@@ -1,0 +1,256 @@
+# Securityscans — secret scanning, statische analyse (SAST), kwetsbaarheden in
+# afhankelijkheden, containerscan, infrastructuurscan en SBOM.
+#
+# Deze workflow blokkeert een pull request bij kritieke of hoge bevindingen
+# (job security-gate). Zie docs/security/vulnerability-management.md voor de SLA's.
+#
+# Voorwaarden in de repository:
+#   * Code scanning (GitHub Advanced Security of publieke repo) voor SARIF-upload;
+#     zonder die functie falen de upload-stappen niet, maar zijn de resultaten alleen
+#     zichtbaar in de joblogs (continue-on-error).
+#   * Secret scanning en push protection staan bij voorkeur óók aan in
+#     Settings → Code security and analysis.
+name: Security scan
+
+on:
+  push:
+    branches: ["main", "develop", "release/**"]
+  pull_request:
+    branches: ["main", "develop", "release/**"]
+  schedule:
+    # Wekelijks opnieuw scannen: nieuwe CVE's raken ook ongewijzigde code.
+    - cron: "0 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TEMPLATE_STRICT: ${{ vars.TEMPLATE_STRICT || 'false' }}
+
+jobs:
+  secret-scan:
+    name: secret-scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # volledige historie: secrets worden ook in oude commits gezocht
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITLEAKS_LICENSE is vereist voor organisatie-repositories.
+          # Alternatief zonder licentie: trufflehog (zie onderstaande stap).
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+        continue-on-error: true
+      - name: TruffleHog (alternatief / tweede controle)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --results=verified --fail
+      - name: Toelichting
+        if: failure()
+        run: |
+          echo "::error::Mogelijk secret aangetroffen. Roteer het secret onmiddellijk (het is gelekt zodra het gepusht is), verwijder het uit de historie en meld dit volgens docs/security/incident-response.md."
+
+  sast:
+    name: sast
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # Semgrep is stack-agnostisch en werkt ook zonder gekozen [TECH STACK].
+      - name: Semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: >-
+            p/default
+            p/security-audit
+            p/secrets
+            p/owasp-top-ten
+          generateSarif: "true"
+        continue-on-error: true
+
+      - name: Semgrep-resultaten uploaden
+        uses: github/codeql-action/upload-sarif@v3
+        if: always() && hashFiles('semgrep.sarif') != ''
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+        continue-on-error: true
+
+      # CodeQL geeft diepere analyse. Zet de repository-variabele CODEQL_LANGUAGES
+      # (bijv. "javascript-typescript" of "python,java") zodra [TECH STACK] bekend is.
+      - name: CodeQL initialiseren
+        if: vars.CODEQL_LANGUAGES != ''
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ vars.CODEQL_LANGUAGES }}
+          queries: security-extended
+      - name: CodeQL autobuild
+        if: vars.CODEQL_LANGUAGES != ''
+        uses: github/codeql-action/autobuild@v3
+      - name: CodeQL analyse
+        if: vars.CODEQL_LANGUAGES != ''
+        uses: github/codeql-action/analyze@v3
+
+  dependency-vulnerabilities:
+    name: dependency-vulnerabilities
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: CRITICAL,HIGH
+          format: sarif
+          output: trivy-fs.sarif
+          exit-code: "0" # de gate-job beslist; hier alleen rapporteren
+      - name: Resultaten uploaden
+        uses: github/codeql-action/upload-sarif@v3
+        if: always() && hashFiles('trivy-fs.sarif') != ''
+        with:
+          sarif_file: trivy-fs.sarif
+          category: trivy-fs
+        continue-on-error: true
+      - name: Kritieke en hoge bevindingen tellen
+        id: count
+        run: |
+          count=0
+          if [ -f trivy-fs.sarif ]; then
+            count="$(grep -c '"level": *"error"' trivy-fs.sarif || true)"
+          fi
+          echo "findings=${count}" >> "$GITHUB_OUTPUT"
+          echo "Kritieke/hoge bevindingen: ${count}"
+      - name: Blokkeren bij kritieke of hoge bevindingen
+        if: steps.count.outputs.findings != '0'
+        run: |
+          echo "::error::Er zijn kritieke of hoge kwetsbaarheden in afhankelijkheden gevonden. De Definition of Done staat dit niet toe. Zie docs/security/vulnerability-management.md."
+          exit 1
+
+  container-scan:
+    name: container-scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aanwezigheid Dockerfile bepalen
+        id: check
+        run: |
+          if [ -f Dockerfile ] || [ -f docker/Dockerfile ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Geen Dockerfile gevonden; containerscan overgeslagen. Deze job wordt automatisch actief zodra er containers worden gebruikt."
+          fi
+      - name: Image bouwen
+        if: steps.check.outputs.present == 'true'
+        run: docker build -t local/scan-target:${{ github.sha }} .
+      - name: Trivy image scan
+        if: steps.check.outputs.present == 'true'
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: image
+          image-ref: local/scan-target:${{ github.sha }}
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          format: sarif
+          output: trivy-image.sarif
+          exit-code: "1"
+      - name: Resultaten uploaden
+        if: always() && hashFiles('trivy-image.sarif') != ''
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-image.sarif
+          category: trivy-image
+        continue-on-error: true
+
+  iac-scan:
+    name: iac-scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Infrastructuurcode aanwezig?
+        id: check
+        run: |
+          if find . -name '*.tf' -o -name '*.bicep' -o -path '*k8s*' -name '*.yaml' | grep -q .; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Geen infrastructure as code gevonden; scan overgeslagen. Wordt actief zodra [CLOUD] is gekozen en /infra bestaat."
+          fi
+      - name: Trivy config scan
+        if: steps.check.outputs.present == 'true'
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: CRITICAL,HIGH
+          exit-code: "1"
+
+  sbom:
+    name: sbom
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: SBOM genereren (CycloneDX)
+        uses: anchore/sbom-action@v0
+        with:
+          format: cyclonedx-json
+          artifact-name: sbom.cyclonedx.json
+          output-file: sbom.cyclonedx.json
+      - name: SBOM bewaren
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.cyclonedx.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  security-gate:
+    name: security-gate
+    runs-on: ubuntu-latest
+    needs: [secret-scan, sast, dependency-vulnerabilities, container-scan, iac-scan, sbom]
+    if: always()
+    steps:
+      - name: Samenvatting
+        run: |
+          {
+            echo "### Securitycontroles"
+            echo "| Controle | Status |"
+            echo "|---|---|"
+            echo "| secret-scan | ${{ needs.secret-scan.result }} |"
+            echo "| sast | ${{ needs.sast.result }} |"
+            echo "| dependency-vulnerabilities | ${{ needs.dependency-vulnerabilities.result }} |"
+            echo "| container-scan | ${{ needs.container-scan.result }} |"
+            echo "| iac-scan | ${{ needs.iac-scan.result }} |"
+            echo "| sbom | ${{ needs.sbom.result }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Blokkeren bij een gefaalde securitycontrole
+        if: contains(needs.*.result, 'failure')
+        run: |
+          echo "::error::Een securitycontrole is gefaald. Merge en release zijn geblokkeerd tot dit is opgelost of expliciet is geaccepteerd volgens GOVERNANCE.md (risicoacceptatie)."
+          exit 1
