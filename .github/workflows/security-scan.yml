@@ -43,20 +43,21 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # volledige historie: secrets worden ook in oude commits gezocht
+      # Gitleaks (MIT) is de blokkerende secret scanner. Bewust géén TruffleHog als
+      # tweede controle: die actie staat onder AGPL-3.0 en botst daarmee met het
+      # licentiebeleid in dependency-review.yml. Een uitzondering maken op het eigen
+      # beleid voor het eigen gemak is precies wat een control waardeloos maakt.
+      # Aanvullende dekking komt van GitHub secret scanning + push protection
+      # (Settings → Code security and analysis) — zie SECURITY.md.
       - name: Gitleaks
         uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # GITLEAKS_LICENSE is vereist voor organisatie-repositories.
-          # Alternatief zonder licentie: trufflehog (zie onderstaande stap).
+          # GITLEAKS_LICENSE is vereist voor organisatierepositories; voor persoonlijke
+          # repositories is de actie gratis. Ontbreekt de licentie in een organisatie,
+          # dan faalt deze stap met een duidelijke melding — dat is bewust: een
+          # stilzwijgend overgeslagen secret scan is gevaarlijker dan een rode build.
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
-        continue-on-error: true
-      - name: TruffleHog (alternatief / tweede controle)
-        uses: trufflesecurity/trufflehog@main
-        with:
-          # De actie geeft zelf al --fail mee; die vlag hier herhalen laat TruffleHog
-          # afbreken met "flag 'fail' cannot be repeated".
-          extra_args: --results=verified
       - name: Toelichting
         if: failure()
         run: |

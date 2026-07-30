@@ -67,6 +67,12 @@ jobs:
           # Licentiebeleid — AANNAME, te bevestigen door [LEGAL/COMPLIANCE].
           # Sterke copyleft is uitgesloten omdat de dienst als gehoste applicatie wordt
           # aangeboden; een AGPL-component kan brononthullingsverplichtingen meebrengen.
+          #
+          # Let op: de actie merkt `deny-licenses` aan als verouderd en kan de optie in
+          # een volgende major verwijderen. Herzie dit bij de volgende major-upgrade
+          # (het alternatief is een allowlist, maar die markeert ook alle GitHub Actions
+          # zonder gepubliceerde licentie als bevinding). Deze afweging hoort in een ADR
+          # zodra de organisatie een definitief licentiebeleid heeft vastgesteld.
           deny-licenses: AGPL-3.0, AGPL-3.0-only, AGPL-3.0-or-later, SSPL-1.0
           comment-summary-in-pr: on-failure
           warn-only: false
