@@ -1,8 +1,33 @@
 # Testgroepplan
 
-De testgroep is geen eenmalige toets aan het einde, maar een **vast onderdeel van elke
+> **Doel:** structureel leren van echte gebruikers, met een werkbaar ritme.
+> **Wanneer gebruiken:** bij het opzetten van de testgroep en bij het plannen van elke
+> leeractiviteit.
+> **Wie:** UX- en onderzoeksexpertise binnen de Developers, samen met de Product Owner.
+> **Adoptieniveau:** Core.
+> **Gerelateerd:** [`experiment-template.md`](experiment-template.md) · [`feedback-log.md`](feedback-log.md) · [`consent-and-privacy-check.md`](consent-and-privacy-check.md)
+
+De testgroep is geen eenmalige toets aan het einde, maar een **vast onderdeel van de
 sprintcyclus**. Zonder contact met echte gebruikers bouwen we op aannames — bij een
 financiële dienst is dat een risico voor de gebruiker, niet alleen voor het project.
+
+## 0. Vier soorten risico — en dus vier soorten onderzoek
+
+De testgroep beantwoordt niet elke vraag. Bepaal eerst **welk risico** je toetst:
+
+| Risicotype | De vraag | Wie of wat levert het antwoord |
+|---|---|---|
+| **Desirability** | willen gebruikers dit? | probleeminterview of concepttest met de doelgroep |
+| **Usability** | kunnen ze het begrijpen en gebruiken? | taakgerichte usabilitytest met de testgroep |
+| **Feasibility** | kunnen wij dit betrouwbaar bouwen en draaien? | technische spike of prototype — géén gebruikerssessie |
+| **Viability** | is dit duurzaam, verantwoord en passend bij onze doelen? | kosten-, risico-, compliance- of businessanalyse |
+
+De testgroep is het instrument voor **desirability en usability**. Feasibility en viability
+worden binnen het team en met governance beantwoord. Het grootste verspilde onderzoek is
+een usabilitytest op iets wat niemand wil, of een gebruikerssessie over een vraag die
+juridisch of technisch beantwoord had moeten worden.
+
+Sjabloon per experiment: [`experiment-template.md`](experiment-template.md).
 
 ## 1. Samenstelling
 
@@ -115,13 +140,15 @@ Per stap:
 
 ## 4. Wat testen we per fase?
 
-| Fase | Wat | Methode |
-|---|---|---|
-| Probleem nog onduidelijk | bestaat het probleem, en voor wie? | interview |
-| Oplossingsrichting | begrijpt men het concept? | prototype + hardop denken |
-| Werkend increment | lukt de taak zonder hulp? | usabilitytest |
-| Meerdere sprints later | komt men terug, en waarom (niet)? | meting + interview |
-| Vóór bredere uitrol | vertrouwen, duidelijkheid, foutafhandeling | usabilitytest + vragenlijst |
+| Fase | Wat | Risicotype | Methode |
+|---|---|---|---|
+| Probleem nog onduidelijk | bestaat het probleem, en voor wie? | desirability | interview |
+| Oplossingsrichting | begrijpt men het concept? | desirability + usability | prototype + hardop denken |
+| Technische onzekerheid | kunnen we dit betrouwbaar bouwen? | feasibility | spike, geen gebruikerssessie |
+| Werkend increment | lukt de taak zonder hulp? | usability | usabilitytest |
+| Vóór opschalen | is dit houdbaar qua kosten, risico en regelgeving? | viability | analyse + governance |
+| Meerdere sprints later | komt men terug, en waarom (niet)? | desirability | meting + interview |
+| Vóór bredere uitrol | vertrouwen, duidelijkheid, foutafhandeling | usability | usabilitytest + vragenlijst |
 
 ## 5. Randvoorwaarden (niet onderhandelbaar)
 

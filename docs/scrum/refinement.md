@@ -20,11 +20,16 @@ vaste sessie voorkomt alleen dat het erbij inschiet.
    * *Compliance:* raakt dit een control of een mogelijke verplichting?
    * *Geld:* kunnen er onjuiste bedragen ontstaan? Wat is de schade als het misgaat?
 5. **Testaanpak bepalen:** welke tests, welk niveau, welke synthetische data?
-6. **Splitsen** als het niet binnen één sprint past (zie §3).
-7. **Schatten** (zie §2).
-8. **Boardvelden invullen:** itemtype, epic, prioriteit, businesswaarde, risico,
+6. **Risicotype benoemen bij onzekerheid.** Weet je niet of dit werkt, bepaal dan wélk
+   risico je eerst wegneemt: *desirability* (willen ze dit?), *usability* (snappen ze het?),
+   *feasibility* (kunnen we het bouwen?) of *viability* (is het houdbaar en verantwoord?).
+   Dat bepaalt of je een interview, een usabilitytest, een spike of een analyse plant —
+   zie [`../research/experiment-template.md`](../research/experiment-template.md).
+7. **Splitsen** als het niet binnen één sprint past (zie §3).
+8. **Schatten** (zie §2).
+9. **Boardvelden invullen:** itemtype, epic, prioriteit, businesswaarde, risico,
    complexiteit, story points, security-/privacy-/compliance-impact, target release.
-9. **Status bijwerken:** Ready for sprint, of terug met een concrete actie.
+10. **Status bijwerken:** Ready for sprint, of terug met een concrete actie.
 
 ## 2. Schatten
 

@@ -1,7 +1,28 @@
 # Experiment (sjabloon)
 
-Gebruik dit sjabloon om een aanname te toetsen vóórdat er veel wordt gebouwd. Eén
-experiment = één hypothese.
+> **Doel:** één aanname toetsen vóórdat er veel wordt gebouwd.
+> **Wanneer gebruiken:** bij elke openstaande aanname met impact op scope of ontwerp.
+> **Wie:** UX-/onderzoeksexpertise binnen de Developers, samen met de Product Owner.
+> **Adoptieniveau:** Core.
+> **Gerelateerd:** [`test-group-plan.md`](test-group-plan.md) · [`../product/mvp-scope.md`](../product/mvp-scope.md)
+
+Eén experiment = één hypothese. Begin met het **risicotype** — dat bepaalt de methode.
+
+## 0. Welk risico toets je?
+
+| Risicotype | De vraag | Passende methode |
+|---|---|---|
+| **Desirability** | willen gebruikers dit? | probleeminterview, concepttest, landingspagina |
+| **Usability** | kunnen ze het begrijpen en gebruiken? | taakgerichte usabilitytest, hardop-denken |
+| **Feasibility** | kunnen wij dit technisch en operationeel betrouwbaar bouwen? | technische spike, prototype, belastingtest |
+| **Viability** | is dit duurzaam, verantwoord en passend bij onze doelen? | kosten-, risico-, compliance- of businessanalyse |
+
+> **Niet elk risico wordt met een usabilitytest onderzocht.** Een usabilitytest op een
+> functie die niemand wil, meet alleen hoe soepel iets overbodigs werkt. En of we iets
+> *mogen* aanbieden is een viability-vraag, geen gebruikersvraag.
+
+Bij een financiële dienst hoort viability standaard ook de vraag: *is dit verantwoord voor
+de gebruiker?* — geen dark patterns, geen misleidende weergave, geen drang.
 
 ## Kop
 
@@ -9,6 +30,7 @@ experiment = één hypothese.
 |---|---|
 | Experiment-ID | `EXP-[NR]` |
 | Titel | `[KORTE TITEL]` |
+| **Risicotype** | ⬜ desirability ⬜ usability ⬜ feasibility ⬜ viability |
 | Eigenaar | `[NAAM]` |
 | Sprint | `[NR]` |
 | Status | concept / loopt / afgerond / gestopt |
@@ -34,7 +56,8 @@ experiment = één hypothese.
 
 | Onderwerp | Invulling |
 |---|---|
-| Methode | ⬜ usabilitytest ⬜ interview ⬜ prototype ⬜ A/B-vergelijking ⬜ meting in testomgeving ⬜ desk research |
+| Methode | ⬜ probleeminterview ⬜ concepttest ⬜ usabilitytest ⬜ prototype ⬜ technische spike ⬜ A/B-vergelijking ⬜ meting in testomgeving ⬜ kosten-/risicoanalyse ⬜ desk research |
+| Doelgroep of segment | `[WELK SEGMENT — bepaalt de reikwijdte van de conclusie]` |
 | Kleinst mogelijke opzet | `[WAT BOUWEN WE MINIMAAL?]` |
 | Deelnemers | `[AANTAL]` uit `[TESTGROEP]`, profiel `[…]` |
 | Duur | `[X]` dagen / `[Y]` sessies |
@@ -94,6 +117,8 @@ concluderen op basis van deze opzet.
 * …
 
 ## 9. Beslissing
+
+Vergelijk met de **vooraf** vastgelegde criteria uit §4 — niet met wat achteraf goed uitkomt.
 
 ⬜ Doorgaan ⬜ Aanpassen ⬜ Opnieuw toetsen ⬜ Stoppen
 

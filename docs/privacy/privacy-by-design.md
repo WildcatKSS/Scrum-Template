@@ -3,10 +3,36 @@
 Privacy is een ontwerpeis, geen document achteraf. Dit hoofdstuk vertaalt de beginselen
 naar concrete keuzes die het team elke sprint maakt.
 
+> **Doel:** privacy als ontwerpeis, niet als document achteraf.
+> **Wanneer gebruiken:** bij refinement van elk item met gegevens, en bij nieuwe
+> verwerkingen.
+> **Wie:** Developers met privacyexpertise; de privacy officer/DPO toetst onafhankelijk.
+> **Adoptieniveau:** Core (§1–3), Advanced (§4–7).
+> **Gerelateerd:** [`data-classification.md`](data-classification.md) · [`data-retention.md`](data-retention.md) · [`../compliance/regulatory-decisions.md`](../compliance/regulatory-decisions.md)
+
 > ⚖️ Alle juridische duiding in dit document is een **werkbaar uitgangspunt**, geen
 > juridisch advies. Grondslagen, termijnen en verplichtingen zijn **te valideren door een
 > bevoegde specialist**; registreer die validatie in
 > [`../compliance/regulatory-decisions.md`](../compliance/regulatory-decisions.md).
+
+## 0. Vijf soorten verplichting — niet op één hoop
+
+"Compliance" is geen enkelvoudig begrip. Deze vijf hebben elk een eigen bron, eigen
+beoordelaar en eigen bewijs. Ze door elkaar halen leidt tot twee fouten: privacyregels
+behandelen als vrijblijvend intern beleid, of intern beleid presenteren als wettelijke
+plicht.
+
+| # | Soort | Bron | Wie stelt vast wat geldt | Waar vastgelegd |
+|---|---|---|---|---|
+| 1 | **Gegevensbescherming** (privacywetgeving) | wet | privacy officer/DPO, met juridische validatie | dit document, [`data-retention.md`](data-retention.md), DPIA |
+| 2 | **Intern privacybeleid** | eigen keuze, strenger dan de wet mag | privacy officer + PO | dit document |
+| 3 | **Informatiebeveiliging** (algemeen) | goede praktijk, normen, klantvereisten | security officer | [`../security/security-principles.md`](../security/security-principles.md) |
+| 4 | **Sectorspecifieke financiële regelgeving** | wet en toezicht, afhankelijk van `[TYPE DIENST]` en `[LANDEN/REGIO]` | **bevoegde specialist** — het team niet | [`../compliance/regulatory-decisions.md`](../compliance/regulatory-decisions.md) |
+| 5 | **Contractueel of leveranciersvereist** | overeenkomst | compliance + inkoop | [`../compliance/compliance-register.md`](../compliance/compliance-register.md) |
+
+**Praktisch verschil:** een bewaartermijn uit categorie 1 mag je niet zelf verlengen; een
+strengere termijn uit categorie 2 mag je zelf aanpassen; een eis uit categorie 4 mag je
+niet zelf vaststellen — ook niet als je denkt dat je het antwoord weet.
 
 ## 1. Beginselen in de praktijk
 

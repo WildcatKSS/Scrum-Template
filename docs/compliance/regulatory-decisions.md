@@ -1,7 +1,20 @@
 # Regulatoire besluiten
 
+> **Doel:** juridische en regulatoire vragen zichtbaar houden tot een bevoegde specialist
+> ze heeft beantwoord.
+> **Wanneer gebruiken:** zodra iemand denkt "mag dit eigenlijk wel?".
+> **Wie:** compliance officer beheert; iedereen mag een vraag toevoegen.
+> **Adoptieniveau:** Core voor de blokkerende vragen (RD-01, RD-14), Regulated voor het volledige register.
+> **Gerelateerd:** [`compliance-register.md`](compliance-register.md) · [`../privacy/privacy-by-design.md`](../privacy/privacy-by-design.md) §0
+
 Register van vragen over wet- en regelgeving, met de status van de beoordeling. Het
 principe is simpel: **het team beantwoordt deze vragen niet zelf.**
+
+Dit register gaat over **wat geldt** (soorten `GB` en `FR` uit
+[`../privacy/privacy-by-design.md`](../privacy/privacy-by-design.md) §0). Hoe we een
+eenmaal vastgestelde verplichting borgen, staat in
+[`control-mapping.md`](control-mapping.md); het bewijs daarvan in
+[`audit-evidence.md`](audit-evidence.md).
 
 > ⚖️ Elke conclusie in dit register is **te valideren door een bevoegde specialist**
 > (jurist, compliance officer of externe adviseur) totdat de kolom *Gevalideerd door*

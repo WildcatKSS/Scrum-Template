@@ -65,6 +65,19 @@ body:
     validations:
       required: true
 
+  - type: checkboxes
+    id: threat-checklist
+    attributes:
+      label: "Threat modelling"
+      description: >-
+        Loop bij de start van deze epic de epic-threatchecklist door
+        (docs/architecture/epic-threat-checklist.md, ± 45 minuten). Raakt de epic geen
+        gegevens, geld, toegang of externe koppeling, vink dan het tweede vakje aan en
+        licht dat toe in de risico's hierboven.
+      options:
+        - label: "Epic-threatchecklist doorlopen; uitkomsten verwerkt in acceptatiecriteria of eigen issues"
+        - label: "Niet van toepassing — toegelicht bij Risico's en aannames"
+
   - type: dropdown
     id: impact
     attributes:
