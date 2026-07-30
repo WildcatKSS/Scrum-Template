@@ -82,6 +82,13 @@ vergunningplicht · grondslagen · wettelijke bewaartermijnen · identificatieve
 informatieverplichtingen · meldplichten bij incidenten · eisen aan uitbesteding ·
 internationale doorgifte · toegankelijkheidsverplichtingen.
 
+## 6a. Waar staan de placeholders?
+
+De meeste staan in `README.md` §4, [`product/product-vision.md`](product/product-vision.md)
+en [`product/mvp-scope.md`](product/mvp-scope.md). De onboardingdocumenten
+([`onboarding/`](onboarding/)) bevatten bewust weinig placeholders: die zijn direct
+bruikbaar zonder invulwerk.
+
 ## 7. Volgorde van invullen
 
 1. **Direct:** organisatie, repository, contactadressen, licentiejaar.

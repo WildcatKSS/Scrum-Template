@@ -44,7 +44,7 @@ vinkje.
 
 | # | Van toepassing wanneer het item raakt… | Criterium |
 |---|---|---|
-| C1 | applicatiecode | passende unit-, integratie- of end-to-endtests toegevoegd of bijgewerkt; dekking blijft boven `COVERAGE_MIN` |
+| C1 | applicatiecode | passende unit-, integratie- of end-to-endtests toegevoegd of bijgewerkt; dekking blijft boven `COVERAGE_MIN` — welk niveau waarvoor: [`../testing/test-strategy.md`](../testing/test-strategy.md) |
 | C2 | een gebruikersinterface | toegankelijkheid gecontroleerd (geautomatiseerd + handmatige toetsenbordcontrole), WCAG 2.2 AA op de kernreis; teksten begrijpelijk (streven B1) |
 | C3 | authenticatie of autorisatie | negatieve tests: een onbevoegde gebruiker kan het níét (`tests/security/`, S-1 t/m S-3) |
 | C4 | geldstromen, bedragen of limieten | tests op afronding, valuta, negatieve bedragen, randgevallen en idempotentie; limieten serverseitig afgedwongen |

@@ -10,7 +10,7 @@ securityactiviteit bij welke stap in onze Scrum-cyclus hoort en wie die uitvoert
 | **Idee / Inbox** | eerste inschatting security-, privacy- en compliance-impact | PO + melder | velden op het board |
 | **Discovery** | misbruikscenario's benoemen ("abuse stories") | Developers (UX- en security-expertise) | issuebeschrijving |
 | **Refinement** | verplichte risicoscan; securityeisen als acceptatiecriteria | Scrum Team, governance op afroep | acceptatiecriteria |
-| **Epicstart** | threat modelling (STRIDE) | Developers (security-expertise) + tech lead | [`../architecture/threat-model.md`](../architecture/threat-model.md) |
+| **Epicstart** | threat modelling met de [epic-checklist](../architecture/epic-threat-checklist.md) | Developers (security-expertise) + tech lead | [`../architecture/threat-model.md`](../architecture/threat-model.md) |
 | **Ontwerp** | ADR met security-impact | Tech lead | ADR |
 | **Bouw** | veilige codeerpraktijken, geen secrets, invoervalidatie | Developers | code |
 | **Commit** | pre-commit secret scan (optioneel), ondertekende commits | Developers | commit |

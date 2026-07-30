@@ -7,6 +7,8 @@ maken: is er ruimte voor nieuwe functionaliteit, of moeten we eerst stabiliseren
 > Owner en de opdrachtgever; bij een financiële dienst kunnen contractuele of regulatoire
 > eisen strenger zijn — **te valideren door een bevoegde specialist**.
 
+> **Gerelateerd:** [`sre-principles.md`](sre-principles.md) · [`monitoring.md`](monitoring.md)
+
 ## 1. SLO's
 
 | # | Service level indicator | Doel | Meetvenster | Waarom deze waarde |

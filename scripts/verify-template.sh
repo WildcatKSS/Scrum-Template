@@ -11,8 +11,12 @@ note_error() { printf '\033[0;31m  ✗ %s\033[0m\n' "$*"; errors=$((errors+1)); 
 note_ok()    { printf '\033[0;32m  ✓ %s\033[0m\n' "$*"; }
 
 required_files=(
-  README.md SECURITY.md SUPPORT.md CONTRIBUTING.md GOVERNANCE.md
+  README.md START-HERE.md SECURITY.md SUPPORT.md CONTRIBUTING.md GOVERNANCE.md
   CODE_OF_CONDUCT.md LICENSE CHANGELOG.md .env.example .gitignore
+  docs/README.md docs/adoption-levels.md
+  docs/onboarding/product-owner-quick-start.md
+  docs/onboarding/developer-onboarding.md
+  docs/testing/test-strategy.md
   .github/CODEOWNERS .github/dependabot.yml .github/labels.yml
   .github/PULL_REQUEST_TEMPLATE.md
   .github/ISSUE_TEMPLATE/config.yml
@@ -41,7 +45,7 @@ required_files=(
   docs/scrum/definition-of-done.md docs/scrum/sprint-planning.md
   docs/scrum/sprint-review.md docs/scrum/retrospective.md docs/scrum/refinement.md
   docs/scrum/roles.md docs/scrum/project-board.md docs/scrum/labels.md
-  docs/scrum/sprint-plan-example.md
+  docs/scrum/sprint-plan-example.md docs/scrum/anti-patterns.md
   docs/research/test-group-plan.md docs/research/interview-template.md
   docs/research/usability-test-template.md docs/research/feedback-log.md
   docs/research/experiment-template.md
@@ -50,16 +54,20 @@ required_files=(
   docs/architecture/data-flow.md docs/architecture/threat-model.md
   docs/architecture/adr/0001-architecture-decision-template.md
   docs/architecture/adr/README.md
+  docs/architecture/architecture-principles.md
+  docs/architecture/epic-threat-checklist.md
   docs/security/security-principles.md docs/security/secure-development-lifecycle.md
   docs/security/access-control.md docs/security/incident-response.md
   docs/security/vulnerability-management.md docs/security/security-testing.md
+  docs/security/security-champions.md
   docs/privacy/privacy-by-design.md docs/privacy/data-classification.md
   docs/privacy/data-retention.md docs/privacy/privacy-impact-assessment-template.md
   docs/compliance/compliance-register.md docs/compliance/control-mapping.md
   docs/compliance/audit-evidence.md docs/compliance/regulatory-decisions.md
   docs/operations/deployment.md docs/operations/monitoring.md
   docs/operations/backup-and-recovery.md docs/operations/service-level-objectives.md
-  docs/operations/runbook.md
+  docs/operations/runbook.md docs/operations/sre-principles.md
+  docs/operations/platform-readiness-checklist.md
   docs/releases/release-process.md docs/releases/release-checklist.md
   src/README.md tests/README.md scripts/README.md
   scripts/bootstrap.sh scripts/verify-template.sh
@@ -74,7 +82,7 @@ done
 [ "${errors}" -eq 0 ] && note_ok "alle ${#required_files[@]} bestanden aanwezig"
 
 echo "2. Verplichte mappen"
-for d in src tests/unit tests/integration tests/security tests/accessibility tests/end-to-end scripts; do
+for d in src tests/unit tests/integration tests/security tests/accessibility tests/end-to-end scripts docs/onboarding docs/testing; do
   [ -d "${d}" ] || note_error "ontbreekt: ${d}/"
 done
 note_ok "mapstructuur gecontroleerd"
@@ -127,7 +135,22 @@ done < <(grep -rhoE '^[^#]*uses:[[:space:]]*[^[:space:]]+' .github --include='*.
           | sort -u)
 [ "${unpinned}" -eq 0 ] && note_ok "alle externe actions zijn op een commit-SHA vastgezet"
 
-echo "6. Patrooncontrole op gevoelige gegevens (beperkt, geen volledige PII-detectie)"
+echo "6. Elk document is bereikbaar (geen verweesde bestanden)"
+# Een document zonder inkomende link wordt niet gevonden en dus niet gebruikt.
+orphans=0
+while IFS= read -r doc; do
+  name="$(basename "${doc}")"
+  # zoek een verwijzing naar dit bestand vanuit een ander markdownbestand
+  if ! grep -rl --include='*.md' --include='*.yml' -- "${name}" . \
+       | grep -v "^${doc}$" | grep -q .; then
+    note_error "geen enkele verwijzing naar: ${doc}"
+    orphans=$((orphans+1))
+  fi
+done < <(find . -name '*.md' -not -path './.git/*' -not -name 'README.md' \
+           -not -name 'START-HERE.md' | sed 's|^\./||' | sort)
+[ "${orphans}" -eq 0 ] && note_ok "alle documenten zijn vanuit de repository bereikbaar"
+
+echo "7. Patrooncontrole op gevoelige gegevens (beperkt, geen volledige PII-detectie)"
 # LET OP: dit is een grove zeef tegen slordigheid, GEEN bewijs dat de repository vrij is
 # van persoonsgegevens. Secret scanning (security-scan.yml + GitHub push protection) blijft
 # de primaire controle voor secrets; menselijke review blijft nodig. Zie
@@ -163,5 +186,5 @@ if [ "${errors}" -gt 0 ]; then
 fi
 ok "Template is consistent."
 echo
-echo "Let op: stap 6 is een patrooncontrole op veelgemaakte fouten, geen volledige"
+echo "Let op: stap 7 is een patrooncontrole op veelgemaakte fouten, geen volledige"
 echo "PII-detectie. Zij bewijst niet dat de repository geen persoonsgegevens bevat."

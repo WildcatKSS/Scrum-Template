@@ -1,5 +1,8 @@
 # tests/
 
+> Strategie, testniveaus en kwaliteitsrisico's: [`../docs/testing/test-strategy.md`](../docs/testing/test-strategy.md).
+> Dit bestand beschrijft alleen wáár wat staat en hoe je het draait.
+
 | Map | Wat er in hoort | Draait via |
 |---|---|---|
 | `unit/` | losse functies en domeinlogica, zonder I/O | `scripts/ci/test-unit.sh` |

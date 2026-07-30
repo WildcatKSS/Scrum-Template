@@ -1,5 +1,10 @@
 # Optionele uitbreidingen
 
+> **Doel:** zicht houden op wat je bewust nog niet hebt ingebouwd.
+> **Wanneer gebruiken:** bij de overgang naar een hoger [adoptieniveau](adoption-levels.md).
+> **Wie:** Developers en tech lead.
+> **Gerelateerd:** [`adoption-levels.md`](adoption-levels.md)
+
 Deze template is bewust een **minimale maar werkende** versie: alles wat erin zit, wordt
 vanaf sprint 1 gebruikt. Onderstaande uitbreidingen zijn nuttig, maar voegen complexiteit
 toe die je pas wilt betalen als je er iets voor terugkrijgt.

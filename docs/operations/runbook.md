@@ -6,6 +6,9 @@ Praktische instructies voor als er iets misgaat. Kort, concreet en uitvoerbaar o
 > datalek → volg [`../security/incident-response.md`](../security/incident-response.md) en
 > meld binnen 24 uur bij privacy én security. Ga niet eerst zelf onderzoeken.
 
+> **Gerelateerd:** [`sre-principles.md`](sre-principles.md) (incidentniveaus en
+> post-mortems) · [`../security/incident-response.md`](../security/incident-response.md)
+
 ## 0. Contact
 
 | Rol | Contact | Wanneer |

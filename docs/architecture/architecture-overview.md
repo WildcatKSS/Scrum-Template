@@ -5,6 +5,9 @@ Beschrijft de hoofdcomponenten van `[PRODUCTNAAM]` en hoe zij samenwerken (C4 ni
 > **Status:** sjabloon met een bewust eenvoudige startarchitectuur. Kies pas complexere
 > patronen wanneer een concreet probleem daarom vraagt, en leg dat vast in een ADR.
 
+> **Gerelateerd:** [`architecture-principles.md`](architecture-principles.md) (de kaders) ·
+> [`system-context.md`](system-context.md) · [`adr/README.md`](adr/README.md)
+
 ## 1. Uitgangspunten
 
 1. **Begin eenvoudig.** Een goed gestructureerde, modulaire applicatie ("modulith")

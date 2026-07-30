@@ -2,6 +2,9 @@
 
 Hoe code van een pull request in productie komt, en welke waarborgen daarbij horen.
 
+> **Gerelateerd:** [`platform-readiness-checklist.md`](platform-readiness-checklist.md) ·
+> [`../releases/release-process.md`](../releases/release-process.md)
+
 ## 1. Omgevingen
 
 | Omgeving | Doel | Data | Toegang | Deploy |

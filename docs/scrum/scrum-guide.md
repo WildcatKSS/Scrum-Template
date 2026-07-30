@@ -1,8 +1,18 @@
 # Zo werken wij: Scrum bij `[PRODUCTNAAM]`
 
+> **Doel:** vastleggen hoe dit team Scrum toepast.
+> **Wanneer gebruiken:** bij onboarding en bij twijfel over de werkwijze.
+> **Wie:** het hele Scrum Team.
+> **Adoptieniveau:** Core.
+> **Gerelateerd:** [`roles.md`](roles.md) · [`anti-patterns.md`](anti-patterns.md) · [`project-board.md`](project-board.md)
+
 Dit document beschrijft hoe dit team Scrum toepast. Het volgt de Scrum Guide en vult die
 aan met wat een **financiële dienst** extra vraagt: security, privacy en compliance zijn
 onderdeel van het werk, niet een fase erna.
+
+Herken je de vorm van Scrum zonder de werking? Loop dan
+[`anti-patterns.md`](anti-patterns.md) langs — vijftien patronen met symptoom, waarom het
+schadelijk is en de correctie.
 
 ## 1. Kern in één alinea
 

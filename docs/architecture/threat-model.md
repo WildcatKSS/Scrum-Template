@@ -4,7 +4,8 @@ Threat modelling beantwoordt vier vragen: *wat bouwen we?* · *wat kan er misgaa
 *wat doen we eraan?* · *hebben we het goed gedaan?*
 
 **Ritme:** per epic vóór de bouw, bij elke wijziging aan een vertrouwensgrens, en
-minimaal elk kwartaal opnieuw. **Deelnemers:** securityverantwoordelijke, tech lead,
+minimaal elk kwartaal opnieuw. Werkblad voor een epic:
+[`epic-threat-checklist.md`](epic-threat-checklist.md). **Deelnemers:** securityverantwoordelijke, tech lead,
 minimaal één developer, en bij gegevens de privacyverantwoordelijke.
 
 > Dit document bevat **geen** exploitdetails. Concrete kwetsbaarheden horen niet in een

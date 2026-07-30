@@ -4,6 +4,9 @@ Een ADR legt vast **waarom** een technische keuze is gemaakt, welke alternatieve
 overwogen en welke gevolgen zijn geaccepteerd. Zonder ADR's verdwijnt die kennis met de
 mensen die het team verlaten — bij een financiële dienst is dat ook een auditprobleem.
 
+Toetsingskader voor elke ADR: [`../architecture-principles.md`](../architecture-principles.md).
+Wijk je af van een principe, dan hoort dat expliciet in de ADR onder *Negatieve gevolgen*.
+
 ## Werkwijze
 
 1. Kopieer [`0001-architecture-decision-template.md`](0001-architecture-decision-template.md)

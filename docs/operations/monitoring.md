@@ -3,6 +3,9 @@
 Wij meten om te weten of gebruikers geholpen worden en of er misbruik plaatsvindt — niet
 om gedrag te profileren. **Geen persoonsgegevens in monitoring.**
 
+> **Gerelateerd:** [`sre-principles.md`](sre-principles.md) (waarom we meten wat we meten) ·
+> [`service-level-objectives.md`](service-level-objectives.md) · [`runbook.md`](runbook.md)
+
 ## 1. Vier lagen
 
 | Laag | Vraag | Voorbeelden |

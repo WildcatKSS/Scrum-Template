@@ -152,7 +152,7 @@ en het wegvallen van auditlogging.
 
 | Moment | Controle |
 |---|---|
-| Refinement | risicoscan op elk item |
+| Refinement | risicoscan op elk item (zie [`security-champions.md`](security-champions.md)) |
 | Pull request | securityvelden ingevuld; CODEOWNERS-review bij gevoelige paden |
 | CI | secret scan, SAST, dependency- en containerscan, SBOM, licenties |
 | Definition of Done | securitycontroles geslaagd, geen kritieke/hoge bevindingen |

@@ -1,266 +1,234 @@
 # [PRODUCTNAAM] — Scrum-template voor een online financiële dienst
 
-> **Status van deze repository:** herbruikbare **GitHub-template**. Alle waarden tussen
-> vierkante haken (`[PRODUCTNAAM]`, `[DOELGROEP]`, `[TECH STACK]`, …) zijn nog niet
-> ingevuld. Zie [`docs/placeholders.md`](docs/placeholders.md) voor de volledige lijst en
-> [Openstaande beslissingen](#openstaande-beslissingen-en-aannames).
+> ### 👉 Nieuw hier? Begin bij **[START-HERE.md](START-HERE.md)** — 8 minuten lezen, dan weet je waar te beginnen.
+
+> **Status:** herbruikbare **GitHub-template**. Alle waarden tussen vierkante haken
+> (`[PRODUCTNAAM]`, `[DOELGROEP]`, `[TECH STACK]`, …) zijn nog niet ingevuld —
+> zie [`docs/placeholders.md`](docs/placeholders.md).
 
 > [!IMPORTANT]
 > Deze template levert **proces, structuur en controlemomenten**. Zij levert géén
-> juridische, compliance- of securitygoedkeuring. Niets in deze repository bewijst dat
-> een product aan wet- of regelgeving voldoet. Alle regulatoire conclusies zijn gemarkeerd
-> als **“te valideren door een bevoegde specialist”**.
+> juridische, compliance- of securitygoedkeuring. Niets in deze repository bewijst dat een
+> product aan wet- of regelgeving voldoet. Alle regulatoire conclusies zijn gemarkeerd als
+> **"te valideren door een bevoegde specialist"**.
 
 ---
 
-## 1. Doel van de repository
+## 1. Wat is deze template?
 
-Deze repository is het startpunt voor een multidisciplinair team dat volgens **Scrum**
-een **veilige, schaalbare en gebruiksvriendelijke online financiële dienst** ontwikkelt.
-De template ondersteunt:
+Het startpunt voor een multidisciplinair team dat volgens **Scrum** een veilige,
+schaalbare en gebruiksvriendelijke online financiële dienst bouwt.
+
+**Wel:** werkende CI/CD met securitycontroles · Issue Forms en PR-template · een
+Scrum-werkwijze die niet omzeilbaar is · documentatie voor security, privacy, compliance
+en operations · een fictieve voorbeeldbacklog om mee te starten.
+
+**Niet:** geen applicatiecode, geen gekozen technologiestack, geen juridisch advies, en
+geen verplichting om alles tegelijk in te voeren.
 
 | Doel | Waar geregeld |
 |---|---|
-| Productontwikkeling volgens Scrum organiseren | [`docs/scrum/`](docs/scrum/), GitHub Issues + Projects |
-| Iteratief en incrementeel waarde opleveren | [`docs/scrum/scrum-guide.md`](docs/scrum/scrum-guide.md), [`docs/scrum/definition-of-done.md`](docs/scrum/definition-of-done.md) |
-| Een MVP snel met een testgroep valideren | [`docs/product/mvp-scope.md`](docs/product/mvp-scope.md), [`docs/research/`](docs/research/) |
-| Feedback omzetten in backlogitems | [`docs/research/feedback-log.md`](docs/research/feedback-log.md) |
-| Kwaliteit, privacy, security en compliance vanaf sprint 1 meenemen | [`.github/workflows/`](.github/workflows/), [`docs/security/`](docs/security/), [`docs/privacy/`](docs/privacy/), [`docs/compliance/`](docs/compliance/) |
-| Beslissingen traceerbaar vastleggen | [`docs/architecture/adr/`](docs/architecture/adr/), [`docs/compliance/regulatory-decisions.md`](docs/compliance/regulatory-decisions.md) |
-| Gecontroleerd releasen | [`docs/releases/`](docs/releases/), [`.github/workflows/release.yml`](.github/workflows/release.yml) |
+| Scrum organiseren | [`docs/scrum/`](docs/scrum/) + GitHub Issues en Projects |
+| Iteratief waarde opleveren | [Scrum-werkwijze](docs/scrum/scrum-guide.md) · [Definition of Done](docs/scrum/definition-of-done.md) |
+| Een MVP valideren met gebruikers | [MVP-scope](docs/product/mvp-scope.md) · [`docs/research/`](docs/research/) |
+| Feedback omzetten in backlogitems | [feedbacklog](docs/research/feedback-log.md) |
+| Kwaliteit, privacy en security vanaf sprint 1 | [`.github/workflows/`](.github/workflows/) · [`docs/security/`](docs/security/) |
+| Beslissingen traceerbaar vastleggen | [ADR's](docs/architecture/adr/) · [regulatoire besluiten](docs/compliance/regulatory-decisions.md) |
+| Gecontroleerd releasen | [`docs/releases/`](docs/releases/) · [`release.yml`](.github/workflows/release.yml) |
 
-## 2. Productcontext
+## 2. Start hier
 
-| Onderwerp | Waarde | Status |
+| Ik ben… | Begin bij |
+|---|---|
+| **nieuw met deze template** | [START-HERE.md](START-HERE.md) |
+| **Product Owner** | [Quick start](docs/onboarding/product-owner-quick-start.md) |
+| **Developer** | [Developer onboarding](docs/onboarding/developer-onboarding.md) |
+| **Scrum Master** | [Scrum-werkwijze](docs/scrum/scrum-guide.md) · [antipatronen](docs/scrum/anti-patterns.md) |
+| **UX / onderzoek** | [Testgroepplan](docs/research/test-group-plan.md) |
+| **Security Champion** | [Security Champions](docs/security/security-champions.md) |
+| **Platform / operations** | [Platform-readiness](docs/operations/platform-readiness-checklist.md) · [SRE-principes](docs/operations/sre-principles.md) |
+| **Privacy / compliance** | [Privacy by design](docs/privacy/privacy-by-design.md) · [control matrix](docs/compliance/control-mapping.md) |
+
+Volledige index per rol: [`docs/README.md`](docs/README.md).
+
+## 3. Adoptieniveaus
+
+Je hebt op dag één maar een klein deel van deze repository nodig.
+
+| Niveau | Voor wie | Wat je invult |
 |---|---|---|
-| Productnaam | `[PRODUCTNAAM]` | te bepalen |
-| Doelgroep | `[DOELGROEP]` | te bepalen |
-| Probleem | `[PROBLEEM]` | te bepalen |
-| Belangrijkste productdoel | `[PRODUCTDOEL]` | te bepalen |
-| Type financiële dienst | `[TYPE DIENST]` (budgetteren / betalen / lenen / investeren / financieel inzicht) | te bepalen — **bepaalt het regulatoire regime** |
-| Landen/regio's | `[LANDEN/REGIO]` | te bepalen — **bepaalt toezichthouder en dataresidency** |
-| Technologiestack | `[TECH STACK]` | te bepalen — zie [ADR 0002](docs/architecture/adr/) |
-| Cloudomgeving | `[CLOUD]` (AWS / Azure / GCP / n.t.b.) | te bepalen |
-| Sprintduur | `[SPRINTDUUR]` (advies: 2 weken) | te bepalen |
-| Testgroep | `[TESTGROEP]` | te bepalen |
+| 🟢 **Core** | klein team, eerste product of prototype | visie, MVP, backlog, DoD, CI, secret scanning |
+| 🔵 **Advanced** | groeiend product, echte gebruikers | + ADR's, threat modelling, scans, SLO's, releasekanalen |
+| 🟣 **Regulated/Enterprise** | gereguleerde productie | + governance, control matrix, auditbewijs, approvals |
 
-Uitgebreide context: [`docs/product/product-vision.md`](docs/product/product-vision.md).
+Details en het groeipad: [`docs/adoption-levels.md`](docs/adoption-levels.md). Een lager
+niveau is gefaseerde invoering, **geen vrijstelling** van fundamentele security- en
+privacyprincipes.
 
-## 3. Uitgangspunten
+## 4. Repository gebruiken
 
-1. **Secure by design, privacy by design, least privilege** — geen bijzaak, maar
-   acceptatiecriterium ([`docs/security/security-principles.md`](docs/security/security-principles.md)).
-2. **Elke sprint levert een bruikbaar, getest en potentieel releasbaar increment.**
-3. **Snelheid mag nooit ten koste gaan van essentiële beveiligings-, privacy- of
-   controlemaatregelen.** Een financiële MVP slaat die niet over.
-4. **Nooit echte persoonsgegevens, betaalgegevens, authenticatiemiddelen of
-   productiedata** in development, demo's, tests of testgroepsessies.
-5. **Aannames worden expliciet gemarkeerd**, nooit stilzwijgend als besluit behandeld.
-6. **Traceerbaarheid**: issue → PR → check → release → bewijs.
-7. **Feedback is input, geen opdracht.** Elke suggestie wordt getoetst
-   ([`docs/research/feedback-log.md`](docs/research/feedback-log.md)).
+### Productcontext
 
-## 4. Repositorystructuur
+| Onderwerp | Waarde | Consequentie |
+|---|---|---|
+| Productnaam · doelgroep · probleem · productdoel | `[PRODUCTNAAM]` · `[DOELGROEP]` · `[PROBLEEM]` · `[PRODUCTDOEL]` | zie [productvisie](docs/product/product-vision.md) |
+| Type financiële dienst | `[TYPE DIENST]` | **bepaalt het regulatoire regime** |
+| Landen/regio's | `[LANDEN/REGIO]` | bepaalt toezichthouder en dataresidency |
+| Technologiestack · cloud | `[TECH STACK]` · `[CLOUD]` | vastleggen als [ADR](docs/architecture/adr/) |
+| Sprintduur · testgroep | `[SPRINTDUUR]` · `[TESTGROEP]` | zie [Scrum](docs/scrum/scrum-guide.md) en [testgroepplan](docs/research/test-group-plan.md) |
 
-```
-.
-├── .github/
-│   ├── ISSUE_TEMPLATE/        # Issue Forms: user story, bug, tech, security, compliance, spike, epic, feature, testgroepfeedback
-│   ├── workflows/             # ci, security-scan, dependency-review, code-quality, release, labels-sync
-│   ├── CODEOWNERS             # verplichte reviewers voor gevoelige paden
-│   ├── PULL_REQUEST_TEMPLATE.md
-│   ├── dependabot.yml
-│   └── labels.yml             # bron van waarheid voor labels
-├── docs/
-│   ├── product/               # visie, doelen, persona's, journey, MVP, roadmap, voorbeeldbacklog
-│   ├── scrum/                 # werkwijze, rollen, board, DoR, DoD, events
-│   ├── research/              # testgroep: plan, interview, usability, consent, feedback, experimenten
-│   ├── architecture/          # context, overzicht, dataflows, threat model, ADR's
-│   ├── security/              # principes, SDLC, access control, incidenten, kwetsbaarheden, testen
-│   ├── privacy/               # privacy by design, classificatie, bewaartermijnen, DPIA
-│   ├── compliance/            # register, control mapping, auditbewijs, regulatoire besluiten
-│   ├── operations/            # deployment, monitoring, backup/recovery, SLO's, runbook
-│   └── releases/              # releaseproces en -checklist
-├── src/                       # applicatiecode (structuur volgt uit [TECH STACK])
-├── tests/                     # unit, integration, security, accessibility, end-to-end
-├── scripts/                   # bootstrap + CI-scripts die de workflows aanroepen
-├── .env.example               # configuratiecontract (nooit echte secrets)
-├── CHANGELOG.md               # Keep a Changelog + SemVer
-├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md
-├── GOVERNANCE.md              # rollen, mandaten, besluitvorming
-├── LICENSE
-├── README.md
-├── SECURITY.md                # responsible disclosure — géén security via publieke issues
-└── SUPPORT.md
-```
-
-## 5. Lokale installatie
+### Installatie
 
 ```bash
 git clone https://github.com/[ORGANISATIE]/[REPOSITORY].git
 cd [REPOSITORY]
-cp .env.example .env          # vul lokale, niet-productie waarden in
-./scripts/bootstrap.sh        # detecteert de stack en installeert afhankelijkheden
+cp .env.example .env          # lokale, niet-productie waarden
+./scripts/bootstrap.sh        # detecteert de stack en installeert
+./scripts/verify-template.sh  # controleert de repository zelf
 ```
 
-`scripts/bootstrap.sh` is **stack-agnostisch**: het detecteert Node.js, Python, Go, Java
-of .NET aan de hand van manifestbestanden. Zolang `[TECH STACK]` niet is gekozen, meldt
-het script dat er nog niets te installeren is en stopt het zonder fout.
+`bootstrap.sh` is stack-agnostisch: het herkent Node.js, Python, Go, Java en .NET. Zolang
+`[TECH STACK]` niet is gekozen, meldt het dat er nog niets te installeren is.
 
-## 6. Configuratie
+### Configuratie
 
-* Alle configuratie loopt via omgevingsvariabelen; het contract staat in
-  [`.env.example`](.env.example).
-* **Secrets** horen in GitHub Actions Secrets of een secrets manager, nooit in de repo.
-* Omgevingen zijn strikt gescheiden: `development` → `test` → `staging` → `production`
-  ([`docs/operations/deployment.md`](docs/operations/deployment.md)).
-* CI-gedrag: zolang `TEMPLATE_STRICT` niet op `true` staat, waarschuwen nog niet
-  ingevulde controles in plaats van te falen. Zet de repository-variabele
-  `TEMPLATE_STRICT=true` zodra de stack er is — dan worden de checks blokkerend.
-* Deployment staat bewust uit en is fail-closed. `deploy-staging` en `deploy-production`
-  draaien alleen bij een **tag-push** op de hoofdbranch én met
-  `STAGING_DEPLOY_ENABLED=true` respectievelijk `PRODUCTION_DEPLOY_ENABLED=true`.
-  Een handmatige run (`workflow_dispatch`) is altijd een **droogrun**: die valideert wel,
-  maar rolt niets uit. Productie vereist daarnaast een stabiele SemVer-versie en een
-  kanaal uit de allowlist (`limited-production`, `general-availability`) via
-  `RELEASE_CHANNEL`. Gebeurt er niets, dan wordt er ook **geen deploymentbewijs
-  geschreven**. Volledig overzicht: [`docs/operations/deployment.md`](docs/operations/deployment.md#6-configuratie-en-secrets).
+Alle configuratie loopt via omgevingsvariabelen; het contract staat in
+[`.env.example`](.env.example). Secrets horen in GitHub Actions Secrets of een secrets
+manager — nooit in de repository. Omgevingen zijn strikt gescheiden:
+`development` → `test` → `staging` → `production`.
 
-## 7. Testcommando's
+De repository-variabelen die het gedrag van de pipeline sturen (`TEMPLATE_STRICT`,
+`STAGING_DEPLOY_ENABLED`, `PRODUCTION_DEPLOY_ENABLED`, `RELEASE_CHANNEL`,
+`CODEQL_LANGUAGES`, `COVERAGE_MIN`) staan met uitleg in
+[`docs/operations/deployment.md`](docs/operations/deployment.md#6-configuratie-en-secrets).
 
-| Doel | Commando | Testmap |
-|---|---|---|
-| Alles | `./scripts/ci/all.sh` | — |
-| Build | `./scripts/ci/build.sh` | — |
-| Lint + format | `./scripts/ci/lint.sh` | — |
-| Unit tests | `./scripts/ci/test-unit.sh` | `tests/unit/` |
-| Integratietests | `./scripts/ci/test-integration.sh` | `tests/integration/` |
-| Coveragedrempel | `./scripts/ci/coverage-check.sh` | — |
-| End-to-end | `./scripts/ci/test-e2e.sh` | `tests/end-to-end/` |
-| Securitytests | `./scripts/ci/test-security.sh` | `tests/security/` |
-| Toegankelijkheid | `./scripts/ci/test-accessibility.sh` | `tests/accessibility/` |
-| SBOM | `./scripts/ci/sbom.sh` | — |
-| Licentiecontrole | `./scripts/ci/license-check.sh` | — |
-| Template zelfcontrole | `./scripts/verify-template.sh` | — |
+### Repositorystructuur
 
-## 8. Ontwikkelworkflow
+```
+.github/        Issue Forms, PR-template, CODEOWNERS, labels, Dependabot, workflows
+docs/           procesdocumentatie — begin bij docs/README.md
+src/            applicatiecode (structuur volgt uit [TECH STACK])
+tests/          unit · integration · security · accessibility · end-to-end
+scripts/        bootstrap + de CI-scripts die de workflows aanroepen
+```
 
-1. Pak een item op uit **Sprint backlog** dat aan de [Definition of Ready](#10-definition-of-ready) voldoet.
-2. Branch: `feat/<issue>-korte-titel`, `fix/…`, `chore/…`, `sec/…`, `docs/…`.
-3. Commit volgens [Conventional Commits](https://www.conventionalcommits.org/)
-   (voedt changelog en SemVer). Onderteken commits waar dat is ingesteld.
-4. Open een **pull request** met het [PR-template](.github/PULL_REQUEST_TEMPLATE.md);
-   koppel het issue met `Relates to #123` (zie [Sluitwoorden](docs/scrum/project-board.md#gebruik-van-sluitwoorden-in-pull-requests)).
-5. CI moet groen zijn: build, lint, tests, coverage, secret scan, dependency review,
-   SAST, SBOM, licenties.
-6. Review: minimaal 1 review (2 voor security-, geld- of datastromen) en verplichte
-   **CODEOWNERS**-review voor gevoelige paden.
-7. Merge (squash) → item naar **Ready for testing** → validatie → **Done** zodra
-   aantoonbaar aan de Definition of Done is voldaan. Een merge zet een item nooit
-   automatisch op Done; gebruik `Relates to #123` zolang er nog validatie volgt.
+## 5. Scrum en productontwikkeling
 
-Branch protection-advies: [`CONTRIBUTING.md`](CONTRIBUTING.md#branch-protection).
-
-## 9. Scrum-werkwijze
-
-* **Sprintduur:** `[SPRINTDUUR]` — advies 2 weken (1 week alleen bij een ervaren team en
-  volledig geautomatiseerde pipeline).
 * **Scrum Team:** Product Owner, Scrum Master en Developers. De Developers zijn
-  multidisciplinair en bevatten UX- en onderzoeks-, test-, security-, privacy-,
-  compliance- en operationsexpertise. Onafhankelijke governancerollen (security officer,
-  privacy officer/DPO, compliance officer) en stakeholders — waaronder de deelnemers aan
-  de testgroep — staan buiten het Scrum Team.
-  Zie [`docs/scrum/roles.md`](docs/scrum/roles.md) en [`GOVERNANCE.md`](GOVERNANCE.md).
-* **Events:** [Sprint Planning](docs/scrum/sprint-planning.md) ·
-  [Daily Scrum](docs/scrum/scrum-guide.md#daily-scrum) ·
-  [Refinement](docs/scrum/refinement.md) ·
-  [Sprint Review](docs/scrum/sprint-review.md) ·
-  [Retrospective](docs/scrum/retrospective.md)
-* **Board:** GitHub Projects met 11 statussen en 14 velden —
-  [`docs/scrum/project-board.md`](docs/scrum/project-board.md).
-* **Gebruikersvalidatie:** doorlopend en risicogestuurd. Elke sprint met gebruikersimpact
-  bevat een expliciete leeractiviteit; een formele validatieronde volgt minimaal elke 1–2
-  sprints — [`docs/research/test-group-plan.md`](docs/research/test-group-plan.md).
+  multidisciplinair (UX, onderzoek, test, security, privacy, compliance, operations).
+  Governancerollen en de deelnemers aan de testgroep staan bewust **buiten** het Scrum
+  Team — [`docs/scrum/roles.md`](docs/scrum/roles.md).
+* **Sprintduur:** `[SPRINTDUUR]` (advies 2 weken). Elke sprint levert een bruikbaar,
+  getest en potentieel releasbaar increment.
+* **Board:** 12 statussen en 14 velden — [`docs/scrum/project-board.md`](docs/scrum/project-board.md).
+* **Backlog:** Productdoel → Epic → Feature → User story → taken. Labels in
+  [`.github/labels.yml`](.github/labels.yml); fictief voorbeeld in
+  [`docs/product/example-backlog.md`](docs/product/example-backlog.md).
+* **Definition of Ready:** [`docs/scrum/definition-of-ready.md`](docs/scrum/definition-of-ready.md).
+* **Definition of Done:** universeel (U1–U8) + conditioneel (C1–C12), **zonder
+  uitzonderingsprocedure** — [`docs/scrum/definition-of-done.md`](docs/scrum/definition-of-done.md).
+* **Valkuilen:** [`docs/scrum/anti-patterns.md`](docs/scrum/anti-patterns.md).
+* **Gebruikersvalidatie:** risicogestuurd; onderscheid tussen desirability, usability,
+  feasibility en viability — [`docs/research/test-group-plan.md`](docs/research/test-group-plan.md).
 
-## 10. Backlog
+## 6. Development en kwaliteit
 
-```
-Productdoel
-└── Epic
-    └── Feature
-        └── User story
-            ├── Technische taak
-            ├── Testtaak
-            ├── Securitytaak
-            └── Compliance-/privacytaak
-```
+Werkwijze: item uit *Sprint backlog* → branch (`feat/12-…`) → code + tests → PR met
+template, gekoppeld met `Relates to #12` → CI groen → review (2 bij gevoelige paden) →
+merge → validatie → Done. Uitgebreid:
+[`CONTRIBUTING.md`](CONTRIBUTING.md) en [developer onboarding](docs/onboarding/developer-onboarding.md).
 
-* Labels: [`.github/labels.yml`](.github/labels.yml), uitleg in [`docs/scrum/labels.md`](docs/scrum/labels.md).
-* Voorbeeldbacklog (fictief): [`docs/product/example-backlog.md`](docs/product/example-backlog.md).
-* Sprint 1 en 2: [`docs/scrum/sprint-plan-example.md`](docs/scrum/sprint-plan-example.md).
+| Doel | Commando |
+|---|---|
+| Volledige keten (zoals CI) | `./scripts/ci/all.sh` |
+| Losse stappen | `./scripts/ci/{build,lint,test-unit,test-integration,coverage-check,test-e2e,test-security,test-accessibility}.sh` |
+| Template zelfcontrole | `./scripts/verify-template.sh` |
 
-## 11. Definition of Ready
+Welke test op welk niveau hoort: [`docs/testing/test-strategy.md`](docs/testing/test-strategy.md).
+Architectuurkaders: [`docs/architecture/architecture-principles.md`](docs/architecture/architecture-principles.md).
 
-Een item mag pas de sprint in als probleem en gebruikerswaarde helder zijn,
-acceptatiecriteria controleerbaar zijn, afhankelijkheden bekend zijn, designs of
-functionele uitgangspunten er zijn, security-, privacy- en compliance-impact voorlopig
-beoordeeld zijn, de testaanpak duidelijk is, het item binnen één sprint past, het team het
-begrijpt en blokkades zichtbaar zijn.
-Volledig: [`docs/scrum/definition-of-ready.md`](docs/scrum/definition-of-ready.md).
+## 7. Security, privacy en compliance
 
-## 12. Definition of Done
+> **Meld kwetsbaarheden nooit via een publiek issue** → [`SECURITY.md`](SECURITY.md)
+> (private vulnerability reporting of `[SECURITY-CONTACT-EMAIL]`).
 
-Twee lagen, zodat de lijst klopt voor zowel een documentatiewijziging als een betaalfunctie:
+* **Securityprincipes en -eisen:** [`docs/security/security-principles.md`](docs/security/security-principles.md)
+* **Threat modelling:** systeembreed in [`threat-model.md`](docs/architecture/threat-model.md),
+  per epic met de [epic-checklist](docs/architecture/epic-threat-checklist.md)
+* **In de pipeline:** secret scanning, SAST, dependency- en containerscan, SBOM,
+  licentiecontrole. De `security-gate` is **fail-closed**: elke verplichte controle moet
+  exact `success` zijn.
+* **Privacy:** [`docs/privacy/privacy-by-design.md`](docs/privacy/privacy-by-design.md) —
+  inclusief het onderscheid tussen gegevensbescherming, intern beleid,
+  informatiebeveiliging, sectorspecifieke regelgeving en contractuele eisen.
+* **Compliance:** [control matrix](docs/compliance/control-mapping.md) ·
+  [auditbewijs](docs/compliance/audit-evidence.md) ·
+  [regulatoire besluiten](docs/compliance/regulatory-decisions.md).
+* **Nooit** echte persoonsgegevens, betaalgegevens of productiedata buiten productie —
+  op elk adoptieniveau.
 
-* **Universeel (U1–U8, altijd):** acceptatiecriteria aantoonbaar behaald · review door een
-  ander · CI groen · geen blokkerende bevindingen · geen secrets, persoonsgegevens of
-  productiedata · documentatie bijgewerkt · traceerbaar issue ↔ PR ↔ commit · gemerged
-  zonder de build te breken.
-* **Conditioneel (C1–C12, wanneer het item het gebied raakt):** tests · toegankelijkheid ·
-  negatieve autorisatietests · geldstroomtests · migratie en rollback · persoonsgegevens ·
-  compliancebewijs · validatie met gebruikers · monitoring · CODEOWNERS-review ·
-  verificatie in een testomgeving · changelog. Wat niet van toepassing is, onderbouw je.
+## 8. Releases en operations
 
-**Er is geen uitzonderingsprocedure.** Ontbreekt een verplicht criterium, dan is het item
-niet Done: splitsen of terug naar de backlog. Done is een objectieve vaststelling door de
-Developers, geen persoonlijke goedkeuring; de Product Owner inspecteert het resultaat,
-past de backlog aan en beslist over vrijgave.
-Volledig: [`docs/scrum/definition-of-done.md`](docs/scrum/definition-of-done.md).
+Semantic Versioning + [`CHANGELOG.md`](CHANGELOG.md). Kanalen: intern prototype →
+testgroepversie → bèta → beperkte productie → algemene beschikbaarheid.
 
-## 13. Securitymeldingen
+De releaseworkflow is fail-closed: een handmatige run is altijd een **droogrun**;
+deployment vereist een tag-push op de hoofdbranch met de juiste variabelen, en productie
+bovendien een stabiele SemVer-versie, een kanaal uit de allowlist en environment approval.
+Details: [`docs/releases/release-process.md`](docs/releases/release-process.md) en
+[`docs/operations/deployment.md`](docs/operations/deployment.md).
 
-> **Meld kwetsbaarheden nooit via een publiek GitHub Issue.**
-> Gebruik GitHub **Private Vulnerability Reporting** of `[SECURITY-CONTACT-EMAIL]`.
-> Proces, scope en responstijden: [`SECURITY.md`](SECURITY.md).
+Operations: [monitoring](docs/operations/monitoring.md) ·
+[SLO's](docs/operations/service-level-objectives.md) ·
+[SRE-principes](docs/operations/sre-principles.md) ·
+[runbook](docs/operations/runbook.md) ·
+[back-up en herstel](docs/operations/backup-and-recovery.md) ·
+[platform-readiness](docs/operations/platform-readiness-checklist.md).
 
-## 14. Deployment
+## 9. Documentatie-index
 
-Omgevingen, promotiepad, goedkeuringen en rollback:
-[`docs/operations/deployment.md`](docs/operations/deployment.md) ·
-monitoring: [`docs/operations/monitoring.md`](docs/operations/monitoring.md) ·
-SLO's: [`docs/operations/service-level-objectives.md`](docs/operations/service-level-objectives.md) ·
-runbook: [`docs/operations/runbook.md`](docs/operations/runbook.md).
+**[`docs/README.md`](docs/README.md)** — per rol, per situatie en per adoptieniveau.
+Overige ingangen: [`CONTRIBUTING.md`](CONTRIBUTING.md) ·
+[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) · [`GOVERNANCE.md`](GOVERNANCE.md) ·
+[`SUPPORT.md`](SUPPORT.md) · [`LICENSE`](LICENSE) (standaard MIT — voor een commerciële
+dienst is een propriëtaire licentie vaak passender).
 
-## 15. Releases
+## 10. Openstaande beslissingen en placeholders
 
-Semantic Versioning + [`CHANGELOG.md`](CHANGELOG.md). Releasekanalen: interne prototype →
-testgroepversie → bèta → beperkte productie-uitrol → algemene beschikbaarheid.
-Proces: [`docs/releases/release-process.md`](docs/releases/release-process.md) ·
-checklist: [`docs/releases/release-checklist.md`](docs/releases/release-checklist.md).
+Niet besloten — behandel deze niet als feit:
 
-## 16. Bijdragen
+| # | Onderwerp | Type | Eigenaar |
+|---|---|---|---|
+| 1 | Productnaam, doelgroep, probleem, productdoel | open besluit | Product Owner |
+| 2 | Type financiële dienst (bepaalt het regulatoire regime) | open besluit | PO + Compliance |
+| 3 | Landen/regio's, dataresidency, taal | open besluit | PO + Compliance |
+| 4 | Vergunningplicht en rol in de keten | **te valideren door bevoegde specialist** | Compliance |
+| 5 | Technologiestack en cloudprovider | open besluit | Tech lead |
+| 6 | Sprintduur (aanname: 2 weken) | aanname | Scrum Master |
+| 7 | Samenstelling testgroep (aanname: 8–12 deelnemers) | aanname | UX-expertise |
+| 8 | Identiteitsprovider en MFA-methode | open besluit | Security + Tech lead |
+| 9 | Bewaartermijnen per gegevenscategorie | **te valideren door bevoegde specialist** | Privacy |
+| 10 | Licentiemodel (aanname: MIT) | aanname | Eigenaar repo |
+| 11 | Coveragedrempel (aanname: 70%, groeipad naar 80%) | aanname | Developers |
+| 12 | Leveranciers en verwerkersovereenkomsten | open besluit | Privacy + Inkoop |
 
-[`CONTRIBUTING.md`](CONTRIBUTING.md) · [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) ·
-[`GOVERNANCE.md`](GOVERNANCE.md) · hulp: [`SUPPORT.md`](SUPPORT.md).
+Volledige lijst met volgorde van invullen: [`docs/placeholders.md`](docs/placeholders.md).
+Bewust nog niet ingebouwd: [`docs/optional-extensions.md`](docs/optional-extensions.md).
 
-## 17. Licentie
+## 11. Handmatige repository-instellingen
 
-Zie [`LICENSE`](LICENSE) (standaard MIT). **Beslissing te nemen:** voor een commerciële
-financiële dienst is een propriëtaire licentie vaak passender. Zie
-[Openstaande beslissingen](#openstaande-beslissingen-en-aannames).
+Na het aanmaken van de repository, in deze volgorde:
 
-## 18. Contact en eigenaarschap
+- [ ] `main` als default branch; branch protection volgens [`CONTRIBUTING.md`](CONTRIBUTING.md#branch-protection)
+- [ ] `[ORG]` in [`.github/CODEOWNERS`](.github/CODEOWNERS) vervangen door bestaande teams — anders doet CODEOWNERS niets
+- [ ] Secret scanning, push protection en private vulnerability reporting aanzetten
+- [ ] Dependency graph aanzetten (anders meldt `dependency-review` dat control CM-05 niet actief is)
+- [ ] Workflow **Labels sync** handmatig draaien
+- [ ] Projects-board aanmaken; automatisering *issue gesloten → Done* **uitzetten**
+- [ ] Repository-variabelen instellen (zie §4)
+- [ ] Environments `staging` en `production` met required reviewers (Advanced/Regulated)
+
+## Contact en eigenaarschap
 
 | Rol | Naam | Contact | GitHub-team |
 |---|---|---|---|
@@ -270,28 +238,5 @@ financiële dienst is een propriëtaire licentie vaak passender. Zie
 | Security officer | `[NAAM]` | `[SECURITY-CONTACT-EMAIL]` | `@[ORG]/security` |
 | Privacy officer / DPO | `[NAAM]` | `[EMAIL]` | `@[ORG]/privacy` |
 | Compliance officer | `[NAAM]` | `[EMAIL]` | `@[ORG]/compliance` |
-| UX / onderzoeker | `[NAAM]` | `[EMAIL]` | `@[ORG]/ux` |
-| Testgroepcoördinator | `[NAAM]` | `[EMAIL]` | `@[ORG]/ux` |
-
-## Openstaande beslissingen en aannames
-
-Onderstaande punten zijn **niet** besloten. Ze staan als aanname of open besluit
-vastgelegd; behandel ze niet als feit.
-
-| # | Onderwerp | Type | Eigenaar | Waar vastgelegd |
-|---|---|---|---|---|
-| 1 | Productnaam, doelgroep, probleem, productdoel | open besluit | Product Owner | `docs/product/product-vision.md` |
-| 2 | Type financiële dienst (bepaalt regulatoir regime) | open besluit | PO + Compliance | `docs/compliance/regulatory-decisions.md` |
-| 3 | Landen/regio's, dataresidency, taalondersteuning | open besluit | PO + Compliance | `docs/compliance/regulatory-decisions.md` |
-| 4 | Vergunningplicht, rol als betaaldienstverlener/tussenpersoon | **te valideren door bevoegde specialist** | Compliance | `docs/compliance/compliance-register.md` |
-| 5 | Technologiestack en cloudprovider | open besluit | Tech lead | `docs/architecture/adr/` |
-| 6 | Sprintduur (aanname: 2 weken) | aanname | Scrum Master | `docs/scrum/scrum-guide.md` |
-| 7 | Samenstelling en grootte testgroep (aanname: 8–12 deelnemers) | aanname | UX | `docs/research/test-group-plan.md` |
-| 8 | Identiteits-/authenticatieleverancier en MFA-methode | open besluit | Security + Tech lead | `docs/security/access-control.md` |
-| 9 | Bewaartermijnen per gegevenscategorie | **te valideren door bevoegde specialist** | Privacy | `docs/privacy/data-retention.md` |
-| 10 | Licentiemodel van deze repository (aanname: MIT) | aanname | Eigenaar repo | `LICENSE` |
-| 11 | Coveragedrempel (aanname: 70%, groeipad naar 80%) | aanname | Team | `scripts/ci/coverage-check.sh` |
-| 12 | Externe leveranciers en verwerkersovereenkomsten | open besluit | Privacy + Inkoop | `docs/compliance/control-mapping.md` |
-
-Volledige placeholderlijst: [`docs/placeholders.md`](docs/placeholders.md).
-Optionele uitbreidingen (bewust nog niet ingebouwd): [`docs/optional-extensions.md`](docs/optional-extensions.md).
+| UX- en onderzoeksexpertise | `[NAAM]` | `[EMAIL]` | `@[ORG]/ux` |
+| Security Champion | `[NAAM]` | `[EMAIL]` | `@[ORG]/security` |
