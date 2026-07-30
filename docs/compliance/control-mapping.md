@@ -51,7 +51,7 @@ doel: aantoonbaar maken dat een maatregel niet alleen op papier bestaat.
 | CM-02 | Vier-ogenprincipe op gevoelige paden | CODEOWNERS | reviewstatus | — | Tech lead | elke PR |
 | CM-03 | Geautomatiseerd testen vóór merge | `ci.yml` | workflowrun | — | Team | elke PR |
 | CM-04 | Statische analyse en secret scanning | `security-scan.yml` | workflowrun | — | Security | elke PR |
-| CM-05 | Afhankelijkheden en licenties beoordeeld | `dependency-review.yml` | workflowrun | uitzonderingenlijst | Security | elke PR |
+| CM-05 | Afhankelijkheden en licenties beoordeeld | `dependency-review.yml` (vereist een ingeschakelde Dependency graph; anders draait alleen `license-check.sh` + Trivy en meldt de workflow dat deze control **niet actief** is) | workflowrun | uitzonderingenlijst | Security | elke PR |
 | CM-06 | SBOM per release | `release.yml` | artifact | archief | Security | per release |
 | CM-07 | Architectuurbesluiten vastgelegd | ADR | bestandsaanwezigheid | ADR-review | Tech lead | per besluit |
 | CM-08 | Releasegoedkeuring door PO, Security, Compliance | environment reviewers | goedkeuringslog | releasechecklist | PO | per release |

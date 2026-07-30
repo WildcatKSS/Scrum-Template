@@ -3,8 +3,15 @@
 #
 # Let op: dependency-review-action vereist dat de Dependency graph aanstaat
 # (Settings → Code security and analysis → Dependency graph). Voor private repositories
-# is GitHub Advanced Security nodig; zonder die functie faalt de actie met een duidelijke
-# melding en dekt scripts/ci/license-check.sh de licentiecontrole af.
+# is daar GitHub Advanced Security voor nodig.
+#
+# Deze workflow controleert eerst zélf of de functie beschikbaar is:
+#   * beschikbaar     → de review draait en is blokkerend bij hoge/kritieke bevindingen;
+#   * niet beschikbaar → de review wordt overgeslagen met een zichtbare waarschuwing,
+#     zodat elke pull request niet permanent rood staat om een repository-instelling.
+# In dat laatste geval blijven scripts/ci/license-check.sh (licenties) en de Trivy-scan
+# in security-scan.yml (kwetsbaarheden) van kracht. Zet de functie aan zodra dat kan —
+# zie control CM-05 in docs/compliance/control-mapping.md.
 name: Dependency review
 
 on:
@@ -26,7 +33,33 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Is de Dependency graph beschikbaar?
+        id: capability
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          code="$(curl -sS -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/dependency-graph/sbom")"
+          if [ "${code}" = "200" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Dependency graph is beschikbaar; de review is blokkerend."
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Dependency graph staat uit voor deze repository (HTTP ${code}). De dependency review is overgeslagen. Zet de functie aan via Settings → Code security and analysis; tot die tijd dekken license-check.sh en de Trivy-scan een deel van deze control af (CM-05)."
+            {
+              echo "### Dependency review overgeslagen"
+              echo ""
+              echo "De Dependency graph is niet beschikbaar voor deze repository (HTTP \`${code}\`)."
+              echo "Deze control is daarmee **niet actief**. Zet de functie aan via"
+              echo "*Settings → Code security and analysis* en registreer dit als openstaande"
+              echo "actie bij control CM-05 in \`docs/compliance/control-mapping.md\`."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Nieuwe afhankelijkheden beoordelen
+        if: steps.capability.outputs.available == 'true'
         uses: actions/dependency-review-action@v5
         with:
           # Geen enkele nieuwe afhankelijkheid met een bekende hoge of kritieke kwetsbaarheid.
@@ -39,7 +72,7 @@ jobs:
           warn-only: false
 
       - name: Toelichting bij falen
-        if: failure()
+        if: failure() && steps.capability.outputs.available == 'true'
         run: |
           echo "::error::Nieuwe afhankelijkheid met een hoge/kritieke kwetsbaarheid of een niet-toegestane licentie. Kies een alternatief, wacht op een gepatchte versie, of leg een expliciete risicoacceptatie vast volgens GOVERNANCE.md."
 

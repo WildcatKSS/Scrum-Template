@@ -54,7 +54,9 @@ jobs:
       - name: TruffleHog (alternatief / tweede controle)
         uses: trufflesecurity/trufflehog@main
         with:
-          extra_args: --results=verified --fail
+          # De actie geeft zelf al --fail mee; die vlag hier herhalen laat TruffleHog
+          # afbreken met "flag 'fail' cannot be repeated".
+          extra_args: --results=verified
       - name: Toelichting
         if: failure()
         run: |
