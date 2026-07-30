@@ -118,6 +118,10 @@ het script dat er nog niets te installeren is en stopt het zonder fout.
 * CI-gedrag: zolang `TEMPLATE_STRICT` niet op `true` staat, waarschuwen nog niet
   ingevulde controles in plaats van te falen. Zet de repository-variabele
   `TEMPLATE_STRICT=true` zodra de stack er is — dan worden de checks blokkerend.
+* Deployment staat bewust uit: `deploy-staging` en `deploy-production` draaien alleen met
+  `STAGING_DEPLOY_ENABLED=true` respectievelijk `PRODUCTION_DEPLOY_ENABLED=true`. Staan ze
+  uit, dan wordt er niets uitgerold en **geen deploymentbewijs geschreven**. Volledig
+  overzicht van de repository-variabelen: [`docs/operations/deployment.md`](docs/operations/deployment.md#6-configuratie-en-secrets).
 
 ## 7. Testcommando's
 

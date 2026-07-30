@@ -32,6 +32,7 @@ Volgorde per blok: van "meestal snel de moeite waard" naar "alleen bij aantoonba
 | Uitbreiding | Wat het oplevert | Wanneer |
 |---|---|---|
 | SLSA-provenance en ondertekende artifacts (Sigstore/cosign) | aantoonbare herkomst van builds | vóór productie |
+| Dependabot ook op de SHA-pins van actions laten draaien | pins blijven actueel zonder handwerk (actief: `.github/dependabot.yml`) | al ingericht |
 | Verplichte commit signing | herkomst van code | zodra alle teamleden sleutels hebben |
 | DAST in de pipeline (OWASP ZAP tegen staging) | vindt runtime-problemen | zodra staging stabiel is |
 | Runtime-bescherming / WAF-regels als code | blokkeert misbruik vroeg | vóór productie |

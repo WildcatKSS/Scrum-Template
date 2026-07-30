@@ -38,14 +38,14 @@ jobs:
     outputs:
       stack: ${{ steps.setup.outputs.stack }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - id: setup
         uses: ./.github/actions/setup-stack
       - name: Build
         run: ./scripts/ci/build.sh
       - name: Artifact uploaden
         if: steps.setup.outputs.stack != 'none'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: build-output
           path: |
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-stack
       - name: Shellcheck installeren
         run: sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
@@ -74,14 +74,14 @@ jobs:
     timeout-minutes: 20
     needs: build
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh
       - name: Unit tests
         run: ./scripts/ci/test-unit.sh
       - name: Coveragerapport bewaren
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: coverage-report
           path: |
@@ -109,7 +109,7 @@ jobs:
     #       --health-cmd pg_isready --health-interval 10s
     #       --health-timeout 5s --health-retries 5
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh
@@ -125,8 +125,8 @@ jobs:
     timeout-minutes: 10
     needs: unit-tests
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: coverage-report
         continue-on-error: true
@@ -139,7 +139,7 @@ jobs:
     timeout-minutes: 30
     needs: build
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh
@@ -147,7 +147,7 @@ jobs:
         run: ./scripts/ci/test-e2e.sh
       - name: Testrapport bewaren
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: e2e-report
           path: |
@@ -162,7 +162,7 @@ jobs:
     timeout-minutes: 20
     needs: build
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh

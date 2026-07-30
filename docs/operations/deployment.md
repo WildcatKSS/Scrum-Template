@@ -80,6 +80,31 @@ privacybeoordeling verplicht; migraties draaien nooit ongecontroleerd tijdens pi
 
 Nieuwe variabele? Voeg hem toe aan `.env.example` én aan dit document.
 
+### Repository-variabelen die het gedrag van de pipeline sturen
+
+Instellen via *Settings → Secrets and variables → Actions → Variables*.
+
+| Variabele | Effect zolang niet gezet | Zet op `true` wanneer |
+|---|---|---|
+| `TEMPLATE_STRICT` | ontbrekende build-, test- en scanstappen waarschuwen in plaats van te falen | de technologiestack in de repository staat |
+| `STAGING_DEPLOY_ENABLED` | de job `deploy-staging` wordt **overgeslagen**; er wordt niets uitgerold en geen deploymentbewijs geschreven | de deploystappen in `release.yml` daadwerkelijk zijn ingevuld voor `[CLOUD]` |
+| `PRODUCTION_DEPLOY_ENABLED` | de job `deploy-production` wordt **overgeslagen** | idem, voor productie |
+| `CODEQL_LANGUAGES` | CodeQL draait niet; Semgrep dekt de statische analyse | de talen bekend zijn, bijv. `javascript-typescript` |
+| `COVERAGE_MIN` | drempel 70% | het team een andere drempel afspreekt |
+| `STAGING_URL`, `PRODUCTION_URL` | placeholder-URL's in de environmentweergave | de omgevingen bestaan |
+
+> **Waarom een schakelaar en geen "gewoon draaien"?** De deploystappen zijn placeholders
+> zolang `[CLOUD]` niet is gekozen. Een job die niets uitrolt en tóch groen afsluit met
+> "deploy vastgelegd als bewijs", levert vals bewijs voor een control die niet heeft
+> gedraaid — precies wat een audit onbruikbaar maakt. Daarom geldt:
+>
+> * variabele **niet gezet** → job wordt overgeslagen (grijs, geen deployment, geen bewijs);
+>   de job `deployment-status` maakt dit expliciet zichtbaar in het runoverzicht;
+> * variabele **op `true`** maar de placeholder nog niet vervangen → de job **faalt** met
+>   een duidelijke melding. Wie zegt dat hij uitrolt, moet dat waarmaken;
+> * variabele **op `true`** en echte deploystappen ingevuld → uitrol, rooktest, en pas
+>   daarna het deploymentbewijs.
+
 ## 7. Rollback
 
 | Situatie | Actie | Streeftijd |

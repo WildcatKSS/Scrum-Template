@@ -58,6 +58,22 @@ Zie ook [`../../tests/security/README.md`](../../tests/security/README.md).
 | Afspraak | scan **nooit** tegen productie zonder expliciete toestemming en afstemming |
 | Opvolging | bevindingen via `security-issue.yml`, SLA volgens `vulnerability-management.md` |
 
+## 4a. Statische analyse (SAST) is blokkerend
+
+De Semgrep-stap in `security-scan.yml` mag falen en doet dat ook: faalt de scan, dan
+faalt de job `sast`, en daarmee de `security-gate` die de merge tegenhoudt. Dat is het
+verschil tussen een control en een rapportage.
+
+| Situatie | Wat je doet |
+|---|---|
+| Terechte bevinding | oplossen, met een test die het gedrag vastlegt |
+| Onterechte bevinding (false positive) | expliciet onderdrukken: regel in `.semgrepignore` of een `nosemgrep`-annotatie op de betreffende regel, **met** onderbouwing, beoordelaar en houdbaarheidsdatum in [`../compliance/audit-evidence.md`](../compliance/audit-evidence.md) §4 |
+| Scan valt uit door een storing bij de leverancier | opnieuw draaien; blijft het falen, dan is dat een belemmering voor de Scrum Master — niet iets om weg te vinken |
+
+Alleen het uploaden van de SARIF-resultaten is "best effort": dat vereist Code scanning
+in de repository, en het ontbreken daarvan mag de scan zelf niet ongedaan maken. De
+bevindingen staan dan in de joblog.
+
 ## 5. Regressie op security
 
 Elke opgeloste kwetsbaarheid krijgt een test die aantoont dat het probleem terug zou

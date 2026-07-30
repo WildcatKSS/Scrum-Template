@@ -50,11 +50,13 @@ doel: aantoonbaar maken dat een maatregel niet alleen op papier bestaat.
 | CM-01 | Elke wijziging via pull request | branch protection | vereiste checks | instellingenexport | Tech lead | doorlopend |
 | CM-02 | Vier-ogenprincipe op gevoelige paden | CODEOWNERS | reviewstatus | — | Tech lead | elke PR |
 | CM-03 | Geautomatiseerd testen vóór merge | `ci.yml` | workflowrun | — | Team | elke PR |
-| CM-04 | Statische analyse en secret scanning | `security-scan.yml` | workflowrun | — | Security | elke PR |
+| CM-04 | Statische analyse en secret scanning | `security-scan.yml`; SAST en secret scan zijn **blokkerend** (falen ⇒ `security-gate` rood ⇒ merge geblokkeerd) | workflowrun | onderdrukte bevindingen met onderbouwing (§4 auditbewijs) | Security | elke PR |
 | CM-05 | Afhankelijkheden en licenties beoordeeld | `dependency-review.yml` (vereist een ingeschakelde Dependency graph; anders draait alleen `license-check.sh` + Trivy en meldt de workflow dat deze control **niet actief** is) | workflowrun | uitzonderingenlijst | Security | elke PR |
 | CM-06 | SBOM per release | `release.yml` | artifact | archief | Security | per release |
 | CM-07 | Architectuurbesluiten vastgelegd | ADR | bestandsaanwezigheid | ADR-review | Tech lead | per besluit |
 | CM-08 | Releasegoedkeuring door PO, Security, Compliance | environment reviewers | goedkeuringslog | releasechecklist | PO | per release |
+| CM-09 | Deploymentbewijs komt uitsluitend voort uit een echte uitrol | `release.yml`: de deployjobs draaien alleen met `STAGING_DEPLOY_ENABLED` / `PRODUCTION_DEPLOY_ENABLED` op `true`, en het bewijs wordt pas na een geslaagde uitrol én verificatie geschreven | joboverzicht + `deployment-status` | releasechecklist | Tech lead | per release |
+| CM-10 | Externe GitHub Actions vastgezet op commit-SHA | alle workflows en `.github/actions/` | workflowbestanden | Dependabot-updates | Security | per wijziging |
 
 ## Operatie en continuïteit
 

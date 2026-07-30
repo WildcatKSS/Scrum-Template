@@ -55,6 +55,15 @@ communicatie geregeld.
 Tag `vX.Y.Z` → goedkeuring op de `production`-environment → gefaseerde uitrol
 (5% → 25% → 100%) met observatie tussen de stappen.
 
+> **Let op — de pipeline rolt pas uit als je dat expliciet aanzet.** De deploystappen in
+> `release.yml` zijn placeholders tot `[CLOUD]` is gekozen. De jobs `deploy-staging` en
+> `deploy-production` draaien alleen wanneer de repository-variabelen
+> `STAGING_DEPLOY_ENABLED` respectievelijk `PRODUCTION_DEPLOY_ENABLED` op `true` staan.
+> Staan ze uit, dan worden de jobs overgeslagen, wordt er **geen** deploymentbewijs
+> geschreven en meldt de job `deployment-status` dat er niets is uitgerold. Staan ze aan
+> terwijl de placeholders er nog zijn, dan faalt de job.
+> Zie [`../operations/deployment.md`](../operations/deployment.md) §6.
+
 ### 7. Monitoring
 Minimaal `[30]` minuten actief meekijken: foutratio, latency, inlogpogingen, mislukte
 transacties, auditlogvolume. Iemand kijkt daadwerkelijk, niet alleen "het dashboard staat open".

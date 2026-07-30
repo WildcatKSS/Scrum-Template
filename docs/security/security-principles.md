@@ -120,7 +120,10 @@ monitoring · server-side request forgery.
 * Dependabot, dependency review, kwetsbaarhedenscans en SBOM in de pipeline.
 * Major-upgrades zijn een bewuste beslissing met eigen backlogitem.
 * Nieuwe afhankelijkheid = expliciete afweging (onderhoud, licentie, alternatieven).
-* GitHub Actions vastgezet op een versie; workflowrechten minimaal.
+* GitHub Actions vastgezet op een **volledige commit-SHA**, niet op een tag: een tag kan
+  worden verplaatst naar andere code, een SHA niet. De leesbare versie staat als
+  commentaar achter de SHA (`uses: actions/checkout@3d3c42e… # v7.0.1`) en Dependabot
+  werkt beide bij. Workflowrechten minimaal (`permissions: contents: read` als standaard).
 
 ### 2.15 Kwetsbaarheidsscans
 Zie [`vulnerability-management.md`](vulnerability-management.md). Kort: secret scanning,

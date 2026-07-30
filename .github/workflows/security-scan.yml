@@ -40,7 +40,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0 # volledige historie: secrets worden ook in oude commits gezocht
       # Gitleaks (MIT) is de blokkerende secret scanner. Bewust géén TruffleHog als
@@ -50,7 +50,7 @@ jobs:
       # Aanvullende dekking komt van GitHub secret scanning + push protection
       # (Settings → Code security and analysis) — zie SECURITY.md.
       - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v3
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # GITLEAKS_LICENSE is vereist voor organisatierepositories; voor persoonlijke
@@ -71,11 +71,16 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v7
-
-      # Semgrep is stack-agnostisch en werkt ook zonder gekozen [TECH STACK].
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # Semgrep is stack-agnostisch en draait ook zonder gekozen [TECH STACK]: regels
+      # voor talen die niet in de repository voorkomen leveren simpelweg geen treffers.
+      # Deze stap is bewust blokkerend — de documentatie belooft dat de security-gate
+      # merges tegenhoudt bij securityproblemen, en dat kan alleen als de scan zelf mag
+      # falen. Een terechte bevinding los je op; een onterechte onderdruk je expliciet
+      # met een regel in .semgrepignore of een `nosemgrep`-annotatie, met onderbouwing
+      # en houdbaarheidsdatum in docs/compliance/audit-evidence.md (§4).
       - name: Semgrep
-        uses: semgrep/semgrep-action@v1
+        uses: semgrep/semgrep-action@713efdd345f3035192eaa63f56867b88e63e4e5d # v1 (= v0.58.0)
         with:
           config: >-
             p/default
@@ -83,10 +88,11 @@ jobs:
             p/secrets
             p/owasp-top-ten
           generateSarif: "true"
-        continue-on-error: true
 
+      # Alleen de upload blijft best effort: die vereist Code scanning, en het ontbreken
+      # daarvan mag de scan zelf niet ongedaan maken. De bevindingen staan dan in de log.
       - name: Semgrep-resultaten uploaden
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@f205ea1c3313d32999d8d6a48b4f6530d4437b38 # v4.37.4
         if: always() && hashFiles('semgrep.sarif') != ''
         with:
           sarif_file: semgrep.sarif
@@ -97,16 +103,16 @@ jobs:
       # (bijv. "javascript-typescript" of "python,java") zodra [TECH STACK] bekend is.
       - name: CodeQL initialiseren
         if: vars.CODEQL_LANGUAGES != ''
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@f205ea1c3313d32999d8d6a48b4f6530d4437b38 # v4.37.4
         with:
           languages: ${{ vars.CODEQL_LANGUAGES }}
           queries: security-extended
       - name: CodeQL autobuild
         if: vars.CODEQL_LANGUAGES != ''
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@f205ea1c3313d32999d8d6a48b4f6530d4437b38 # v4.37.4
       - name: CodeQL analyse
         if: vars.CODEQL_LANGUAGES != ''
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@f205ea1c3313d32999d8d6a48b4f6530d4437b38 # v4.37.4
 
   dependency-vulnerabilities:
     name: dependency-vulnerabilities
@@ -116,9 +122,9 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Trivy filesystem scan
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: fs
           scan-ref: .
@@ -128,7 +134,7 @@ jobs:
           output: trivy-fs.sarif
           exit-code: "0" # de gate-job beslist; hier alleen rapporteren
       - name: Resultaten uploaden
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@f205ea1c3313d32999d8d6a48b4f6530d4437b38 # v4.37.4
         if: always() && hashFiles('trivy-fs.sarif') != ''
         with:
           sarif_file: trivy-fs.sarif
@@ -157,7 +163,7 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Aanwezigheid Dockerfile bepalen
         id: check
         run: |
@@ -172,7 +178,7 @@ jobs:
         run: docker build -t local/scan-target:${{ github.sha }} .
       - name: Trivy image scan
         if: steps.check.outputs.present == 'true'
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: image
           image-ref: local/scan-target:${{ github.sha }}
@@ -183,7 +189,7 @@ jobs:
           exit-code: "1"
       - name: Resultaten uploaden
         if: always() && hashFiles('trivy-image.sarif') != ''
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@f205ea1c3313d32999d8d6a48b4f6530d4437b38 # v4.37.4
         with:
           sarif_file: trivy-image.sarif
           category: trivy-image
@@ -194,7 +200,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Infrastructuurcode aanwezig?
         id: check
         run: |
@@ -206,7 +212,7 @@ jobs:
           fi
       - name: Trivy config scan
         if: steps.check.outputs.present == 'true'
-        uses: aquasecurity/trivy-action@v0.36.0
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           scan-type: config
           scan-ref: .
@@ -218,15 +224,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: SBOM genereren (CycloneDX)
-        uses: anchore/sbom-action@v0
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
         with:
           format: cyclonedx-json
           artifact-name: sbom.cyclonedx.json
           output-file: sbom.cyclonedx.json
       - name: SBOM bewaren
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: sbom
           path: sbom.cyclonedx.json
