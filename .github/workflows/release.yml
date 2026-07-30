@@ -56,7 +56,7 @@ jobs:
       version: ${{ steps.meta.outputs.version }}
       prerelease: ${{ steps.meta.outputs.prerelease }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - id: meta
@@ -108,7 +108,7 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Securitytests
         run: ./scripts/ci/test-security.sh
       - name: Kwetsbaarhedenscan (blokkerend bij kritiek/hoog)
@@ -157,7 +157,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Releasenotes samenstellen
@@ -187,7 +187,7 @@ jobs:
       name: staging
       url: ${{ vars.STAGING_URL || 'https://staging.example.invalid' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v4
         with:
           name: release-artifact-${{ needs.release-candidate.outputs.version }}
@@ -231,7 +231,7 @@ jobs:
       name: production
       url: ${{ vars.PRODUCTION_URL || 'https://example.invalid' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Voorwaarden controleren
         run: |
           if [ "${{ needs.release-candidate.outputs.prerelease }}" = "true" ]; then
