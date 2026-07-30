@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Nieuwe afhankelijkheden beoordelen
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5
         with:
           # Geen enkele nieuwe afhankelijkheid met een bekende hoge of kritieke kwetsbaarheid.
           fail-on-severity: high
