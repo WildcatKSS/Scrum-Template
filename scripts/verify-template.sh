@@ -22,23 +22,34 @@ required_files=(
   .github/ISSUE_TEMPLATE/security-issue.yml
   .github/ISSUE_TEMPLATE/compliance-task.yml
   .github/ISSUE_TEMPLATE/research-spike.yml
+  .github/ISSUE_TEMPLATE/epic.yml
+  .github/ISSUE_TEMPLATE/feature.yml
+  .github/ISSUE_TEMPLATE/test-group-feedback.yml
+  .github/actions/setup-stack/action.yml
   .github/workflows/ci.yml
   .github/workflows/security-scan.yml
   .github/workflows/dependency-review.yml
   .github/workflows/code-quality.yml
   .github/workflows/release.yml
+  .github/workflows/labels-sync.yml
   docs/product/product-vision.md docs/product/product-goals.md
   docs/product/personas.md docs/product/customer-journey.md
   docs/product/mvp-scope.md docs/product/roadmap.md
+  docs/product/example-backlog.md
+  docs/placeholders.md docs/optional-extensions.md
   docs/scrum/scrum-guide.md docs/scrum/definition-of-ready.md
   docs/scrum/definition-of-done.md docs/scrum/sprint-planning.md
   docs/scrum/sprint-review.md docs/scrum/retrospective.md docs/scrum/refinement.md
+  docs/scrum/roles.md docs/scrum/project-board.md docs/scrum/labels.md
+  docs/scrum/sprint-plan-example.md
   docs/research/test-group-plan.md docs/research/interview-template.md
   docs/research/usability-test-template.md docs/research/feedback-log.md
   docs/research/experiment-template.md
+  docs/research/consent-and-privacy-check.md
   docs/architecture/system-context.md docs/architecture/architecture-overview.md
   docs/architecture/data-flow.md docs/architecture/threat-model.md
   docs/architecture/adr/0001-architecture-decision-template.md
+  docs/architecture/adr/README.md
   docs/security/security-principles.md docs/security/secure-development-lifecycle.md
   docs/security/access-control.md docs/security/incident-response.md
   docs/security/vulnerability-management.md docs/security/security-testing.md
@@ -50,6 +61,10 @@ required_files=(
   docs/operations/backup-and-recovery.md docs/operations/service-level-objectives.md
   docs/operations/runbook.md
   docs/releases/release-process.md docs/releases/release-checklist.md
+  src/README.md tests/README.md scripts/README.md
+  scripts/bootstrap.sh scripts/verify-template.sh
+  scripts/ci/common.sh scripts/ci/all.sh
+  scripts/release/prepare-release-notes.sh
 )
 
 echo "1. Verplichte bestanden"

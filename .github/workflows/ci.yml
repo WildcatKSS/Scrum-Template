@@ -180,16 +180,18 @@ jobs:
     steps:
       - name: Resultaat samenvatten
         run: |
-          echo "### CI-resultaat" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Job | Status |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
-          echo "| build | ${{ needs.build.result }} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| lint | ${{ needs.lint.result }} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| unit-tests | ${{ needs.unit-tests.result }} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| integration-tests | ${{ needs.integration-tests.result }} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| coverage | ${{ needs.coverage.result }} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| e2e-tests | ${{ needs.e2e-tests.result }} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| accessibility | ${{ needs.accessibility.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "### CI-resultaat"
+            echo "| Job | Status |"
+            echo "|---|---|"
+            echo "| build | ${{ needs.build.result }} |"
+            echo "| lint | ${{ needs.lint.result }} |"
+            echo "| unit-tests | ${{ needs.unit-tests.result }} |"
+            echo "| integration-tests | ${{ needs.integration-tests.result }} |"
+            echo "| coverage | ${{ needs.coverage.result }} |"
+            echo "| e2e-tests | ${{ needs.e2e-tests.result }} |"
+            echo "| accessibility | ${{ needs.accessibility.result }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Falen wanneer een verplichte job niet is geslaagd
         if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
         run: |
