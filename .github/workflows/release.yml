@@ -1,0 +1,269 @@
+# Release — bouwt een releasekandidaat, controleert kwaliteit en security, deployt naar
+# de testomgeving en zet productie-uitrol pas door na handmatige goedkeuring.
+#
+# Werkwijze:
+#   1. Tag een commit op main volgens Semantic Versioning: v1.4.0 (of v1.4.0-rc.1).
+#   2. Deze workflow bouwt, test, scant, genereert een SBOM en releasenotes.
+#   3. Deployment naar 'staging' gebeurt automatisch.
+#   4. Deployment naar 'production' vereist goedkeuring via de GitHub Environment
+#      'production' (Settings → Environments → production → Required reviewers).
+#
+# Eenmalig in te richten:
+#   * Environments 'staging' en 'production', met required reviewers op production
+#     (minimaal Product Owner + Security/Compliance — zie GOVERNANCE.md).
+#   * Deploymentcredentials als environment secrets, bij voorkeur via OIDC
+#     (permissions: id-token: write) in plaats van langlevende sleutels.
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Versie (bijv. v1.4.0). Alleen voor een handmatige droogloop."
+        required: true
+        type: string
+      channel:
+        description: "Releasekanaal"
+        required: true
+        type: choice
+        default: "test-group"
+        options:
+          - internal-prototype
+          - test-group
+          - beta
+          - limited-production
+          - general-availability
+
+permissions:
+  contents: read
+
+env:
+  VERSION: ${{ github.event.inputs.version || github.ref_name }}
+  CHANNEL: ${{ github.event.inputs.channel || 'test-group' }}
+  TEMPLATE_STRICT: ${{ vars.TEMPLATE_STRICT || 'false' }}
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. Releasekandidaat: bouwen en volledig controleren
+  # ---------------------------------------------------------------------------
+  release-candidate:
+    name: release-candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      prerelease: ${{ steps.meta.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: meta
+        name: Versie bepalen
+        run: |
+          version="${VERSION}"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          if echo "${version}" | grep -qE '-(rc|alpha|beta)'; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Release ${version} — kanaal ${CHANNEL}"
+      - uses: ./.github/actions/setup-stack
+      - name: Build
+        run: ./scripts/ci/build.sh
+      - name: Regressietests (unit, integratie, end-to-end)
+        run: |
+          ./scripts/ci/test-unit.sh
+          ./scripts/ci/test-integration.sh
+          ./scripts/ci/test-e2e.sh
+      - name: Dekkingsdrempel
+        run: ./scripts/ci/coverage-check.sh
+        env:
+          COVERAGE_MIN: ${{ vars.COVERAGE_MIN || '70' }}
+      - name: Toegankelijkheidscontrole
+        run: ./scripts/ci/test-accessibility.sh
+      - name: Artifact bewaren
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifact-${{ steps.meta.outputs.version }}
+          path: |
+            dist/
+            build/
+            out/
+            target/*.jar
+          if-no-files-found: ignore
+          retention-days: 90
+
+  # ---------------------------------------------------------------------------
+  # 2. Security-, privacy- en compliancecheck vóór uitrol
+  # ---------------------------------------------------------------------------
+  release-checks:
+    name: release-checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: release-candidate
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Securitytests
+        run: ./scripts/ci/test-security.sh
+      - name: Kwetsbaarhedenscan (blokkerend bij kritiek/hoog)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+      - name: SBOM genereren
+        uses: anchore/sbom-action@v0
+        with:
+          format: cyclonedx-json
+          output-file: sbom.cyclonedx.json
+      - name: Licentiecontrole
+        run: ./scripts/ci/license-check.sh
+      - name: SBOM bewaren als releasebewijs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ needs.release-candidate.outputs.version }}
+          path: sbom.cyclonedx.json
+          if-no-files-found: warn
+          retention-days: 365
+      - name: Handmatige goedkeuringen herinneren
+        run: |
+          {
+            echo "### Vereiste goedkeuringen vóór productie"
+            echo ""
+            echo "- [ ] Product Owner — functionele acceptatie"
+            echo "- [ ] Security — geen openstaande kritieke of hoge bevindingen"
+            echo "- [ ] Privacy/Compliance — verwerkingen, bewaartermijnen en bewijs bijgewerkt"
+            echo ""
+            echo "Volledige lijst: \`docs/releases/release-checklist.md\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ---------------------------------------------------------------------------
+  # 3. Releasenotes en GitHub Release
+  # ---------------------------------------------------------------------------
+  release-notes:
+    name: release-notes
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [release-candidate, release-checks]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Releasenotes samenstellen
+        run: ./scripts/release/prepare-release-notes.sh "${{ needs.release-candidate.outputs.version }}" > RELEASE_NOTES.md
+      - name: Notes tonen in de samenvatting
+        run: cat RELEASE_NOTES.md >> "$GITHUB_STEP_SUMMARY"
+      - name: GitHub Release aanmaken
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ needs.release-candidate.outputs.version }}
+          body_path: RELEASE_NOTES.md
+          prerelease: ${{ needs.release-candidate.outputs.prerelease == 'true' }}
+          draft: true # bewust concept: de PO publiceert pas na akkoord
+          files: |
+            RELEASE_NOTES.md
+
+  # ---------------------------------------------------------------------------
+  # 4. Deployment naar de testomgeving (automatisch)
+  # ---------------------------------------------------------------------------
+  deploy-staging:
+    name: deploy-staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [release-candidate, release-checks]
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL || 'https://staging.example.invalid' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-artifact-${{ needs.release-candidate.outputs.version }}
+        continue-on-error: true
+      - name: Deployen naar staging
+        run: |
+          echo "::notice::PLACEHOLDER — vul de deploystap in voor [CLOUD]."
+          echo "Voorbeelden:"
+          echo "  AWS   : aws-actions/configure-aws-credentials@v4 (OIDC) + aws ecs update-service / aws s3 sync"
+          echo "  Azure : azure/login@v2 (OIDC) + azure/webapps-deploy@v3"
+          echo "  GCP   : google-github-actions/auth@v2 (workload identity) + gcloud run deploy"
+          echo "  K8s   : kubectl set image / helm upgrade --install"
+          echo "Gebruik OIDC in plaats van langlevende sleutels; zie docs/security/access-control.md."
+      - name: Rooktest na deploy
+        run: |
+          echo "::notice::PLACEHOLDER — voeg een rooktest toe, bijvoorbeeld een healthcheck:"
+          echo "curl -fsS \"\${STAGING_URL}/health\" || exit 1"
+      - name: Deploy vastleggen als bewijs
+        run: |
+          {
+            echo "### Staging-deploy"
+            echo "- Versie: ${{ needs.release-candidate.outputs.version }}"
+            echo "- Kanaal: ${CHANNEL}"
+            echo "- Commit: ${{ github.sha }}"
+            echo "- Tijd: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo ""
+            echo "Neem deze gegevens op in \`docs/compliance/audit-evidence.md\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ---------------------------------------------------------------------------
+  # 5. Productie — alleen na handmatige goedkeuring in de environment
+  # ---------------------------------------------------------------------------
+  deploy-production:
+    name: deploy-production
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: [release-candidate, release-checks, deploy-staging]
+    # De environment 'production' moet required reviewers hebben ingesteld.
+    # Zonder goedkeuring blijft deze job wachten en gebeurt er niets.
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL || 'https://example.invalid' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Voorwaarden controleren
+        run: |
+          if [ "${{ needs.release-candidate.outputs.prerelease }}" = "true" ]; then
+            echo "::error::Een prerelease (rc/alpha/beta) gaat niet naar productie."
+            exit 1
+          fi
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-artifact-${{ needs.release-candidate.outputs.version }}
+        continue-on-error: true
+      - name: Gecontroleerde uitrol
+        run: |
+          echo "::notice::PLACEHOLDER — vul de productie-uitrol in voor [CLOUD]."
+          echo "Advies: gefaseerd uitrollen (canary 5% → 25% → 100%) met automatische"
+          echo "terugval bij een stijgende foutratio. Zie docs/operations/deployment.md."
+      - name: Monitoring na uitrol
+        run: |
+          echo "::notice::PLACEHOLDER — bewaak minimaal 30 minuten actief: foutratio, latency,"
+          echo "mislukte inlogpogingen, mislukte transacties en auditlogvolume."
+          echo "Zie docs/operations/monitoring.md en docs/operations/service-level-objectives.md."
+      - name: Rollback beschikbaar houden
+        run: |
+          echo "::notice::Rollback: herdeploy van de vorige tag of uitschakelen van de feature flag."
+          echo "Vastgelegd rollbackplan staat in de pull request en in docs/releases/release-process.md."
+      - name: Releasebewijs
+        run: |
+          {
+            echo "### Productie-uitrol"
+            echo "- Versie: ${{ needs.release-candidate.outputs.version }}"
+            echo "- Goedgekeurd via environment 'production'"
+            echo "- Commit: ${{ github.sha }}"
+            echo "- Tijd: $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo ""
+            echo "Leg dit vast in \`docs/compliance/audit-evidence.md\` en plan de evaluatie na release."
+          } >> "$GITHUB_STEP_SUMMARY"

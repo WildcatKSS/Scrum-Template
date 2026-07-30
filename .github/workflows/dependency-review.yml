@@ -1,0 +1,56 @@
+# Dependency review — beoordeelt nieuwe of gewijzigde afhankelijkheden in een pull request
+# op bekende kwetsbaarheden en op licenties, vóórdat ze in de hoofdbranch belanden.
+#
+# Let op: dependency-review-action vereist dat de Dependency graph aanstaat
+# (Settings → Code security and analysis → Dependency graph). Voor private repositories
+# is GitHub Advanced Security nodig; zonder die functie faalt de actie met een duidelijke
+# melding en dekt scripts/ci/license-check.sh de licentiecontrole af.
+name: Dependency review
+
+on:
+  pull_request:
+    branches: ["main", "develop", "release/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: dependency-review
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Nieuwe afhankelijkheden beoordelen
+        uses: actions/dependency-review-action@v4
+        with:
+          # Geen enkele nieuwe afhankelijkheid met een bekende hoge of kritieke kwetsbaarheid.
+          fail-on-severity: high
+          # Licentiebeleid — AANNAME, te bevestigen door [LEGAL/COMPLIANCE].
+          # Sterke copyleft is uitgesloten omdat de dienst als gehoste applicatie wordt
+          # aangeboden; een AGPL-component kan brononthullingsverplichtingen meebrengen.
+          deny-licenses: AGPL-3.0, AGPL-3.0-only, AGPL-3.0-or-later, SSPL-1.0
+          comment-summary-in-pr: on-failure
+          warn-only: false
+
+      - name: Toelichting bij falen
+        if: failure()
+        run: |
+          echo "::error::Nieuwe afhankelijkheid met een hoge/kritieke kwetsbaarheid of een niet-toegestane licentie. Kies een alternatief, wacht op een gepatchte versie, of leg een expliciete risicoacceptatie vast volgens GOVERNANCE.md."
+
+  license-check:
+    name: license-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-stack
+      - name: Licentiecontrole op de volledige afhankelijkhedenboom
+        run: ./scripts/ci/license-check.sh
+        env:
+          TEMPLATE_STRICT: ${{ vars.TEMPLATE_STRICT || 'false' }}
