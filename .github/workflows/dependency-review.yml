@@ -24,10 +24,10 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Nieuwe afhankelijkheden beoordelen
-        uses: actions/dependency-review-action@v4
+        uses: actions/dependency-review-action@v5
         with:
           # Geen enkele nieuwe afhankelijkheid met een bekende hoge of kritieke kwetsbaarheid.
           fail-on-severity: high
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-stack
       - name: Licentiecontrole op de volledige afhankelijkhedenboom
         run: ./scripts/ci/license-check.sh

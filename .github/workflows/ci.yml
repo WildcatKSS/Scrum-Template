@@ -38,7 +38,7 @@ jobs:
     outputs:
       stack: ${{ steps.setup.outputs.stack }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - id: setup
         uses: ./.github/actions/setup-stack
       - name: Build
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-stack
       - name: Shellcheck installeren
         run: sudo apt-get update -qq && sudo apt-get install -y -qq shellcheck
@@ -74,7 +74,7 @@ jobs:
     timeout-minutes: 20
     needs: build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh
@@ -109,7 +109,7 @@ jobs:
     #       --health-cmd pg_isready --health-interval 10s
     #       --health-timeout 5s --health-retries 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh
@@ -125,7 +125,7 @@ jobs:
     timeout-minutes: 10
     needs: unit-tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v4
         with:
           name: coverage-report
@@ -139,7 +139,7 @@ jobs:
     timeout-minutes: 30
     needs: build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh
@@ -162,7 +162,7 @@ jobs:
     timeout-minutes: 20
     needs: build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup-stack
       - name: Afhankelijkheden installeren
         run: ./scripts/ci/build.sh
