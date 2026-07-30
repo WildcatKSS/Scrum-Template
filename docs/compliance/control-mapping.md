@@ -55,8 +55,10 @@ doel: aantoonbaar maken dat een maatregel niet alleen op papier bestaat.
 | CM-06 | SBOM per release | `release.yml` | artifact | archief | Security | per release |
 | CM-07 | Architectuurbesluiten vastgelegd | ADR | bestandsaanwezigheid | ADR-review | Tech lead | per besluit |
 | CM-08 | Releasegoedkeuring door PO, Security, Compliance | environment reviewers | goedkeuringslog | releasechecklist | PO | per release |
-| CM-09 | Deploymentbewijs komt uitsluitend voort uit een echte uitrol | `release.yml`: de deployjobs draaien alleen met `STAGING_DEPLOY_ENABLED` / `PRODUCTION_DEPLOY_ENABLED` op `true`, en het bewijs wordt pas na een geslaagde uitrol én verificatie geschreven | joboverzicht + `deployment-status` | releasechecklist | Tech lead | per release |
+| CM-09 | Deploymentbewijs komt uitsluitend voort uit een echte uitrol | `release.yml`: deployjobs draaien alleen bij een tag-push op de hoofdbranch én met de deploymentvariabelen aan; productie vereist bovendien een stabiele SemVer-versie en een kanaal uit de allowlist. Bewijs wordt pas na geslaagde uitrol én verificatie geschreven | joboverzicht + `deployment-status` | releasechecklist | Tech lead | per release |
 | CM-10 | Externe GitHub Actions vastgezet op commit-SHA | alle workflows en `.github/actions/` | workflowbestanden | Dependabot-updates | Security | per wijziging |
+| CM-11 | Securitypoort is fail-closed | `security-scan.yml`, job `security-gate`: elke verplichte securityjob moet exact `success` zijn; `failure`, `cancelled`, `skipped` en ontbrekende resultaten blokkeren | workflowrun | — | Security | elke PR |
+| CM-12 | Done is objectief en niet omzeilbaar | Definition of Done (universeel + conditioneel), geen uitzonderingsprocedure; board zet Done niet automatisch | PR-checklist | boardconfiguratie | Scrum Master | doorlopend |
 
 ## Operatie en continuïteit
 

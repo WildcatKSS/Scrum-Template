@@ -118,10 +118,14 @@ het script dat er nog niets te installeren is en stopt het zonder fout.
 * CI-gedrag: zolang `TEMPLATE_STRICT` niet op `true` staat, waarschuwen nog niet
   ingevulde controles in plaats van te falen. Zet de repository-variabele
   `TEMPLATE_STRICT=true` zodra de stack er is — dan worden de checks blokkerend.
-* Deployment staat bewust uit: `deploy-staging` en `deploy-production` draaien alleen met
-  `STAGING_DEPLOY_ENABLED=true` respectievelijk `PRODUCTION_DEPLOY_ENABLED=true`. Staan ze
-  uit, dan wordt er niets uitgerold en **geen deploymentbewijs geschreven**. Volledig
-  overzicht van de repository-variabelen: [`docs/operations/deployment.md`](docs/operations/deployment.md#6-configuratie-en-secrets).
+* Deployment staat bewust uit en is fail-closed. `deploy-staging` en `deploy-production`
+  draaien alleen bij een **tag-push** op de hoofdbranch én met
+  `STAGING_DEPLOY_ENABLED=true` respectievelijk `PRODUCTION_DEPLOY_ENABLED=true`.
+  Een handmatige run (`workflow_dispatch`) is altijd een **droogrun**: die valideert wel,
+  maar rolt niets uit. Productie vereist daarnaast een stabiele SemVer-versie en een
+  kanaal uit de allowlist (`limited-production`, `general-availability`) via
+  `RELEASE_CHANNEL`. Gebeurt er niets, dan wordt er ook **geen deploymentbewijs
+  geschreven**. Volledig overzicht: [`docs/operations/deployment.md`](docs/operations/deployment.md#6-configuratie-en-secrets).
 
 ## 7. Testcommando's
 
@@ -147,13 +151,14 @@ het script dat er nog niets te installeren is en stopt het zonder fout.
 3. Commit volgens [Conventional Commits](https://www.conventionalcommits.org/)
    (voedt changelog en SemVer). Onderteken commits waar dat is ingesteld.
 4. Open een **pull request** met het [PR-template](.github/PULL_REQUEST_TEMPLATE.md);
-   koppel het issue met `Closes #123`.
+   koppel het issue met `Relates to #123` (zie [Sluitwoorden](docs/scrum/project-board.md#gebruik-van-sluitwoorden-in-pull-requests)).
 5. CI moet groen zijn: build, lint, tests, coverage, secret scan, dependency review,
    SAST, SBOM, licenties.
 6. Review: minimaal 1 review (2 voor security-, geld- of datastromen) en verplichte
    **CODEOWNERS**-review voor gevoelige paden.
-7. Merge (squash) → item naar **Ready for testing** → **Test group validation** → **Done**
-   na acceptatie door de Product Owner.
+7. Merge (squash) → item naar **Ready for testing** → validatie → **Done** zodra
+   aantoonbaar aan de Definition of Done is voldaan. Een merge zet een item nooit
+   automatisch op Done; gebruik `Relates to #123` zolang er nog validatie volgt.
 
 Branch protection-advies: [`CONTRIBUTING.md`](CONTRIBUTING.md#branch-protection).
 
@@ -161,9 +166,12 @@ Branch protection-advies: [`CONTRIBUTING.md`](CONTRIBUTING.md#branch-protection)
 
 * **Sprintduur:** `[SPRINTDUUR]` — advies 2 weken (1 week alleen bij een ervaren team en
   volledig geautomatiseerde pipeline).
-* **Rollen:** Product Owner, Scrum Master, developers, UX/gebruikersonderzoeker,
-  securityverantwoordelijke, privacy/complianceverantwoordelijke, vertegenwoordigers van
-  de testgroep — zie [`docs/scrum/roles.md`](docs/scrum/roles.md) en [`GOVERNANCE.md`](GOVERNANCE.md).
+* **Scrum Team:** Product Owner, Scrum Master en Developers. De Developers zijn
+  multidisciplinair en bevatten UX- en onderzoeks-, test-, security-, privacy-,
+  compliance- en operationsexpertise. Onafhankelijke governancerollen (security officer,
+  privacy officer/DPO, compliance officer) en stakeholders — waaronder de deelnemers aan
+  de testgroep — staan buiten het Scrum Team.
+  Zie [`docs/scrum/roles.md`](docs/scrum/roles.md) en [`GOVERNANCE.md`](GOVERNANCE.md).
 * **Events:** [Sprint Planning](docs/scrum/sprint-planning.md) ·
   [Daily Scrum](docs/scrum/scrum-guide.md#daily-scrum) ·
   [Refinement](docs/scrum/refinement.md) ·
@@ -171,8 +179,9 @@ Branch protection-advies: [`CONTRIBUTING.md`](CONTRIBUTING.md#branch-protection)
   [Retrospective](docs/scrum/retrospective.md)
 * **Board:** GitHub Projects met 11 statussen en 14 velden —
   [`docs/scrum/project-board.md`](docs/scrum/project-board.md).
-* **Testgroep:** elke sprint, minimaal elke tweede sprint —
-  [`docs/research/test-group-plan.md`](docs/research/test-group-plan.md).
+* **Gebruikersvalidatie:** doorlopend en risicogestuurd. Elke sprint met gebruikersimpact
+  bevat een expliciete leeractiviteit; een formele validatieronde volgt minimaal elke 1–2
+  sprints — [`docs/research/test-group-plan.md`](docs/research/test-group-plan.md).
 
 ## 10. Backlog
 
@@ -202,12 +211,21 @@ Volledig: [`docs/scrum/definition-of-ready.md`](docs/scrum/definition-of-ready.m
 
 ## 12. Definition of Done
 
-Acceptatiecriteria behaald · code review gedaan · geautomatiseerde tests groen ·
-unit-/integratie-/e2e-tests toegevoegd · securitycontroles geslaagd · afhankelijkheden en
-secrets gecontroleerd · privacy- en compliancevoorwaarden verwerkt · toegankelijkheid
-gecontroleerd · logging/monitoring toegevoegd · documentatie bijgewerkt · increment werkt
-in een representatieve testomgeving · testgroepfeedback vastgelegd · geen openstaande
-kritieke/hoge kwetsbaarheden · Product Owner heeft geaccepteerd.
+Twee lagen, zodat de lijst klopt voor zowel een documentatiewijziging als een betaalfunctie:
+
+* **Universeel (U1–U8, altijd):** acceptatiecriteria aantoonbaar behaald · review door een
+  ander · CI groen · geen blokkerende bevindingen · geen secrets, persoonsgegevens of
+  productiedata · documentatie bijgewerkt · traceerbaar issue ↔ PR ↔ commit · gemerged
+  zonder de build te breken.
+* **Conditioneel (C1–C12, wanneer het item het gebied raakt):** tests · toegankelijkheid ·
+  negatieve autorisatietests · geldstroomtests · migratie en rollback · persoonsgegevens ·
+  compliancebewijs · validatie met gebruikers · monitoring · CODEOWNERS-review ·
+  verificatie in een testomgeving · changelog. Wat niet van toepassing is, onderbouw je.
+
+**Er is geen uitzonderingsprocedure.** Ontbreekt een verplicht criterium, dan is het item
+niet Done: splitsen of terug naar de backlog. Done is een objectieve vaststelling door de
+Developers, geen persoonlijke goedkeuring; de Product Owner inspecteert het resultaat,
+past de backlog aan en beslist over vrijgave.
 Volledig: [`docs/scrum/definition-of-done.md`](docs/scrum/definition-of-done.md).
 
 ## 13. Securitymeldingen

@@ -9,8 +9,15 @@ Meld beveiligingskwetsbaarheden NIET via een pull request of issue — zie SECUR
 
 ## Gekoppeld issue
 
-Closes #
-<!-- Extra context: Relates to #, Part of epic # -->
+Relates to #
+
+<!--
+Gebruik `Relates to #123` zolang het werk na de merge nog verificatie of validatie nodig
+heeft. `Closes #123` sluit het issue automatisch bij de merge — dan springt het item naar
+een eindstatus vóórdat de Definition of Done is gehaald. Gebruik `Closes #123` alleen
+wanneer de merge het werk aantoonbaar volledig afrondt (bijvoorbeeld een
+documentatiewijziging). Zie docs/scrum/project-board.md §5.
+-->
 
 ## Type wijziging
 
@@ -128,19 +135,44 @@ Closes #
 - Versiebump: ⬜ patch ⬜ minor ⬜ major
 - Vereist coördinatie (communicatie, support, leverancier): ⬜ ja, namelijk … ⬜ nee
 
-## Definition of Done — checklist
+## Definition of Done
 
-- [ ] Acceptatiecriteria behaald
-- [ ] Code review uitgevoerd (2 reviews bij gevoelige paden)
-- [ ] Geautomatiseerde tests geslaagd in CI
-- [ ] Relevante unit-, integratie- en end-to-endtests toegevoegd
-- [ ] Securitycontroles geslaagd (secret scan, SAST, dependency- en containerscan)
-- [ ] Afhankelijkheden en secrets gecontroleerd; geen secrets in code of logs
-- [ ] Privacy- en compliancevoorwaarden verwerkt
-- [ ] Toegankelijkheid gecontroleerd (`docs/scrum/definition-of-done.md`)
-- [ ] Logging en monitoring toegevoegd waar nodig
-- [ ] Documentatie bijgewerkt
-- [ ] Increment werkt in een representatieve testomgeving
-- [ ] Relevante testgroepfeedback vastgelegd in `docs/research/feedback-log.md`
-- [ ] Geen openstaande kritieke of hoge kwetsbaarheden
-- [ ] Product Owner heeft het resultaat geaccepteerd
+Volledige lijst: [`docs/scrum/definition-of-done.md`](../blob/main/docs/scrum/definition-of-done.md).
+Ontbreekt een verplicht criterium, dan is het item **niet Done**; er is geen
+uitzonderingsprocedure. Splits het werk of zet het terug op de backlog.
+
+### Universeel — geldt altijd
+
+- [ ] **U1** acceptatiecriteria aantoonbaar behaald
+- [ ] **U2** review uitgevoerd door iemand anders dan de maker (2 reviews bij gevoelige paden)
+- [ ] **U3** verplichte CI-controles geslaagd
+- [ ] **U4** geen blokkerende bevindingen open (security-gate groen, geen kritieke/hoge kwetsbaarheden)
+- [ ] **U5** geen secrets, echte persoonsgegevens of productiedata toegevoegd
+- [ ] **U6** documentatie bijgewerkt waar nodig
+- [ ] **U7** traceerbaar: issue ↔ pull request ↔ commit
+- [ ] **U8** samengevoegd in de hoofdbranch zonder de build te breken
+
+### Conditioneel — vink aan wat deze wijziging raakt
+
+Wat je overslaat terwijl het gebied wél wordt geraakt, licht je in één regel toe.
+
+- [ ] **C1** applicatiecode → passende tests toegevoegd; dekking boven de drempel
+- [ ] **C2** UI → toegankelijkheid gecontroleerd (WCAG 2.2 AA op de kernreis)
+- [ ] **C3** authenticatie/autorisatie → negatieve tests aanwezig
+- [ ] **C4** geldstromen → tests op afronding, randgevallen en idempotentie
+- [ ] **C5** datamodel/migratie → getest, terugdraaibaar, rollbackplan hierboven
+- [ ] **C6** persoonsgegevens → doel, grondslag, minimalisatie en bewaartermijn geregeld
+- [ ] **C7** control geraakt → bewijs in `docs/compliance/audit-evidence.md`
+- [ ] **C8** gebruikersaanname → validatie uitgevoerd of ingepland; uitkomst in `docs/research/feedback-log.md`
+- [ ] **C9** operationeel → logging, metrics of alerts; runbook bijgewerkt
+- [ ] **C10** securitygevoelig pad → review door de code owners
+- [ ] **C11** geverifieerd in een representatieve testomgeving met synthetische data
+- [ ] **C12** release-impact → regel onder `Unreleased` in `CHANGELOG.md`
+
+**Niet van toepassing, omdat:**
+<!-- Per overgeslagen conditioneel criterium één regel. "n.v.t." zonder reden telt niet. -->
+
+> De Product Owner inspecteert het resultaat en past waar nodig de Product Backlog aan.
+> Een aparte persoonlijke goedkeuring is geen voorwaarde voor Done: dat volgt uit de
+> criteria hierboven. De beslissing om dit increment daadwerkelijk uit te brengen is een
+> releasebeslissing, zie `docs/releases/release-process.md`.

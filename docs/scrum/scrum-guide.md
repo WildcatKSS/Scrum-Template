@@ -23,19 +23,24 @@ is een aparte beslissing van de Product Owner.
 
 ## 3. Rollen
 
-Volledige beschrijving: [`roles.md`](roles.md). Kort:
+Het **Scrum Team** kent drie accountabilities. Meer niet — expertise is iets anders dan een
+rol. Volledige uitwerking: [`roles.md`](roles.md).
 
-| Rol | Verantwoordelijk voor |
+| Accountability | Verantwoordelijk voor |
 |---|---|
-| Product Owner | waarde, backlogprioriteit, acceptatie |
-| Scrum Master | werkwijze, events, belemmeringen wegnemen |
-| Developers | het increment bouwen en aan de DoD laten voldoen |
-| UX / onderzoeker | begrijpen van gebruikers, testgroepsessies, bevindingen |
-| Securityverantwoordelijke | securityeisen, threat modelling, kwetsbaarhedenopvolging |
-| Privacy-/complianceverantwoordelijke | gegevensbescherming, controls, bewijsvoering |
-| Vertegenwoordigers testgroep | gebruikersperspectief inbrengen en increments beoordelen |
+| **Product Owner** | waarde, productdoel, backlogprioriteit; inspecteert het resultaat en beslist over vrijgave |
+| **Scrum Master** | werkwijze, events, belemmeringen wegnemen |
+| **Developers** | het increment bouwen en aantoonbaar aan de DoD laten voldoen |
 
-De laatste vier rollen zijn **onderdeel van het team**, geen externe poortwachters achteraf.
+De **Developers zijn multidisciplinair**: softwareontwikkeling, UX en gebruikersonderzoek,
+testen, security engineering, privacy engineering, compliance-uitvoering en operations
+zitten binnen deze groep. Wie structureel aan het increment bijdraagt, is een Developer —
+ongeacht functietitel. Zo wordt kwaliteit niet "van iemand anders".
+
+Daarnaast bestaan er **onafhankelijke governancerollen** buiten het Scrum Team (security
+officer, privacy officer/DPO, compliance officer) en **stakeholders**, waaronder de
+deelnemers aan de testgroep. Zij adviseren, toetsen en kunnen een release tegenhouden,
+maar zij zijn geen Scrum-accountability en bepalen niet of werk Done is.
 
 ## 4. Artefacten
 
@@ -73,11 +78,11 @@ Regels:
 
 | Event | Duur bij 2 weken | Wie | Doel |
 |---|---|---|---|
-| [Sprint Planning](sprint-planning.md) | max. 4 uur | hele team | sprintdoel en plan bepalen |
+| [Sprint Planning](sprint-planning.md) | max. 4 uur | Scrum Team | sprintdoel en plan bepalen |
 | Daily Scrum | 15 minuten | developers (rest optioneel) | voortgang naar het sprintdoel bijsturen |
-| [Backlog Refinement](refinement.md) | ~5% van de sprint (±4 uur) | team + PO | items Ready maken |
-| [Sprint Review](sprint-review.md) | max. 2 uur | team + belanghebbenden + testgroep | increment inspecteren, feedback ophalen |
-| [Sprint Retrospective](retrospective.md) | max. 1,5 uur | team | werkwijze verbeteren |
+| [Backlog Refinement](refinement.md) | ~5% van de sprint (±4 uur) | Scrum Team | items Ready maken |
+| [Sprint Review](sprint-review.md) | max. 2 uur | Scrum Team + stakeholders (waaronder deelnemers uit de testgroep) | increment inspecteren, feedback ophalen |
+| [Sprint Retrospective](retrospective.md) | max. 1,5 uur | Scrum Team | werkwijze verbeteren |
 
 ### Daily Scrum
 
@@ -94,6 +99,7 @@ Vaste extra check bij een financiële dienst:
 * staat er iets in *In review* of *Ready for testing* dat wacht op een security- of
   privacybeoordeling?
 * zijn er nieuwe kritieke of hoge kwetsbaarheden gemeld door de pipeline?
+* staat er iets op *Done* dat de Definition of Done nog niet aantoonbaar haalt?
 
 Alles wat langer duurt dan een minuut, gaat naar een vervolgafspraak direct na de daily.
 
@@ -108,7 +114,10 @@ Alles wat langer duurt dan een minuut, gaat naar een vervolgafspraak direct na d
 4. **Geen werk zonder issue.** Traceerbaarheid is bij een financiële dienst een eis.
 5. **Security en privacy zijn taken, geen meningen.** Elk signaal wordt een backlogitem
    met eigenaar.
-6. **Testgroepcontact elke sprint**, minimaal elke tweede sprint.
+6. **Doorlopend gebruikerscontact, risicogestuurd ingevuld.** Elke sprint met
+   gebruikersimpact of een openstaande gebruikersaanname bevat een expliciete
+   leeractiviteit; de zwaarte daarvan hangt af van het risico
+   ([`../research/test-group-plan.md`](../research/test-group-plan.md)).
 7. **Nooit echte persoonsgegevens of productiedata** buiten productie.
 8. **Slechte kwaliteit is nooit een oplossing voor tijdsdruk.** Bij tijdgebrek gaat scope
    eruit, niet de Definition of Done.
@@ -134,14 +143,22 @@ gemeten.
 | Aantal geblokkeerde dagen | belemmeringen |
 | Ontsnapte defecten (gevonden na Done) | kwaliteit |
 | Openstaande kritieke/hoge kwetsbaarheden | veiligheid |
-| Aantal testgroepsessies per 2 sprints | leersnelheid |
+| Sprints met een expliciete leeractiviteit | leersnelheid |
 | Aantal feedbackitems omgezet in backlogitems | feedbackcyclus |
 
 Velocity is een hulpmiddel voor het team zelf en **geen doel of prestatiemaat**.
 
 ## 10. Wanneer wijken we af?
 
-Afwijken mag, mits: het team het besluit neemt, de reden en de vervaldatum worden
-vastgelegd in de retrospective, en het niet gaat om een security-, privacy- of
-compliance-eis. Die laatste zijn niet onderhandelbaar zonder de procedure voor
-risicoacceptatie uit [`../../GOVERNANCE.md`](../../GOVERNANCE.md).
+Afwijken van een **werkafspraak** in dit document mag: het Scrum Team neemt het besluit en
+legt reden en vervaldatum vast in de retrospective.
+
+Afwijken van de **Definition of Done** kan niet. Ontbreekt een verplicht criterium, dan is
+het item niet Done en blijft het werk staan
+([`definition-of-done.md`](definition-of-done.md) §4). De DoD kan wel **prospectief**
+worden aangepast voor toekomstig werk — nooit met terugwerkende kracht om lopend werk af
+te ronden.
+
+Risicoacceptatie ([`../../GOVERNANCE.md`](../../GOVERNANCE.md) §4) is een apart
+governanceproces voor het restrisico van **uitgevoerd** werk, en verandert nooit of iets
+Done is.

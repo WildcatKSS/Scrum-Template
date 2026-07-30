@@ -26,7 +26,8 @@ werkvloer. Alles wat we maken heeft een issue — dat is tegelijk onze traceerba
 | 8 | **Ready for testing** | gemerged, staat op de testomgeving | functioneel getest en akkoord | team |
 | 9 | **Test group validation** | wordt voorgelegd aan de testgroep | feedback vastgelegd en beoordeeld | UX |
 | 10 | **Blocked** | kan niet verder; blokkade en eigenaar staan in het issue | blokkade opgeheven | Scrum Master |
-| 11 | **Done** | voldoet aan de [Definition of Done](definition-of-done.md) en is geaccepteerd door de PO | — | PO |
+| 11 | **Done** | voldoet aantoonbaar aan de [Definition of Done](definition-of-done.md) | — | Developers |
+| 12 | **Cancelled / Rejected / Duplicate / Won't do** | het item wordt niet (verder) gemaakt; zie §2b | — | PO |
 
 ### Regels
 
@@ -35,7 +36,30 @@ werkvloer. Alles wat we maken heeft een issue — dat is tegelijk onze traceerba
 * **Blocked** is een status, geen kolom om in te wonen: bespreek elk item dagelijks.
 * Niet elk item doorloopt *Discovery* of *Test group validation*; die stappen zijn
   verplicht voor alles wat de gebruiker merkt.
-* Een item gaat pas naar **Done** als de PO het heeft geaccepteerd.
+* Een item gaat naar **Done** wanneer **aantoonbaar** aan de Definition of Done is
+  voldaan — niet wanneer iemand dat vindt. De Developers stellen dat vast; zie
+  [`definition-of-done.md`](definition-of-done.md). De Product Owner inspecteert het
+  resultaat en past waar nodig de Product Backlog aan, maar geeft geen aparte
+  persoonlijke goedkeuring als kwaliteitspoort.
+* Ontbreekt er een verplicht DoD-criterium, dan is het item **niet Done**. Het resterende
+  werk blijft in het item of gaat terug naar de Product Backlog.
+
+## 2b. Eindstatussen die géén voltooid werk zijn
+
+Werk dat stopt zonder opgeleverd increment krijgt een eigen eindstatus, zodat het niet
+als voltooid productwerk wordt geteld:
+
+| Status | Wanneer | Telt mee als voltooid werk? |
+|---|---|---|
+| **Done** | increment voldoet aantoonbaar aan de DoD | ✅ ja |
+| **Cancelled** | het werk is gestopt; de behoefte bestaat nog wel | ❌ nee |
+| **Rejected** | het item valt buiten de productvisie of scope | ❌ nee |
+| **Duplicate** | al gedekt door een ander item (verwijs ernaar) | ❌ nee |
+| **Won't do** | bewust besluit dit niet te maken, met onderbouwing | ❌ nee |
+
+Richt dit in als extra waarden van het statusveld of als apart veld *Eindreden*. Meet
+doorlooptijd en voltooid werk **alleen** over items met status Done; anders lijkt een
+opgeruimde backlog op productiviteit.
 
 ## 3. Velden
 
@@ -88,11 +112,31 @@ Ingebouwde workflows (*Project → Settings → Workflows*):
 | Trigger | Actie |
 |---|---|
 | Issue geopend | zet Status op **Inbox** |
-| Issue gesloten | zet Status op **Done** |
 | Pull request geopend en gekoppeld | zet Status op **In review** |
-| Pull request gemerged | zet Status op **Ready for testing** |
+| Pull request gemerged | zet Status op **Ready for testing** — **nooit** op Done |
 | Item toegevoegd aan het project | zet Sprint leeg en Prioriteit op *Medium* |
 | Auto-add | voeg elk nieuw issue in de repository automatisch toe |
+
+> ⚠️ **Zet de standaardautomatisering "Issue gesloten → Done" uit.** GitHub sluit een
+> gekoppeld issue automatisch bij het mergen van een pull request met `Closes #123`.
+> Met die automatisering erbij springt het item naar **Done** op het moment van de merge —
+> vóór verificatie op de testomgeving, vóór testgroepvalidatie en vóór de rest van de
+> Definition of Done. Dan meet je merges, geen afgerond werk.
+>
+> **Done wordt handmatig gezet** door de Developers, nadat aantoonbaar aan de DoD is
+> voldaan. Wil je dat automatiseren, doe dat dan op basis van bewijs (bijvoorbeeld een
+> workflow die pas Done zet als alle DoD-checkboxes zijn afgevinkt én de deploy naar de
+> testomgeving is geslaagd) — niet op basis van "de PR is gemerged".
+
+### Gebruik van sluitwoorden in pull requests
+
+* Gebruik **niet** standaard `Closes #123` / `Fixes #123` voor werk dat na de merge nog
+  verificatie of validatie nodig heeft: dat sluit het issue te vroeg.
+* Gebruik `Relates to #123` of `Part of #123` zolang de DoD nog niet volledig is behaald.
+* Sluit het issue pas ná validatie — handmatig, of met `Closes #123` in de PR wanneer de
+  merge het werk aantoonbaar volledig afrondt (bijvoorbeeld een documentatiewijziging).
+* Sluit je een item om een andere reden, gebruik dan de bijbehorende eindstatus uit §2b
+  en zet `state_reason` op *not planned*.
 
 Aanvullend (optioneel, via een workflow met `actions/add-to-project`): items met het label
 `type:security` of `risk:high` automatisch in de weergave *Risico & security* laten
@@ -123,3 +167,12 @@ Een item mag pas naar **Ready for sprint** als:
 * er geen open blokkade is.
 
 Volledige lijst: [`definition-of-ready.md`](definition-of-ready.md).
+
+## 8. Definition of Done op het board
+
+Een item mag pas naar **Done** als de universele DoD-criteria zijn afgevinkt én de
+conditionele criteria die op dit item van toepassing zijn — met onderbouwing bij elk
+"niet van toepassing". Zie [`definition-of-done.md`](definition-of-done.md).
+
+Het veld *Testgroepstatus* staat op *Verwerkt* of *N.v.t.* (met reden) voordat een
+gebruikersgericht item Done wordt.

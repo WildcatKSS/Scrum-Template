@@ -39,7 +39,7 @@ Formaat: `feat/123-transactieoverzicht-filter`. Werk nooit direct op `main`.
 ```
 feat(dashboard): toon maandsaldo per categorie
 
-Closes #123
+Relates to #123
 ```
 
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`,
@@ -50,7 +50,10 @@ Onderteken commits (`git commit -S`) zodra commit signing verplicht is gesteld.
 
 1. Vul het [PR-template](.github/PULL_REQUEST_TEMPLATE.md) volledig in — ook de
    security-, privacy- en compliancevelden. "n.v.t." mag, maar dan met één regel uitleg.
-2. Koppel het issue (`Closes #123`).
+2. Koppel het issue met `Relates to #123`. Gebruik `Closes #123` **alleen** wanneer de
+   merge het werk aantoonbaar volledig afrondt — anders sluit het issue vóórdat de
+   Definition of Done is gehaald en springt het item te vroeg naar een eindstatus
+   ([`docs/scrum/project-board.md`](docs/scrum/project-board.md#gebruik-van-sluitwoorden-in-pull-requests)).
 3. Houd PR's klein (richtlijn: < 400 gewijzigde regels).
 4. Alle verplichte checks moeten slagen; merge is geblokkeerd bij een falende kritieke
    kwaliteits- of securitycheck.
@@ -65,7 +68,8 @@ Onderteken commits (`git commit -S`) zodra commit signing verplicht is gesteld.
 Reviewers letten op: klopt het met de acceptatiecriteria · leesbaarheid en onderhoud ·
 tests op het juiste niveau · invoervalidatie en autorisatie · geen gevoelige gegevens in
 logs, foutmeldingen of URL's · geen secrets in code · afhankelijkheden verantwoord ·
-foutafhandeling · observability · documentatie bijgewerkt · DoD-checklist afgevinkt.
+foutafhandeling · observability · documentatie bijgewerkt · universele DoD-criteria
+afgevinkt en elk overgeslagen conditioneel criterium onderbouwd.
 
 ## 7. Testen
 

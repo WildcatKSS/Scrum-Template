@@ -268,25 +268,44 @@ body:
         - label: "Openstaande blokkades zijn zichtbaar"
 
   - type: checkboxes
-    id: definition-of-done
+    id: definition-of-done-universeel
     attributes:
-      label: "Definition of Done"
-      description: "Af te vinken tijdens uitvoering; de PR herhaalt deze lijst."
+      label: "Definition of Done — universele criteria"
+      description: >-
+        Gelden altijd. Af te vinken tijdens de uitvoering; de pull request herhaalt ze.
+        Ontbreekt er één, dan is het item niet Done — er is geen uitzonderingsprocedure
+        (docs/scrum/definition-of-done.md §4).
       options:
-        - label: "Acceptatiecriteria behaald"
-        - label: "Code review uitgevoerd"
-        - label: "Geautomatiseerde tests geslaagd"
-        - label: "Relevante unit-, integratie- en end-to-endtests toegevoegd"
-        - label: "Securitycontroles geslaagd"
-        - label: "Afhankelijkheden en secrets gecontroleerd"
-        - label: "Privacy- en compliancevoorwaarden verwerkt"
-        - label: "Toegankelijkheid gecontroleerd"
-        - label: "Logging en monitoring toegevoegd waar nodig"
-        - label: "Documentatie bijgewerkt"
-        - label: "Increment werkt in een representatieve testomgeving"
-        - label: "Relevante feedback van de testgroep vastgelegd"
-        - label: "Geen kritieke of hoge onbehandelde kwetsbaarheden"
-        - label: "Product Owner heeft het resultaat geaccepteerd"
+        - label: "U1 — acceptatiecriteria aantoonbaar behaald"
+        - label: "U2 — review uitgevoerd door iemand anders dan de maker"
+        - label: "U3 — verplichte CI-controles geslaagd"
+        - label: "U4 — geen blokkerende bevindingen open (security-gate groen)"
+        - label: "U5 — geen secrets, echte persoonsgegevens of productiedata toegevoegd"
+        - label: "U6 — documentatie bijgewerkt waar nodig"
+        - label: "U7 — traceerbaar: issue ↔ pull request ↔ commit"
+        - label: "U8 — samengevoegd in de hoofdbranch, CI groen"
+
+  - type: checkboxes
+    id: definition-of-done-conditioneel
+    attributes:
+      label: "Definition of Done — conditionele criteria"
+      description: >-
+        Vink alleen aan wat dit item raakt. Wat je niet aanvinkt maar wél verwacht mocht
+        worden, licht je in één regel toe in de pull request. Volledige lijst:
+        docs/scrum/definition-of-done.md sectie B.
+      options:
+        - label: "C1 — applicatiecode: passende tests toegevoegd, dekking blijft boven de drempel"
+        - label: "C2 — UI: toegankelijkheid gecontroleerd (WCAG 2.2 AA op de kernreis)"
+        - label: "C3 — authenticatie/autorisatie: negatieve tests aanwezig"
+        - label: "C4 — geldstromen: tests op afronding, randgevallen en idempotentie"
+        - label: "C5 — datamodel/migratie: getest en terugdraaibaar, rollbackplan in de PR"
+        - label: "C6 — persoonsgegevens: doel, grondslag, minimalisatie en bewaartermijn geregeld"
+        - label: "C7 — control geraakt: bewijs vastgelegd in docs/compliance/audit-evidence.md"
+        - label: "C8 — gebruikersaanname: validatie met gebruikers uitgevoerd of ingepland, uitkomst vastgelegd"
+        - label: "C9 — operationeel: logging, metrics of alerts toegevoegd, runbook bijgewerkt"
+        - label: "C10 — securitygevoelig pad: review door de code owners"
+        - label: "C11 — geverifieerd in een representatieve testomgeving met synthetische data"
+        - label: "C12 — release-impact: regel toegevoegd onder Unreleased in CHANGELOG.md"
 
   - type: checkboxes
     id: data-hygiene

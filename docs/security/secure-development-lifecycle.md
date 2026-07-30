@@ -8,17 +8,17 @@ securityactiviteit bij welke stap in onze Scrum-cyclus hoort en wie die uitvoert
 | Stap | Securityactiviteit | Wie | Bewijs |
 |---|---|---|---|
 | **Idee / Inbox** | eerste inschatting security-, privacy- en compliance-impact | PO + melder | velden op het board |
-| **Discovery** | misbruikscenario's benoemen ("abuse stories") | UX + Security | issuebeschrijving |
-| **Refinement** | verplichte risicoscan; securityeisen als acceptatiecriteria | team + Security | acceptatiecriteria |
-| **Epicstart** | threat modelling (STRIDE) | Security + Tech lead | [`../architecture/threat-model.md`](../architecture/threat-model.md) |
+| **Discovery** | misbruikscenario's benoemen ("abuse stories") | Developers (UX- en security-expertise) | issuebeschrijving |
+| **Refinement** | verplichte risicoscan; securityeisen als acceptatiecriteria | Scrum Team, governance op afroep | acceptatiecriteria |
+| **Epicstart** | threat modelling (STRIDE) | Developers (security-expertise) + tech lead | [`../architecture/threat-model.md`](../architecture/threat-model.md) |
 | **Ontwerp** | ADR met security-impact | Tech lead | ADR |
 | **Bouw** | veilige codeerpraktijken, geen secrets, invoervalidatie | Developers | code |
 | **Commit** | pre-commit secret scan (optioneel), ondertekende commits | Developers | commit |
 | **Pull request** | code review met securitycheck; CODEOWNERS bij gevoelige paden | Reviewers | review |
 | **CI** | secret scan, SAST, dependency review, container- en IaC-scan, SBOM, licenties | pipeline | workflowruns |
 | **Test** | securitytests in `tests/security/` | Developers | testresultaten |
-| **Definition of Done** | geen kritieke/hoge openstaande bevindingen | team | scanresultaten |
-| **Release** | securitycheck en goedkeuring; vetorecht bij bevindingen | Security | releasechecklist |
+| **Definition of Done** | geen kritieke/hoge openstaande bevindingen (U4) | Developers | scanresultaten |
+| **Release** | securitycheck en goedkeuring; vetorecht bij bevindingen | security officer (governance) | releasechecklist |
 | **Productie** | monitoring, alarmering, auditlogging | Ops | dashboards |
 | **Doorlopend** | kwetsbaarhedenopvolging, patchen, hertesten | Security | issues |
 | **Periodiek** | pentest, herziening threat model, toegangsreview | Security | rapporten |
@@ -40,7 +40,8 @@ afhankelijkheden · gevolgen voor bestaande maatregelen.
 ### Product Owner
 * Prioriteer securitywerk zichtbaar; het concurreert niet met features, het is
   onderdeel van "af".
-* Accepteer geen increment met openstaande kritieke of hoge bevindingen.
+* Een increment met openstaande kritieke of hoge bevindingen is per definitie niet Done
+  (criterium U4) — dat is geen afweging maar een vaststelling.
 
 ### Securityverantwoordelijke
 * Wees vroeg aanwezig (refinement), niet alleen aan het einde.

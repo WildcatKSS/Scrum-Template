@@ -10,27 +10,83 @@ financiële dienst is dat een risico voor de gebruiker, niet alleen voor het pro
 |---|---|---|
 | Omschrijving | `[TESTGROEP]` | te bepalen |
 | Omvang | `[8–12]` deelnemers (aanname) | te bevestigen |
-| Per usabilitysessie | 5–6 deelnemers per ronde (vindt ±85% van de gebruiksproblemen) | vast |
+| Per usabilityronde | richtlijn: ± 5 deelnemers **per relevant gebruikerssegment**, in meerdere iteraties | richtlijn |
 | Spreiding | leeftijd, digitale vaardigheid, financiële situatie, taalniveau, toegankelijkheidsbehoeften | te bepalen |
 | Verplicht vertegenwoordigd | minimaal 2 deelnemers met een toegankelijkheidsbehoefte; minimaal 2 met lage digitale vaardigheid | vast |
-| Vaste deelnemers vs. wisselend | ⅔ vast (leert het product kennen), ⅓ wisselend (frisse blik) | aanname |
+| Vaste deelnemers vs. wisselend | roterend: een deel kent het product, een deel kijkt fris (voorkomt participant fatigue) | aanname |
 | Vergoeding | `[VERGOEDING]` — gelijk voor iedereen, niet afhankelijk van de uitkomst | te bepalen |
 | Werving | `[KANAAL]` | te bepalen |
 
 > **Let op bij werving:** vermijd uitsluitend enthousiaste early adopters. Juist de
 > twijfelaars en de mensen die snel afhaken, leveren de bruikbaarste inzichten op.
 
-## 2. Ritme
+### Hoeveel deelnemers zijn genoeg?
 
-| Sprint | Activiteit met de testgroep |
+Er bestaat geen universeel detectiepercentage. De veelgeciteerde vuistregel dat vijf
+deelnemers "het grootste deel" van de gebruiksproblemen vinden, komt uit onderzoek naar
+één homogene gebruikersgroep met vergelijkbare taken; zij is bruikbaar als **startpunt**,
+niet als bewijs van dekking. Hoeveel je er nodig hebt, hangt af van doelgroep en
+segmentatie, productcomplexiteit, de onderzoeksvraag, de taakvariatie, de kwaliteit van de
+opzet en het aantal iteraties.
+
+Werkwijze die wél houdbaar is:
+
+* begin met ± **5 deelnemers per relevant segment**;
+* doe **meerdere kleinere rondes** in plaats van één grote;
+* **verhoog het aantal** bij een heterogene doelgroep, uiteenlopende
+  toegankelijkheidsbehoeften, complexe of risicovolle financiële taken, of wanneer nieuwe
+  sessies nog steeds nieuwe problemen opleveren;
+* **stop met werven** wanneer je verzadiging bereikt: twee tot drie opeenvolgende sessies
+  zonder nieuwe bevindingen;
+* bepaal het uiteindelijke aantal op grond van onderzoeksdoel, risico en verzadiging — en
+  leg die afweging vast bij het onderzoek.
+
+## 2. Ritme — risicogestuurd, niet ritueel
+
+Het principe is **doorlopend leren van echte gebruikers**. De zwaarte van de activiteit
+volgt het risico en de openstaande onzekerheid, niet de kalender. Een klein team dat elke
+sprint een formele usabilitytest moet organiseren, houdt dat niet vol — en put bovendien
+de deelnemers uit.
+
+**Vaste regel:** elke sprint waarin gebruikersimpact bestaat of een gebruikersaanname
+openstaat, bevat een **expliciete leeractiviteit**. Welke, bepaalt het team.
+
+| Soort leeractiviteit | Inspanning | Wanneer passend |
+|---|---|---|
+| Probleeminterview | midden | de behoefte of het probleem is nog onzeker |
+| Prototypevalidatie | laag–midden | een oplossingsrichting toetsen vóór je bouwt |
+| Formele usabilitytest | hoog | een werkend increment op een belangrijke gebruikersreis |
+| Analyse van gebruiksdata | laag | er is genoeg gebruik om gedrag te meten |
+| Support- en feedbackanalyse | laag | er komt al feedback binnen uit de praktijk |
+| Deelname aan de Sprint Review | laag | het increment is toonbaar en er is een concrete vraag |
+| Validatie van een werkend increment | midden | vóór uitbreiding naar een grotere groep |
+
+**Ritmerichtlijn**
+
+| Onderwerp | Richtlijn |
 |---|---|
-| Elke sprint | minimaal één sessie: usabilitytest, interview of feedbackronde |
-| Minimaal elke tweede sprint | een **verplichte** validatiesessie op het increment |
-| Elke sprint | 2–3 vertegenwoordigers aanwezig bij de Sprint Review |
-| Elk kwartaal | brede feedbackronde (vragenlijst) onder de hele groep |
+| Formele validatieronde | minimaal elke 1–2 sprints voor gebruikersgerichte ontwikkeling |
+| Hoog-risico financiële reizen (geld, toestemming, identiteit, foutafhandeling) | intensiever en met meer segmenten testen |
+| Laag-risico of niet-gebruikersgericht werk (interne techniek, documentatie) | geen sessie nodig; leg vast waarom niet |
+| Sprint Review | deelnemers uit de testgroep zijn welkom wanneer er een concrete vraag ligt; niet iedere review vereist dezelfde of überhaupt dezelfde mensen |
+| Observatie door een developer | waar het waarde toevoegt (zeker bij usabilitytests); niet verplicht bij elk interview |
+| Belasting per deelnemer | roteer; houd het aantal sessies per deelnemer beperkt en zichtbaar |
+| Brede feedbackronde (vragenlijst) | elk kwartaal |
 
-Lukt een sessie niet, dan is dat een **belemmering** voor de Scrum Master, geen
-vanzelfsprekendheid.
+Lukt een geplande leeractiviteit structureel niet, dan is dat een **belemmering** voor de
+Scrum Master — geen vanzelfsprekendheid.
+
+**Leg per leeractiviteit vast** (ongeacht de vorm):
+
+| Veld | Waarom |
+|---|---|
+| Hypothese | zonder verwachting is er niets te weerleggen |
+| Methode | maakt de uitkomst interpreteerbaar |
+| Doelgroep/segment | zegt iets over de reikwijdte van de conclusie |
+| Succescriterium (vooraf) | voorkomt achteraf rechtpraten |
+| Beslissing die eruit volgt | voorkomt onderzoek zonder gevolg |
+
+Sjabloon: [`experiment-template.md`](experiment-template.md).
 
 ## 3. De feedbackcyclus
 
@@ -92,8 +148,10 @@ Per stap:
 | Observator (developer of PO) | noteert gedrag, stelt geen vragen |
 | Technische ondersteuning | staat klaar bij problemen met de omgeving |
 
-Bij elke sessie is minimaal **één developer** aanwezig als observator. Zelf zien werkt
-beter dan een rapport lezen.
+Zelf zien werkt beter dan een rapport lezen: bij **usabilitytests en validatiesessies**
+observeert minimaal één developer. Bij lichtere activiteiten (een kort interview,
+data-analyse) is dat wenselijk maar niet verplicht — beter een sessie mét alleen de
+onderzoeker dan geen sessie.
 
 ## 7. Van sessie naar backlog
 
@@ -107,11 +165,13 @@ beter dan een rapport lezen.
 
 | Meetwaarde | Streefwaarde |
 |---|---|
-| Sessies per sprint | ≥ 1 |
-| Deelnemers per usabilityronde | 5–6 |
+| Sprints met gebruikersimpact die een leeractiviteit bevatten | 100% |
+| Formele validatierondes | ≥ 1 per 2 sprints bij gebruikersgerichte ontwikkeling |
+| Verzadiging bereikt vóór afronding van een ronde | ja/nee, per onderzoek vastgelegd |
 | Doorlooptijd sessie → issue | ≤ 1 werkdag |
 | Feedbackitems met beslissing binnen 2 sprints | ≥ 90% |
 | Deelnemers die terugkoppeling ontvingen | 100% |
+| Sessies per deelnemer per kwartaal | ≤ `[3]` (voorkomt participant fatigue) |
 | Uitval van deelnemers per kwartaal | ≤ `[20]%` |
 
 ## 9. Deelnemersregister (buiten deze repository)

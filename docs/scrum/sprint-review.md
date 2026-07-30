@@ -3,8 +3,11 @@
 **Doel:** het increment inspecteren met belanghebbenden en de backlog aanpassen op basis
 van wat we hebben geleerd. Het is een **werksessie**, geen presentatie.
 **Duur:** maximaal 2 uur bij een sprint van 2 weken.
-**Deelnemers:** team, Product Owner, Scrum Master, belanghebbenden, **vertegenwoordigers
-van de testgroep**, security en privacy bij relevante onderwerpen.
+**Deelnemers:** het Scrum Team en de stakeholders die ertoe doen voor dit increment.
+Deelnemers uit de testgroep zijn welkom wanneer er een concrete vraag voor hen ligt — niet
+als vaste verplichting bij elke review (zie
+[`../research/test-group-plan.md`](../research/test-group-plan.md) §2). Governancerollen
+sluiten aan bij relevante onderwerpen.
 
 ## Agenda
 
@@ -12,7 +15,7 @@ van de testgroep**, security en privacy bij relevante onderwerpen.
 |---|---|
 | 10 min | Sprintdoel, wat is wel en niet af, en waarom |
 | 40 min | Demo van het increment in een **werkende omgeving** (geen slides) |
-| 20 min | Bevindingen uit de testgroepsessie van deze sprint |
+| 20 min | Bevindingen uit de leeractiviteit van deze sprint (indien uitgevoerd) |
 | 15 min | Security-, privacy- en compliancestatus |
 | 20 min | Feedback ophalen en vastleggen |
 | 15 min | Gevolgen voor de backlog, roadmap en volgende sprint |
@@ -21,8 +24,8 @@ van de testgroep**, security en privacy bij relevante onderwerpen.
 
 * Demonstreer in een **representatieve testomgeving** met **uitsluitend synthetische
   data** — nooit met productiedata of echte persoonsgegevens.
-* Laat alleen zien wat aan de [Definition of Done](definition-of-done.md) voldoet.
-  Werk dat niet Done is, benoem je; je demonstreert het niet als resultaat.
+* Laat alleen zien wat aantoonbaar aan de [Definition of Done](definition-of-done.md)
+  voldoet. Werk dat niet Done is, benoem je; je demonstreert het niet als resultaat.
 * Laat de gebruiker het doen, niet de ontwikkelaar: geef de muis waar mogelijk aan een
   deelnemer uit de testgroep.
 * Toon ook de **foutpaden**: wat ziet iemand als het misgaat?
@@ -34,7 +37,7 @@ van de testgroep**, security en privacy bij relevante onderwerpen.
 | Securitystatus | Security | openstaande kritieke/hoge bevindingen, opgeloste bevindingen, resultaten van scans |
 | Privacystatus | Privacy | nieuwe verwerkingen, DPIA-status, bewaartermijnen |
 | Compliancestatus | Compliance | geraakte controls, bewijs, openstaande acties, punten die nog **door een bevoegde specialist gevalideerd** moeten worden |
-| Testgroep | UX | wat is getest, met hoeveel deelnemers, wat viel op |
+| Gebruikersonderzoek | Developers (UX-expertise) | welke hypothese, welke methode, hoeveel deelnemers, wat viel op — of onderbouwd waarom deze sprint geen sessie nodig had |
 | Operationeel | Dev | incidenten, monitoring, SLO's |
 
 ## Feedback vastleggen
@@ -62,7 +65,7 @@ Alle feedback wordt tijdens de sessie genoteerd en daarna omgezet in issues:
 
 - [ ] Increment draait in een testomgeving met synthetische data
 - [ ] Alleen Done-werk gedemonstreerd; niet-af werk expliciet benoemd
-- [ ] Testgroep aanwezig of vertegenwoordigd, met bevindingen
+- [ ] Bevindingen uit de leeractiviteit besproken, of onderbouwd waarom die er niet was
 - [ ] Security-, privacy- en compliancestatus behandeld
 - [ ] Alle feedback vastgelegd als issue met classificatie
 - [ ] Backlog en board bijgewerkt vóór de volgende planning

@@ -1,22 +1,27 @@
 # Governance
 
-Dit document beschrijft rollen, mandaten en besluitvorming. Het vult de Scrum-rollen in
-[`docs/scrum/roles.md`](docs/scrum/roles.md) aan met de bevoegdheden die bij een
-financiële dienst horen.
+Dit document beschrijft mandaten en besluitvorming. Het bouwt voort op
+[`docs/scrum/roles.md`](docs/scrum/roles.md), waarin het onderscheid staat tussen
+Scrum-accountabilities (Product Owner, Scrum Master, Developers), vakexpertise binnen de
+Developers, onafhankelijke governancerollen en stakeholders.
 
-## 1. Rollen en mandaat
+## 1. Mandaten
 
-| Rol | Beslist over | Beslist niet over | Escalatie naar |
-|---|---|---|---|
-| **Product Owner** | backlogprioriteit, scope, acceptatie van increments, releasegoedkeuring vanuit productoogpunt | technische uitvoering, securityafwijkingen, juridische conclusies | `[STUURGROEP/OPDRACHTGEVER]` |
-| **Scrum Master** | proces, events, wegnemen belemmeringen | inhoud van de backlog | `[MANAGEMENT]` |
-| **Developers** | technische uitvoering, ontwerp binnen kaders, schattingen, Definition of Done-naleving | prioriteit, acceptatie | Tech lead |
-| **Tech lead / architect** | architectuurkaders, ADR-besluiten | productprioriteit | CTO / `[ROL]` |
-| **UX / gebruikersonderzoeker** | onderzoeksopzet, methode, interpretatie van bevindingen | prioriteit van oplossingen | PO |
-| **Security officer** | securityeisen; **vetorecht** op release bij openstaande kritieke/hoge kwetsbaarheid | productprioriteit | CISO / `[ROL]` |
-| **Privacy officer / DPO** | privacy-eisen, DPIA-uitkomst; **vetorecht** bij onaanvaardbaar privacyrisico | technische uitvoering | `[BESTUUR]` |
-| **Compliance officer** | complianceregister, controls, bewijsvoering; **vetorecht** op release | productprioriteit | `[BESTUUR]` |
-| **Vertegenwoordigers testgroep** | inbreng van gebruikersperspectief en ervaringen | scope of prioriteit (adviserend) | UX |
+| Wie | Positie | Beslist over | Beslist niet over | Escalatie naar |
+|---|---|---|---|---|
+| **Product Owner** | Scrum Team | backlogprioriteit, scope, productdoel, en of/wanneer een Done increment wordt vrijgegeven | technische uitvoering, of iets Done is, securityafwijkingen, juridische conclusies | `[STUURGROEP/OPDRACHTGEVER]` |
+| **Scrum Master** | Scrum Team | proces, events, wegnemen van belemmeringen | inhoud en volgorde van de backlog | `[MANAGEMENT]` |
+| **Developers** | Scrum Team | technische uitvoering, ontwerp binnen kaders, schattingen, en de vaststelling dát het increment aan de DoD voldoet | prioriteit en productrichting | Tech lead |
+| **Tech lead / architect** | Developers | architectuurkaders, ADR-besluiten | productprioriteit | CTO / `[ROL]` |
+| **Security officer** | governance (onafhankelijk) | securityeisen; **vetorecht** op release bij openstaande kritieke/hoge kwetsbaarheid | productprioriteit; of iets Done is | CISO / `[ROL]` |
+| **Privacy officer / DPO** | governance (wettelijk onafhankelijk) | privacy-eisen, DPIA-oordeel; **vetorecht** bij onaanvaardbaar privacyrisico | technische uitvoering | `[BESTUUR]` |
+| **Compliance officer** | governance | complianceregister, controls, bewijsvoering; **vetorecht** op release | productprioriteit | `[BESTUUR]` |
+| **Deelnemers testgroep** | onderzoeksdeelnemers | niets — zij leveren gedrag, ervaringen en feedback | scope of prioriteit | coördinator testgroep |
+
+> **Done staat niet in deze tabel als beslissing van één persoon.** Of een item Done is,
+> volgt uit de [Definition of Done](docs/scrum/definition-of-done.md): objectief,
+> aantoonbaar en vastgesteld door de Developers. Een vetorecht kan een **release**
+> tegenhouden, maar verandert nooit of werk af is.
 
 **Vetorecht** betekent: de release gaat niet door tot het punt is opgelost of
 aantoonbaar en gedocumenteerd is geaccepteerd door de daartoe bevoegde eigenaar
@@ -26,11 +31,12 @@ aantoonbaar en gedocumenteerd is geaccepteerd door de daartoe bevoegde eigenaar
 
 | Type besluit | Wie beslist | Vastlegging |
 |---|---|---|
-| Backlogprioriteit | Product Owner (na advies team) | GitHub Projects, veld *Prioriteit* |
-| Sprintdoel | team in Sprint Planning | sprintissue / board |
-| Architectuur | Tech lead, met team, consent-based | ADR in `docs/architecture/adr/` |
-| Security-uitzondering | Security officer + PO | risicoacceptatie in `docs/compliance/audit-evidence.md` |
-| Privacy-/gegevensverwerking | DPO/Privacy officer | DPIA + `docs/privacy/` |
+| Backlogprioriteit | Product Owner (na advies van Developers en stakeholders) | GitHub Projects, veld *Prioriteit* |
+| Sprintdoel | Scrum Team in Sprint Planning | sprintissue / board |
+| Is dit increment Done? | Developers, op basis van de DoD — geen persoonlijke goedkeuring | issue + PR-checklist |
+| Architectuur | Tech lead, met de Developers, consent-based | ADR in `docs/architecture/adr/` |
+| Risicoacceptatie (restrisico van uitgevoerd werk) | mandaathouder uit §4 | `docs/compliance/audit-evidence.md` §3 |
+| Privacy-/gegevensverwerking | DPO / privacy officer | DPIA + `docs/privacy/` |
 | Regulatoire toepasselijkheid | **bevoegde specialist (jurist/compliance)** | `docs/compliance/regulatory-decisions.md` |
 | Release naar productie | PO + Security + Compliance gezamenlijk | `docs/releases/release-checklist.md` |
 | Wijziging van deze governance | `[BESTUUR]` | PR + CHANGELOG |
@@ -47,20 +53,49 @@ required reviewers op de `production`-environment.
 
 ## 4. Risicoacceptatie
 
-Een risico kan alleen bewust geaccepteerd worden als vastligt: beschrijving, impact,
-waarschijnlijkheid, compenserende maatregel, houdbaarheidsdatum, en de naam van de
-accepterende mandaathouder. Kritieke en hoge securityrisico's kunnen **niet** door het
-team zelf worden geaccepteerd. Registratie: `docs/compliance/audit-evidence.md`.
+Risicoacceptatie gaat over een **restrisico van uitgevoerd werk** — bijvoorbeeld een
+bekende kwetsbaarheid waarvoor nog geen patch bestaat, of een functionele beperking die we
+bewust in productie nemen.
+
+> **Risicoacceptatie is géén uitzondering op de Definition of Done.** Zij kan nooit
+> betekenen dat niet-uitgevoerde tests, ontbrekende deploymentvalidatie of ontbrekend
+> kwaliteits-, privacy- of compliancebewijs als uitgevoerd gelden. Ontbreekt een verplicht
+> DoD-criterium, dan is het item niet Done en blijft het werk op de backlog staan
+> ([`docs/scrum/definition-of-done.md`](docs/scrum/definition-of-done.md) §4).
+
+Een risicoacceptatie is alleen geldig als **alle** onderstaande gegevens zijn vastgelegd:
+
+| Veld | Toelichting |
+|---|---|
+| Beschrijving | wat is het risico, concreet |
+| Impact | wat gebeurt er als het zich voordoet (gebruikers, geld, gegevens) |
+| Waarschijnlijkheid | onderbouwde inschatting |
+| Compenserende maatregelen | wat beperkt het risico intussen |
+| Eigenaar | wie bewaakt het |
+| Bevoegde goedkeurder | mandaathouder uit §1 |
+| Vervaldatum | wanneer opnieuw beoordelen; nooit onbeperkt |
+| Opvolgissue | waar het werk staat om het risico weg te nemen |
+
+Waarvoor risicoacceptatie **wel** passend kan zijn: een openstaande kwetsbaarheid van
+niveau middel of lager, een leveranciersafhankelijkheid, een tijdelijke handmatige
+compenserende maatregel, of een bewust uitgestelde verbetering.
+
+Waarvoor **niet**: ontbrekende tests, niet-uitgevoerde reviews, overgeslagen
+securityscans, niet-geverifieerde deployments, of ontbrekende toestemming voor een
+gegevensverwerking.
+
+Kritieke en hoge securityrisico's kunnen **niet** door de Developers zelf worden
+geaccepteerd. Registratie: `docs/compliance/audit-evidence.md` §3.
 
 ## 5. Ritme
 
 | Moment | Frequentie | Deelnemers |
 |---|---|---|
-| Scrum-events | per sprint | team ([`docs/scrum/`](docs/scrum/)) |
-| Security-/privacyreview op refinement | elke refinement | Security + Privacy |
+| Scrum-events | per sprint | Scrum Team ([`docs/scrum/`](docs/scrum/)) |
+| Security-/privacybeoordeling bij refinement | elke refinement | Developers met security-/privacyexpertise, governance op afroep |
 | Complianceregister bijwerken | maandelijks | Compliance |
-| Threat model herzien | per epic en per kwartaal | Security + Tech lead |
-| Governance-evaluatie | elk kwartaal | alle rolhouders |
+| Threat model herzien | per epic en per kwartaal | Developers (security-expertise) + tech lead |
+| Governance-evaluatie | elk kwartaal | alle mandaathouders |
 
 ## 6. Grenzen van dit document
 
