@@ -63,6 +63,9 @@ De workflow `code-quality.yml` telt bij elke run hoeveel er nog openstaan.
 | Placeholder | Betekenis | Voorstel |
 |---|---|---|
 | `COVERAGE_MIN` | dekkingsdrempel | 70%, groeipad naar 80% |
+| `STAGING_DEPLOY_ENABLED` | staging-deployment aan/uit | uit tot de deploystappen echt zijn ingevuld |
+| `PRODUCTION_DEPLOY_ENABLED` | productiedeployment aan/uit | uit tot de deploystappen echt zijn ingevuld |
+| `RELEASE_CHANNEL` | kanaal bij een tag-push | `test-group` (sluit productie uit) |
 | `[15]` minuten | sessie-time-out | 15 |
 | `[8]` uur | absolute sessieduur | 8 |
 | `[BEDRAG]` | drempel voor handmatige controle | te bepalen |

@@ -6,6 +6,11 @@ Voor een interne prototypeversie volstaat sectie 1.
 **Release:** `v[X.Y.Z]` · **Kanaal:** `[…]` · **Datum:** `[JJJJ-MM-DD]` ·
 **Releaseverantwoordelijke:** `[NAAM]`
 
+> Voorwaarde vooraf: de release loopt via een **tag-push** op de hoofdbranch. Een
+> handmatige workflow-run is een droogrun en rolt niets uit; productie vereist bovendien
+> een stabiele SemVer-versie en een kanaal uit de productie-allowlist. Zie
+> [`../operations/deployment.md`](../operations/deployment.md) §6.
+
 ## 1. Kwaliteit
 
 - [ ] Alle verplichte CI-checks groen (build, lint, unit, integratie, coverage, e2e, a11y)
@@ -51,14 +56,14 @@ Voor een interne prototypeversie volstaat sectie 1.
 - [ ] Audit trail werkt en is compleet
 - [ ] **Akkoord compliance:** `[NAAM]` op `[DATUM]`
 
-## 5. Product — *Product Owner*
+## 5. Product — *Product Owner (releasebesluit, geen Done-gate)*
 
-- [ ] Acceptatiecriteria van alle opgenomen items behaald
-- [ ] Testgroepfeedback verwerkt of expliciet uitgesteld met motivatie
+- [ ] Alle opgenomen items zijn Done volgens de Definition of Done (objectief vastgesteld)
+- [ ] Feedback uit gebruikersvalidatie verwerkt of expliciet uitgesteld met motivatie
 - [ ] Releasenotes gecontroleerd en begrijpelijk voor de doelgroep
 - [ ] Communicatie naar gebruikers/support geregeld
 - [ ] Bekende beperkingen benoemd
-- [ ] **Akkoord Product Owner:** `[NAAM]` op `[DATUM]`
+- [ ] **Releasebesluit Product Owner:** `[NAAM]` op `[DATUM]`
 
 ## 6. Operatie
 
@@ -85,7 +90,7 @@ Voor een interne prototypeversie volstaat sectie 1.
 - [ ] Changelog bijgewerkt en release gepubliceerd
 - [ ] Bewijs vastgelegd (`../compliance/audit-evidence.md`)
 - [ ] Evaluatie binnen `[3]` werkdagen ingepland
-- [ ] Testgroep geïnformeerd over wat er nieuw is
+- [ ] Deelnemers aan de gebruikersvalidatie geïnformeerd over wat er nieuw is
 - [ ] Openstaande punten als backlogitems vastgelegd
 
 ---

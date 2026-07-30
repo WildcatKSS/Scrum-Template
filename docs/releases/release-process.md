@@ -22,7 +22,7 @@ Versies vóór `1.0.0` zijn niet stabiel; dat mag, mits duidelijk gecommuniceerd
 |---|---|---|---|
 | **Intern prototype** | team | synthetisch | CI groen |
 | **Testgroepversie** | testgroep (`[8–12]` deelnemers) | synthetisch | DoD gehaald, geen kritieke/hoge kwetsbaarheden, toestemming geregeld |
-| **Bèta** | `[grotere groep]` | synthetisch of beperkt echt — **te valideren** | DPIA afgerond, securitycheck, support geregeld |
+| **Bèta** | `[grotere groep]` | synthetisch of beperkt echt — **te valideren** | DPIA afgerond, securitycheck, support geregeld. Draait op een **niet-productieomgeving**; wil je bèta wél in productie, richt daar dan een eigen environment voor in en neem het kanaal expliciet op in de productie-allowlist |
 | **Beperkte productie-uitrol** | `[X]%` van de gebruikers | echt | volledige releasechecklist, pentest, goedkeuringen |
 | **Algemene beschikbaarheid** | iedereen | echt | beperkte uitrol stabiel gedurende `[2]` weken |
 
@@ -31,7 +31,9 @@ Overgang naar een volgend kanaal is een expliciet besluit van PO + Security + Co
 ## 3. Stappen
 
 ### 1. Releasekandidaat
-Tag `vX.Y.Z-rc.N` op `main`. De pipeline bouwt, test en scant. Resultaat: artifact + SBOM.
+Tag `vX.Y.Z-rc.N` op `main`, of start de workflow handmatig als droogrun. De pipeline
+bouwt, test en scant. Resultaat: artifact + SBOM. Een `-rc`-versie kan naar staging, maar
+**nooit** naar productie.
 
 ### 2. Regressietests
 Volledige unit-, integratie- en end-to-endsuite plus handmatige verificatie van de
@@ -40,28 +42,37 @@ kernreis op staging.
 ### 3. Securitycheck
 Geen openstaande kritieke of hoge bevindingen. Nieuwe afhankelijkheden beoordeeld. Bij
 wijzigingen aan authenticatie, autorisatie of geldstromen: expliciete beoordeling door de
-securityverantwoordelijke. **Vetorecht.**
+security officer (governance). **Vetorecht.**
 
 ### 4. Privacy- en compliancecheck
 Nieuwe of gewijzigde verwerkingen beoordeeld, bewaartermijnen geregeld, DPIA bijgewerkt,
 controls en bewijs bijgewerkt, openstaande regulatoire vragen niet blokkerend.
 **Vetorecht.**
 
-### 5. Goedkeuring Product Owner
-Acceptatiecriteria behaald, testgroepfeedback verwerkt, releasenotes gecontroleerd,
-communicatie geregeld.
+### 5. Releasebesluit van de Product Owner
+Dit gaat over **vrijgave**, niet over de vraag of het werk af is: dat volgt al uit de
+Definition of Done. De Product Owner beoordeelt of dit Done increment nú naar dit kanaal
+moet: is de waarde er, is de testgroepfeedback verwerkt, kloppen de releasenotes, is de
+communicatie geregeld?
 
 ### 6. Gecontroleerde uitrol
 Tag `vX.Y.Z` → goedkeuring op de `production`-environment → gefaseerde uitrol
 (5% → 25% → 100%) met observatie tussen de stappen.
 
-> **Let op — de pipeline rolt pas uit als je dat expliciet aanzet.** De deploystappen in
-> `release.yml` zijn placeholders tot `[CLOUD]` is gekozen. De jobs `deploy-staging` en
-> `deploy-production` draaien alleen wanneer de repository-variabelen
-> `STAGING_DEPLOY_ENABLED` respectievelijk `PRODUCTION_DEPLOY_ENABLED` op `true` staan.
-> Staan ze uit, dan worden de jobs overgeslagen, wordt er **geen** deploymentbewijs
-> geschreven en meldt de job `deployment-status` dat er niets is uitgerold. Staan ze aan
-> terwijl de placeholders er nog zijn, dan faalt de job.
+> **Let op — de pipeline rolt pas uit als je dat expliciet aanzet, en alleen vanaf een tag.**
+>
+> * Een **handmatige** uitvoering (`workflow_dispatch`) is altijd een **droogrun**: die
+>   valideert de kandidaat maar rolt niets uit, ook niet met de variabelen aan.
+> * **Staging** vereist een tag-push `v*.*.*` op de hoofdbranch én
+>   `STAGING_DEPLOY_ENABLED=true`.
+> * **Productie** vereist daarnaast een **stabiele** SemVer-versie (geen `-rc`, `-alpha`,
+>   `-beta`), een kanaal uit de allowlist (`RELEASE_CHANNEL` = `limited-production` of
+>   `general-availability`), `PRODUCTION_DEPLOY_ENABLED=true` én goedkeuring door de
+>   required reviewers op de environment `production`.
+> * De kanalen `internal-prototype`, `test-group` en `beta` bereiken **nooit** productie.
+> * Gebeurt er niets, dan wordt er **geen** deploymentbewijs geschreven en meldt de job
+>   `deployment-status` waarom.
+>
 > Zie [`../operations/deployment.md`](../operations/deployment.md) §6.
 
 ### 7. Monitoring

@@ -102,16 +102,66 @@ while IFS= read -r ref; do
 done < <(grep -rhoE '(\./)?scripts/[A-Za-z0-9_/.-]+\.sh' .github/workflows/ | sed 's|^\./||' | sort -u)
 note_ok "scriptverwijzingen gecontroleerd"
 
-echo "5. Geen voor de hand liggende echte gegevens in de template"
-if grep -rInE '\b[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}\b' --include='*.md' --include='*.yml' . \
-   | grep -v 'scripts/verify-template.sh' | grep -v '\[' ; then
-  note_error "mogelijk een creditcard-achtig nummer aangetroffen"
-else
-  note_ok "geen kaartnummerpatronen gevonden"
-fi
+echo "5. Externe GitHub Actions zijn op een volledige commit-SHA vastgezet"
+# Een tag kan worden verplaatst naar andere code, een commit-SHA niet. Lokale composite
+# actions (uses: ./...) en herbruikbare workflows in deze repository slaan we over.
+unpinned=0
+while IFS= read -r line; do
+  [ -z "${line}" ] && continue
+  file="${line%%:*}"
+  ref="${line#*:}"
+  case "${ref}" in
+    ./*|.github/*) continue ;;                     # lokale action of workflow
+  esac
+  case "${ref}" in
+    *@[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f])
+      ;;                                            # 40 hex-tekens: goed
+    *)
+      note_error "actie niet op een volledige commit-SHA vastgezet (${file}): ${ref}"
+      unpinned=$((unpinned+1))
+      ;;
+  esac
+done < <(grep -rhoE '^[^#]*uses:[[:space:]]*[^[:space:]]+' .github --include='*.yml' \
+          | sed 's/.*uses:[[:space:]]*//' \
+          | sed "s|^|$(printf '%s' '.github')/…:|" \
+          | sort -u)
+[ "${unpinned}" -eq 0 ] && note_ok "alle externe actions zijn op een commit-SHA vastgezet"
+
+echo "6. Patrooncontrole op gevoelige gegevens (beperkt, geen volledige PII-detectie)"
+# LET OP: dit is een grove zeef tegen slordigheid, GEEN bewijs dat de repository vrij is
+# van persoonsgegevens. Secret scanning (security-scan.yml + GitHub push protection) blijft
+# de primaire controle voor secrets; menselijke review blijft nodig. Zie
+# docs/privacy/data-classification.md.
+scan_files() { grep -rIn --include='*.md' --include='*.yml' --include='*.yaml' \
+  --include='*.sh' --include='*.json' --exclude-dir=.git "$@" . || true; }
+
+# Toegestane, expliciet synthetische voorbeelden.
+allow='example\.invalid|example\.com|example\.org|\[|not-a-real-secret|changeme|dummy|sandbox|verify-template\.sh|data-classification\.md|test-group-plan\.md'
+
+report_pattern() {
+  local label="$1" pattern="$2" hits
+  hits="$(scan_files -E "${pattern}" | grep -Ev "${allow}" || true)"
+  if [ -n "${hits}" ]; then
+    printf '%s\n' "${hits}" | head -5
+    note_error "${label}: mogelijk gevoelig patroon aangetroffen (controleer handmatig)"
+  fi
+}
+
+report_pattern "kaartnummer"      '\b[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}\b'
+report_pattern "IBAN"             '\b[A-Z]{2}[0-9]{2}[ ]?[A-Z0-9]{4}[ ]?[0-9]{4}[ ]?[0-9]{4,}\b'
+report_pattern "BSN-achtig getal" '\b[0-9]{9}\b'
+report_pattern "telefoonnummer"   '\b(\+31|0)[1-9][0-9]{8}\b'
+report_pattern "private key"      'BEGIN [A-Z ]*PRIVATE KEY'
+report_pattern "token-achtige waarde" '\b(gh[pousr]_[A-Za-z0-9]{16,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})\b'
+report_pattern "e-mailadres buiten de voorbeeldsdomeinen" '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+
+note_ok "patrooncontrole uitgevoerd (beperkt: vervangt geen menselijke review of secret scanning)"
 
 echo
 if [ "${errors}" -gt 0 ]; then
   fail "${errors} probleem/problemen gevonden."
 fi
 ok "Template is consistent."
+echo
+echo "Let op: stap 6 is een patrooncontrole op veelgemaakte fouten, geen volledige"
+echo "PII-detectie. Zij bewijst niet dat de repository geen persoonsgegevens bevat."

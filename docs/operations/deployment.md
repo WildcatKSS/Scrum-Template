@@ -24,14 +24,20 @@ Hoe code van een pull request in productie komt, en welke waarborgen daarbij hor
 
 ```
 pull request → CI groen → review + CODEOWNERS → merge naar main
-   → automatische deploy naar staging
-     → verificatie + testgroepvalidatie
-       → tag vX.Y.Z
-         → release-pipeline (regressie, security, SBOM, releasenotes)
+   → tag vX.Y.Z op main
+     → release-pipeline: validatie (build, tests, scans, SBOM, releasenotes)
+       → deploy naar staging          [alleen bij tag-push + STAGING_DEPLOY_ENABLED]
+         → verificatie + gebruikersvalidatie
            → handmatige goedkeuring (environment production)
              → gefaseerde uitrol naar productie
+                                       [+ stabiele SemVer + productiekanaal
+                                        + PRODUCTION_DEPLOY_ENABLED]
                → monitoring en evaluatie
 ```
+
+Een handmatige run van de workflow doorloopt alleen de validatiefase — dat is bewust:
+zo kun je een kandidaat controleren zonder de tag, de versiehistorie en het releasebewijs
+te omzeilen.
 
 ## 3. Goedkeuring voor productie
 
@@ -84,14 +90,40 @@ Nieuwe variabele? Voeg hem toe aan `.env.example` én aan dit document.
 
 Instellen via *Settings → Secrets and variables → Actions → Variables*.
 
-| Variabele | Effect zolang niet gezet | Zet op `true` wanneer |
+| Variabele | Effect zolang niet gezet | Zet wanneer |
 |---|---|---|
-| `TEMPLATE_STRICT` | ontbrekende build-, test- en scanstappen waarschuwen in plaats van te falen | de technologiestack in de repository staat |
-| `STAGING_DEPLOY_ENABLED` | de job `deploy-staging` wordt **overgeslagen**; er wordt niets uitgerold en geen deploymentbewijs geschreven | de deploystappen in `release.yml` daadwerkelijk zijn ingevuld voor `[CLOUD]` |
+| `TEMPLATE_STRICT` | ontbrekende build-, test- en scanstappen waarschuwen in plaats van te falen | op `true` zodra de technologiestack in de repository staat |
+| `STAGING_DEPLOY_ENABLED` | de job `deploy-staging` wordt **overgeslagen**; niets uitgerold, geen deploymentbewijs | op `true` zodra de deploystappen in `release.yml` echt zijn ingevuld voor `[CLOUD]` |
 | `PRODUCTION_DEPLOY_ENABLED` | de job `deploy-production` wordt **overgeslagen** | idem, voor productie |
-| `CODEQL_LANGUAGES` | CodeQL draait niet; Semgrep dekt de statische analyse | de talen bekend zijn, bijv. `javascript-typescript` |
-| `COVERAGE_MIN` | drempel 70% | het team een andere drempel afspreekt |
-| `STAGING_URL`, `PRODUCTION_URL` | placeholder-URL's in de environmentweergave | de omgevingen bestaan |
+| `RELEASE_CHANNEL` | kanaal `test-group` → productie is uitgesloten | op `limited-production` of `general-availability` zodra productie-uitrol de bedoeling is |
+| `CODEQL_LANGUAGES` | CodeQL draait niet; Semgrep dekt de statische analyse | zodra de talen bekend zijn, bijv. `javascript-typescript` |
+| `COVERAGE_MIN` | drempel 70% | wanneer het team een andere drempel afspreekt |
+| `STAGING_URL`, `PRODUCTION_URL` | placeholder-URL's in de environmentweergave | zodra de omgevingen bestaan |
+
+### Wanneer rolt de pipeline daadwerkelijk uit?
+
+De releaseworkflow is **fail-closed**: alles wat niet expliciet is toegestaan, gebeurt niet.
+
+| Trigger | Wat er gebeurt |
+|---|---|
+| **Handmatig (`workflow_dispatch`)** | **droogrun**: build, tests, coverage, toegankelijkheid, securityscans, SBOM en releasenotes draaien. Er wordt **nooit** uitgerold, ook niet met de deploymentvariabelen aan. |
+| **Tag-push `v*.*.*` op de hoofdbranch** | staging rolt uit als `STAGING_DEPLOY_ENABLED=true`. Productie rolt uit als álle voorwaarden hieronder waar zijn. |
+| **Tag-push op een commit buiten de hoofdbranch** | geen deployment; de workflow meldt dit als waarschuwing. |
+| **Ongeldige versie** (geen SemVer) | de workflow **faalt** direct in `release-candidate`. |
+
+**Voorwaarden voor productie — alle vijf vereist:**
+
+1. `github.event_name == 'push'` met een tag onder `refs/tags/v…`;
+2. de getagde commit is bereikbaar vanaf de hoofdbranch;
+3. de versie is geldig SemVer en **geen prerelease** (`-rc`, `-alpha`, `-beta`);
+4. `RELEASE_CHANNEL` staat op `limited-production` of `general-availability` —
+   `internal-prototype`, `test-group` en `beta` komen nooit in productie;
+5. `PRODUCTION_DEPLOY_ENABLED == 'true'`.
+
+Daarbovenop blijft de goedkeuring door de *required reviewers* op de environment
+`production` altijd verplicht. De voorwaarden worden twee keer gecontroleerd: op
+jobniveau (`if`) en nogmaals als eerste stap ín de job, zodat een wijziging aan één van
+beide niet stilzwijgend een deur openzet.
 
 > **Waarom een schakelaar en geen "gewoon draaien"?** De deploystappen zijn placeholders
 > zolang `[CLOUD]` niet is gekozen. Een job die niets uitrolt en tóch groen afsluit met
@@ -99,7 +131,7 @@ Instellen via *Settings → Secrets and variables → Actions → Variables*.
 > gedraaid — precies wat een audit onbruikbaar maakt. Daarom geldt:
 >
 > * variabele **niet gezet** → job wordt overgeslagen (grijs, geen deployment, geen bewijs);
->   de job `deployment-status` maakt dit expliciet zichtbaar in het runoverzicht;
+>   de job `deployment-status` maakt expliciet zichtbaar dát en waarom er niets gebeurde;
 > * variabele **op `true`** maar de placeholder nog niet vervangen → de job **faalt** met
 >   een duidelijke melding. Wie zegt dat hij uitrolt, moet dat waarmaken;
 > * variabele **op `true`** en echte deploystappen ingevuld → uitrol, rooktest, en pas
