@@ -72,6 +72,7 @@ required_files=(
   src/README.md tests/README.md scripts/README.md
   scripts/bootstrap.sh scripts/verify-template.sh
   scripts/ci/common.sh scripts/ci/all.sh
+  scripts/ci/check-action-pins.py scripts/ci/check-docs-links.py
   scripts/release/prepare-release-notes.sh
 )
 
@@ -111,44 +112,43 @@ done < <(grep -rhoE '(\./)?scripts/[A-Za-z0-9_/.-]+\.sh' .github/workflows/ | se
 note_ok "scriptverwijzingen gecontroleerd"
 
 echo "5. Externe GitHub Actions zijn op een volledige commit-SHA vastgezet"
-# Een tag kan worden verplaatst naar andere code, een commit-SHA niet. Lokale composite
-# actions (uses: ./...) en herbruikbare workflows in deze repository slaan we over.
-unpinned=0
-while IFS= read -r line; do
-  [ -z "${line}" ] && continue
-  file="${line%%:*}"
-  ref="${line#*:}"
-  case "${ref}" in
-    ./*|.github/*) continue ;;                     # lokale action of workflow
-  esac
-  case "${ref}" in
-    *@[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f])
-      ;;                                            # 40 hex-tekens: goed
-    *)
-      note_error "actie niet op een volledige commit-SHA vastgezet (${file}): ${ref}"
-      unpinned=$((unpinned+1))
-      ;;
-  esac
-done < <(grep -rhoE '^[^#]*uses:[[:space:]]*[^[:space:]]+' .github --include='*.yml' \
-          | sed 's/.*uses:[[:space:]]*//' \
-          | sed "s|^|$(printf '%s' '.github')/…:|" \
-          | sort -u)
-[ "${unpinned}" -eq 0 ] && note_ok "alle externe actions zijn op een commit-SHA vastgezet"
-
-echo "6. Elk document is bereikbaar (geen verweesde bestanden)"
-# Een document zonder inkomende link wordt niet gevonden en dus niet gebruikt.
-orphans=0
-while IFS= read -r doc; do
-  name="$(basename "${doc}")"
-  # zoek een verwijzing naar dit bestand vanuit een ander markdownbestand
-  if ! grep -rl --include='*.md' --include='*.yml' -- "${name}" . \
-       | grep -v "^${doc}$" | grep -q .; then
-    note_error "geen enkele verwijzing naar: ${doc}"
-    orphans=$((orphans+1))
+# Een tag kan worden verplaatst naar andere code, een commit-SHA niet. De controle draait
+# in scripts/ci/check-action-pins.py: die parseert elke uses:-regel, meldt bestand én
+# regelnummer, en toetst zichzelf met --self-test voordat hij de repository beoordeelt.
+if has python3; then
+  if python3 scripts/ci/check-action-pins.py --self-test >/dev/null; then
+    note_ok "zelftest SHA-pincontrole geslaagd"
+  else
+    note_error "zelftest van scripts/ci/check-action-pins.py faalt — de controle is onbetrouwbaar"
   fi
-done < <(find . -name '*.md' -not -path './.git/*' -not -name 'README.md' \
-           -not -name 'START-HERE.md' | sed 's|^\./||' | sort)
-[ "${orphans}" -eq 0 ] && note_ok "alle documenten zijn vanuit de repository bereikbaar"
+  if python3 scripts/ci/check-action-pins.py .github; then
+    note_ok "alle externe actions zijn op een commit-SHA vastgezet"
+  else
+    note_error "een of meer actions zijn niet op een volledige commit-SHA vastgezet"
+  fi
+else
+  warn "python3 niet beschikbaar; SHA-pincontrole niet uitgevoerd."
+fi
+
+echo "6. Documentatielinks kloppen en elk document is bereikbaar"
+# scripts/ci/check-docs-links.py bouwt de echte linkgrafiek: het volgt relatieve links
+# vanuit de ingangen (README.md, START-HERE.md, docs/README.md) en meldt zowel kapotte
+# links als documenten die vanuit geen enkele ingang te bereiken zijn. Een naam die
+# toevallig ergens in de tekst voorkomt telt niet als link.
+if has python3; then
+  if python3 scripts/ci/check-docs-links.py --self-test >/dev/null; then
+    note_ok "zelftest linkcontrole geslaagd"
+  else
+    note_error "zelftest van scripts/ci/check-docs-links.py faalt — de controle is onbetrouwbaar"
+  fi
+  if python3 scripts/ci/check-docs-links.py .; then
+    note_ok "documentatielinks en bereikbaarheid gecontroleerd"
+  else
+    note_error "kapotte links en/of verweesde documenten gevonden"
+  fi
+else
+  warn "python3 niet beschikbaar; linkcontrole niet uitgevoerd."
+fi
 
 echo "7. Patrooncontrole op gevoelige gegevens (beperkt, geen volledige PII-detectie)"
 # LET OP: dit is een grove zeef tegen slordigheid, GEEN bewijs dat de repository vrij is

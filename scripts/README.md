@@ -12,7 +12,9 @@ controles worden dan blokkerende fouten.
 | Script | Doel | Aangeroepen door |
 |---|---|---|
 | `bootstrap.sh` | lokale omgeving opzetten | mens |
-| `verify-template.sh` | controleert bestanden, YAML en scriptverwijzingen | `code-quality.yml` |
+| `verify-template.sh` | controleert bestanden, YAML, scriptverwijzingen, actiepins, links en gevoelige patronen | `code-quality.yml` |
+| `ci/check-action-pins.py` | toetst dat elke externe GitHub Action op een volledige commit-SHA staat; meldt bestand **en** regelnummer | `verify-template.sh` |
+| `ci/check-docs-links.py` | controleert relatieve markdownlinks en bereikbaarheid via de echte linkgrafiek | `verify-template.sh` |
 | `ci/common.sh` | gedeelde functies (`detect_stack`, logging, `not_configured`) | alle ci-scripts |
 | `ci/build.sh` | afhankelijkheden installeren en bouwen | `ci.yml`, `release.yml` |
 | `ci/lint.sh` | lint en formatteercontrole (incl. shellcheck) | `ci.yml`, `code-quality.yml` |
@@ -37,3 +39,8 @@ controles worden dan blokkerende fouten.
 * Nieuwe scripts: uitvoerbaar maken (`git update-index --chmod=+x`) en opnemen in
   `verify-template.sh`.
 * Scripts worden gecontroleerd met `shellcheck` in `code-quality.yml`.
+* **Controlescripts toetsen zichzelf.** `check-action-pins.py` en `check-docs-links.py`
+  hebben een `--self-test` met vaste voorbeelden van goede en foute invoer. Die zelftest
+  draait in `verify-template.sh` **voordat** de repository wordt beoordeeld: een controle
+  die zijn eigen testgevallen niet haalt, is geen controle. Bouw je een nieuwe controle,
+  geef die dan dezelfde zelftest.
