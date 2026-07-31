@@ -2,9 +2,10 @@
 
 Praktische instructies voor als er iets misgaat. Kort, concreet en uitvoerbaar onder druk.
 
-> **Eerste regel:** bij een vermoeden van toegang tot gegevens door onbevoegden of van een
-> datalek → volg [`../security/incident-response.md`](../security/incident-response.md) en
-> meld binnen 24 uur bij privacy én security. Ga niet eerst zelf onderzoeken.
+> **Eerste regel:** meld een vermoeden van een beveiligingsincident of datalek
+> **onmiddellijk** via het incidentproces
+> ([`../security/incident-response.md`](../security/incident-response.md)). Wacht niet op
+> bevestiging, volledigheid of eigen onderzoek. Melden mag op basis van een vermoeden.
 
 > **Gerelateerd:** [`sre-principles.md`](sre-principles.md) (incidentniveaus en
 > post-mortems) · [`../security/incident-response.md`](../security/incident-response.md)

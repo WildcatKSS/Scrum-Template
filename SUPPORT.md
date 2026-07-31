@@ -5,7 +5,7 @@
 | Situatie | Route |
 |---|---|
 | Beveiligingskwetsbaarheid | **Niet** via issues → [`SECURITY.md`](SECURITY.md) |
-| Vermoeden van datalek of privacyincident | direct `[PRIVACY-CONTACT-EMAIL]` én `[SECURITY-CONTACT-EMAIL]`, binnen 24 uur |
+| Vermoeden van een beveiligingsincident of datalek | **onmiddellijk** via het incidentproces: `[SECURITY-CONTACT-EMAIL]` én `[PRIVACY-CONTACT-EMAIL]`. Wacht niet op bevestiging, volledigheid of eigen onderzoek — zie [`SECURITY.md`](SECURITY.md) §1a |
 | Bug in het product | [Bug report](../../issues/new?template=bug-report.yml) |
 | Wens of idee | [User story](../../issues/new?template=user-story.yml) |
 | Feedback uit een testgroepsessie | [Testgroepfeedback](../../issues/new?template=test-group-feedback.yml) |

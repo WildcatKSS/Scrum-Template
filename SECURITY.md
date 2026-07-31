@@ -24,6 +24,26 @@ Vermeld in de melding:
 **Voeg geen echte persoonsgegevens, betaalgegevens of inloggegevens toe** aan je melding.
 Maskeer waar nodig.
 
+## 1a. Vermoedt u een incident of datalek? Meld het onmiddellijk
+
+Een *kwetsbaarheid* melden (§1) en een *incident* melden zijn twee verschillende dingen.
+Gaat het om een vermoeden dat er nú iets misgaat — onbevoegde toegang, gegevens bij de
+verkeerde persoon, een gelekt secret, verdacht gedrag in productie — dan geldt:
+
+> **Meld een vermoeden van een beveiligingsincident of datalek onmiddellijk via het
+> incidentproces. Wacht niet op bevestiging, volledigheid of eigen onderzoek.**
+
+* Melden mag op basis van een vermoeden. Een onterechte melding is geen fout; te laat
+  melden wél.
+* Ga niet eerst zelf onderzoeken, testen of "even kijken of het echt zo is". Dat kost tijd
+  en kan bewijs vernietigen.
+* Beoordeel **niet zelf** of het meldingsplichtig is bij een toezichthouder. Externe
+  meldtermijnen zijn kort en worden **bepaald door bevoegde specialisten**.
+* Route: `[SECURITY-CONTACT-EMAIL]` en `[INCIDENTKANAAL]`, bij persoonsgegevens ook
+  `[PRIVACY-CONTACT-EMAIL]`. **Nooit** via een publiek GitHub Issue.
+
+Volledige procedure: [`docs/security/incident-response.md`](docs/security/incident-response.md).
+
 ## 2. Responstijden (streefwaarden, te bevestigen door `[SECURITY-OWNER]`)
 
 | Stap | Streeftijd |

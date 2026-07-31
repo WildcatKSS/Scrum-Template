@@ -83,7 +83,7 @@ Deze gaan direct naar de betreffende verantwoordelijke, ongeacht score:
 | Signaal | Naar wie | Termijn |
 |---|---|---|
 | Mogelijk securityrisico | securityverantwoordelijke, via `SECURITY.md` | direct |
-| Mogelijk privacyrisico of gegevens bij de verkeerde persoon | privacyverantwoordelijke | binnen 24 uur |
+| Mogelijk privacyrisico of gegevens bij de verkeerde persoon | privacyverantwoordelijke, via het incidentproces | **onmiddellijk**, zonder eigen onderzoek |
 | Misleidende of onjuiste financiële informatie | PO + compliance | direct |
 | Toegankelijkheidsblokkade | UX + PO | eerstvolgende refinement |
 | Deelnemer in financiële nood | UX; verwijzen naar `[HULPINSTANTIE]`, geen advies geven | tijdens de sessie |

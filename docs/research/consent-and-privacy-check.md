@@ -85,7 +85,10 @@ toestemming = geen sessie.
 
 Zijn er per ongeluk toch echte persoonsgegevens vastgelegd of gedeeld?
 
-1. Meld dit binnen 24 uur bij `[PRIVACY-CONTACT-EMAIL]` én `[SECURITY-CONTACT-EMAIL]`.
-2. Verwijder de gegevens waar mogelijk en leg vast wat er is gebeurd.
-3. Volg [`../security/incident-response.md`](../security/incident-response.md).
-4. **Beoordeel niet zelf** of dit meldingsplichtig is — dat doet de privacyverantwoordelijke.
+1. Meld dit **onmiddellijk** via het incidentproces: `[PRIVACY-CONTACT-EMAIL]` én
+   `[SECURITY-CONTACT-EMAIL]`. Wacht niet op bevestiging, volledigheid of eigen onderzoek.
+2. Volg [`../security/incident-response.md`](../security/incident-response.md).
+3. Verwijder de gegevens waar mogelijk en leg vast wat er is gebeurd — maar laat het melden
+   daar niet op wachten.
+4. **Beoordeel niet zelf** of dit meldingsplichtig is bij een toezichthouder. Externe
+   meldtermijnen zijn kort en worden bepaald door bevoegde specialisten.

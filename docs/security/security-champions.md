@@ -20,7 +20,7 @@ mandaat.
 |---|---|---|
 | Positie | binnen de Developers (Scrum Team) | governance, onafhankelijk van het team |
 | Doet | meebouwen, meedenken, kennis verspreiden | kaders stellen, onafhankelijk beoordelen |
-| Beslist over | niets formeels; adviseert en signaleert | securityeisen; vetorecht op release |
+| Beslist over | niets formeels; adviseert en signaleert | securityeisen; een openstaande kritieke/hoge bevinding blokkeert de release |
 | Accepteert risico | **nee** | kritiek/hoog: nee (dat gaat naar de mandaathouder); overige binnen mandaat |
 | Verantwoordelijk voor | dat security zichtbaar is in het werk | dat security aantoonbaar geborgd is |
 
@@ -76,7 +76,7 @@ mandaat.
 | Situatie | Actie |
 |---|---|
 | Kritieke of hoge kwetsbaarheid | direct naar de Security Officer; volg de SLA's uit [`vulnerability-management.md`](vulnerability-management.md) |
-| Vermoeden van actief misbruik of datalek | [`incident-response.md`](incident-response.md); binnen 24 uur ook privacy informeren |
+| Vermoeden van actief misbruik of datalek | **onmiddellijk** melden via [`incident-response.md`](incident-response.md), inclusief privacy zodra persoonsgegevens in beeld zijn; wacht niet op bevestiging of eigen onderzoek |
 | Gelekt secret | eerst roteren, dan opruimen, dan melden |
 | Twijfel over acceptabel restrisico | **niet zelf beslissen** → risicoacceptatie volgens [`../../GOVERNANCE.md`](../../GOVERNANCE.md) §4 |
 | Structureel te weinig tijd voor securitywerk | Scrum Master (belemmering), niet stilzwijgend accepteren |
