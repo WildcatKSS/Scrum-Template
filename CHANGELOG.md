@@ -11,6 +11,25 @@ security-impact worden expliciet gemarkeerd.
 
 ## [Unreleased]
 
+### Opgelost
+- `prepare-release-notes.sh` brak af zodra één rubriek geen commits had. De constructie
+  `[ -n "$body" ] && printf …` was het laatste commando van de functie, dus onder `set -e`
+  stopte het script. In de praktijk trof dat vrijwel elke release: er zijn zelden commits in
+  alle zes rubrieken. Nu een `if`-blok. De generator draait voortaan ook als rooktest in
+  `ci/all.sh`, want een script dat alleen tijdens een release draait, faalt anders pas op
+  het slechtst denkbare moment (#12)
+
+### Gewijzigd
+- `retention-days` voor het SBOM-releasebewijs van 365 naar 90. GitHub kapt artifactretentie
+  zonder waarschuwing af op het repositorymaximum — 90 dagen voor publieke repositories —
+  dus 365 leverde stil 90 op. De workflow belooft nu wat hij levert. Wie langer moet
+  bewaren, kiest een andere opslagroute; de opties en het openstaande besluit staan in
+  [`docs/compliance/audit-evidence.md`](docs/compliance/audit-evidence.md) §5 (#12)
+  — compliance-impact: het bewijsregister claimde een termijn die niet werd gehaald
+- De SBOM-action maakt geen eigen artifact meer (`upload-artifact: false`); de stap "SBOM
+  bewaren als releasebewijs" doet dat al onder een voorspelbare naam. Voorheen ontstonden
+  twee artifacts met dezelfde inhoud en verschillende namen (#12)
+
 ## [1.0.1] - 2026-07-31
 
 ### Opgelost

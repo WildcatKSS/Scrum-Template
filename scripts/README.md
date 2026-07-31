@@ -27,7 +27,7 @@ controles worden dan blokkerende fouten.
 | `ci/sbom.sh` | SBOM lokaal genereren | mens (in CI doet `anchore/sbom-action` dit) |
 | `ci/license-check.sh` | licentiebeleid op afhankelijkheden | `dependency-review.yml`, `release.yml` |
 | `ci/all.sh` | volledige lokale keten | mens |
-| `release/prepare-release-notes.sh` | releasenotes uit Conventional Commits | `release.yml` |
+| `release/prepare-release-notes.sh` | releasenotes uit Conventional Commits | `release.yml`, en als rooktest in `ci/all.sh` |
 
 ## Conventies
 

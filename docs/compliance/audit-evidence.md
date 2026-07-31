@@ -60,6 +60,40 @@ acceptatie heeft een einddatum en wordt bij het verlopen opnieuw beoordeeld
 | Kwartaalbewijs (toegang, termijnen, hersteltest, threat model) | per kwartaal | Security + Privacy |
 | Jaarbewijs (pentest, DPIA-herziening, trainingen) | jaarlijks | Security + Compliance |
 
+### Bewaartermijn van pipelinebewijs — een harde grens
+
+Bewijs dat als **GitHub Actions-artifact** wordt bewaard (SBOM, scanrapporten,
+testrapporten) valt onder de artifactretentie van de repository, en die kent een maximum:
+
+| Repository | Maximum bewaartermijn |
+|---|---|
+| Publiek | **90 dagen** |
+| Privé / organisatie | tot 400 dagen, afhankelijk van de instelling |
+
+> **`retention-days` wordt stil naar beneden bijgesteld.** Vraag je in een workflow een
+> langere termijn dan het repositorymaximum, dan krijg je zonder waarschuwing of
+> foutmelding het maximum. De workflow lijkt te doen wat je vroeg; het artifact verdwijnt
+> eerder dan je denkt.
+
+Daarom staat `retention-days` in `release.yml` op 90 en niet hoger: wat de workflow belooft
+is wat je krijgt. Controleer de werkelijke termijn na een release aan het veld `expires_at`
+van het artifact, niet aan de workflowdefinitie.
+
+**Vraagt jouw bewaarplicht een langere termijn — bij een gereguleerde dienst is dat
+doorgaans zo — dan is een Actions-artifact niet de juiste opslag.** Kies dan bewust een
+route en leg die hier vast:
+
+| Route | Geschikt voor | Aandachtspunt |
+|---|---|---|
+| Publiceren als **release-asset** | SBOM's, releasebewijs | blijft bij de release zolang die bestaat; vraagt `contents: write` op een aparte, daarvoor bedoelde job |
+| Wegschrijven naar **objectopslag** met bewaarbeleid (WORM/immutability) | alles wat lang moet blijven | vraagt inrichting en toegangsbeheer; zie [`../operations/deployment.md`](../operations/deployment.md) |
+| Vastleggen in een **GRC- of bewijssysteem** | formele verantwoording | vaak al aanwezig binnen de organisatie |
+
+**Openstaand besluit:** welke route `[ORGANISATIE]` kiest voor bewijs dat langer dan 90
+dagen bewaard moet blijven, en welke termijn er wettelijk of contractueel geldt. Dat laatste
+is **te bepalen door een bevoegde specialist** — noteer het in
+[`regulatory-decisions.md`](regulatory-decisions.md).
+
 ## 6. Houdbaarheid
 
 Bewijs is niet eeuwig geldig. Een controle van vorig jaar zegt niets over vandaag. Geef bij
