@@ -93,6 +93,15 @@ monitoring en alerting ingericht · runbook bijgewerkt · rollback getest · bac
 herstel aantoonbaar · capaciteit voldoende · iemand kijkt na de uitrol daadwerkelijk mee.
 Volledige lijst: [`platform-readiness-checklist.md`](platform-readiness-checklist.md).
 
+**Verifiëren ín productie mag — begrensd.** Sommige eigenschappen kun je alleen in
+productie vaststellen. De grens ligt bij impact op echte gebruikers en echte gegevens:
+vooraf ontworpen, begrensde en veilige checks (healthchecks, synthetische monitoring,
+canaryverificatie, gecontroleerde post-deploymentchecks) zijn onderdeel van goed
+operationeel werk. Ongecontroleerde functionele tests, wijzigingen aan echte klantdata,
+echte transacties en destructieve of onbegrensde experimenten zijn dat niet. Zie
+[`../testing/test-strategy.md`](../testing/test-strategy.md) §4a en
+[`monitoring.md`](monitoring.md) §7a.
+
 **Toil verminderen:** handmatig, repetitief, automatiseerbaar werk dat meegroeit met het
 gebruik. Houd bij hoeveel tijd eraan opgaat; boven `[20]%` van de teamtijd wordt
 automatiseren prioriteit. Toil is backlogwerk met een eigenaar, geen achtergrondruis.
@@ -108,3 +117,5 @@ ketenafhankelijkheden.
 * Geen dashboard dat niemand bekijkt.
 * Geen SLO die is gekozen omdat hij makkelijk haalbaar is.
 * Geen apart SRE-team dat "de betrouwbaarheid doet"; het hoort bij de Developers.
+* Geen resilience-experiment in productie zonder begrensde impact, rollback en vooraf
+  afgesproken afbreekcriteria.

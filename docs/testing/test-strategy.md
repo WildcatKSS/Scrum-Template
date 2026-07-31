@@ -41,13 +41,13 @@ halen. Vuistregel: test zo laag als kan, zo hoog als moet.
 
 | Niveau | Wat | Wanneer | Waar |
 |---|---|---|---|
-| **Unit** | losse functies, domeinregels, berekeningen | altijd bij logica | `tests/unit/` |
-| **Component** | één module met zijn directe randen (gemockt) | bij samenhangende logica | `tests/unit/` of `tests/integration/` |
-| **Integratie** | samenwerking met database, wachtrij, externe API (mock/sandbox) | bij I/O en persistentie | `tests/integration/` |
-| **Contract** | afspraken tussen diensten of met `[PROVIDER]` | bij meerdere teams of externe API's | `tests/integration/` |
-| **End-to-end** | de volledige gebruikersreis in een browser | kernreizen, klein houden | `tests/end-to-end/` |
-| **Security** | misbruikscenario's uit het threat model | bij auth, geld, gegevens | `tests/security/` |
-| **Toegankelijkheid** | WCAG 2.2 AA | bij elke UI-wijziging | `tests/accessibility/` |
+| **Unit** | losse functies, domeinregels, berekeningen | altijd bij logica | [`tests/unit/`](../../tests/unit/README.md) |
+| **Component** | één module met zijn directe randen (gemockt) | bij samenhangende logica | [`tests/unit/`](../../tests/unit/README.md) of [`tests/integration/`](../../tests/integration/README.md) |
+| **Integratie** | samenwerking met database, wachtrij, externe API (mock/sandbox) | bij I/O en persistentie | [`tests/integration/`](../../tests/integration/README.md) |
+| **Contract** | afspraken tussen diensten of met `[PROVIDER]` | bij meerdere teams of externe API's | [`tests/integration/`](../../tests/integration/README.md) |
+| **End-to-end** | de volledige gebruikersreis in een browser | kernreizen, klein houden | [`tests/end-to-end/`](../../tests/end-to-end/README.md) |
+| **Security** | misbruikscenario's uit het threat model | bij auth, geld, gegevens | [`tests/security/`](../../tests/security/README.md) |
+| **Toegankelijkheid** | WCAG 2.2 AA | bij elke UI-wijziging | [`tests/accessibility/`](../../tests/accessibility/README.md) |
 | **Exploratory (handmatig)** | gericht zoeken naar wat je niet hebt bedacht | per increment, timeboxed | notities in het issue |
 | **Usability** | begrijpen gebruikers het? | bij gebruikersgerichte wijzigingen | [`../research/`](../research/) |
 
@@ -72,20 +72,65 @@ exploratory testing. Er is geen overdracht naar een testfase na de sprint — da
 
 ## 4. Testdata en omgevingen
 
+### Testdata: herkenbaar fictief, nooit toevallig geldig
+
 * **Uitsluitend synthetische data.** Nooit productiedata, ook niet "geanonimiseerd" —
   financiële gegevens zijn lastiger te anonimiseren dan ze lijken.
 * **Reproduceerbaar:** vaste seeds, geen afhankelijkheid van de echte klok of het internet.
-* **Herkenbaar fictief:** `test.user+p1@example.invalid`, bedragen als `12,34`,
-  IBAN's uit de gereserveerde testreeks.
-* **Externe koppelingen** draaien in `PROVIDER_MODE=mock` of sandbox; `live` is in tests
-  technisch geblokkeerd.
+* **Bank- en betaalgegevens:** gebruik **uitsluitend testwaarden die de gekozen provider of
+  sandbox zelf publiceert**. Is er geen provider-sandbox, gebruik dan duidelijk fictieve en
+  **bewust ongeldige** waarden (bijvoorbeeld een rekeningnummer met een opzettelijk onjuist
+  controlegetal). Een structureel geldig rekeningnummer is nooit automatisch een veilig
+  voorbeeld: het kan van een echt persoon zijn.
+* **Geen universele "testreeks".** Provider-specifieke testwaarden horen in de
+  implementatierepository of de providerconfiguratie, niet als standaard in deze template:
+  ze verouderen, verschillen per land en per provider, en kunnen licentievoorwaarden hebben.
+* **Technisch geblokkeerd:** `PROVIDER_MODE=live` is in tests niet toegestaan
+  (`scripts/ci/test-integration.sh` breekt af), zodat testdata nooit een live endpoint
+  bereikt.
+* **Overige voorbeelden** zijn herkenbaar fictief: e-mailadressen op `example.invalid`,
+  bedragen als `12,34`, namen als `Testgebruiker A`, tokens als
+  `local-dev-not-a-real-secret`. Nooit een echt of plausibel kaartnummer, BSN-achtig
+  getal of telefoonnummer.
 
 | Omgeving | Gebruikt voor | Data |
 |---|---|---|
 | lokaal | unit, integratie | synthetisch |
 | CI | alles wat geautomatiseerd is | synthetisch, per run weggegooid |
 | staging | e2e, exploratory, gebruikerssessies | synthetisch, stabiel |
-| productie | **geen tests** behalve rooktests na uitrol | echt |
+| productie | alleen vooraf ontworpen, begrensde en veilige checks (§4a) | echt |
+
+### 4a. Wat mag er wél en niet in productie?
+
+"Geen tests in productie" is te absoluut: sommige controles kún je alleen daar doen, en
+zonder die controles weet je niet of een uitrol geslaagd is. De grens ligt bij **impact op
+echte gebruikers en echte gegevens**.
+
+> In productie draaien alleen vooraf ontworpen, begrensde en veilige checks die geen echte
+> klantdata wijzigen, geen ongecontroleerde transacties veroorzaken en geen gebruikers
+> benadelen.
+
+| ❌ Niet zonder expliciet ontworpen en goedgekeurd proces | ✅ Wel, mits veilig ontworpen |
+|---|---|
+| ongecontroleerde functionele tests | read-only health checks |
+| tests die echte klantdata wijzigen | synthetische monitoring op de kernreis |
+| tests die echte betalingen of transacties uitvoeren | canaryverificatie tijdens een gefaseerde uitrol |
+| tests die gebruikers beïnvloeden | gecontroleerde post-deploymentchecks |
+| destructieve tests | configuratie- en autorisatiecontroles zonder klantimpact |
+| testaccounts met echte persoonsgegevens | periodieke failover-/resilience-validatie binnen vooraf goedgekeurde kaders |
+| resilience-experimenten zonder begrensde impact en rollback | herstelverificatie in een **geïsoleerde** omgeving |
+| | monitoring van gebruikersgerichte SLI's |
+
+Voorwaarden voor elke productiecheck:
+
+* **synthetische identiteiten representeren geen echte personen** en zijn als testaccount
+  herkenbaar;
+* de check is **herkenbaar, traceerbaar en uitschakelbaar** (eigen markering in logs en
+  metrics, en een schakelaar);
+* de check valt onder **monitoring, wijzigingsbeheer en incidentrespons** — het is
+  productiegedrag, geen los experiment;
+* **opruimen en kostenbeheersing** zijn geregeld: geen ophopende testrecords, geen
+  onbegrensde uitvoeringsfrequentie.
 
 ## 5. Automatisering en regressie *(Advanced)*
 

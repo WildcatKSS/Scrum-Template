@@ -160,6 +160,10 @@ Elke pull request bevat een rollbackplan. Geen plan = niet mergen.
 - [ ] Migratieplan en rollbackplan bekend
 - [ ] Monitoring en alarmering actief; iemand kijkt daadwerkelijk mee
 - [ ] Communicatie geregeld als gebruikers iets merken
+- [ ] Post-deploymentchecks vooraf ontworpen en begrensd (read-only healthchecks,
+      synthetische monitoring, canaryverificatie) — zie
+      [`../testing/test-strategy.md`](../testing/test-strategy.md) §4a en
+      [`monitoring.md`](monitoring.md) §7a
 - [ ] Deploy vastgelegd als bewijs (`../compliance/audit-evidence.md`)
 
 ## 9. Nog te bepalen

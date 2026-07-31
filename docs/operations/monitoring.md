@@ -81,6 +81,28 @@ veiligheidsrisico.
 | Security | Security | inlogpogingen, rechtenwijzigingen, exports, scanstatus |
 | Kwaliteit | team | testresultaten, dekking, ontsnapte defecten |
 
+## 7a. Checks die in productie draaien
+
+Monitoring is niet passief: sommige controles voeren actief iets uit tegen productie. Dat
+mag, binnen de grens uit [`../testing/test-strategy.md`](../testing/test-strategy.md) §4a:
+
+> In productie draaien alleen vooraf ontworpen, begrensde en veilige checks die geen echte
+> klantdata wijzigen, geen ongecontroleerde transacties veroorzaken en geen gebruikers
+> benadelen.
+
+| Check | Wat het doet | Voorwaarde |
+|---|---|---|
+| Healthcheck / readiness probe | read-only status van de dienst en zijn afhankelijkheden | geen schrijfacties |
+| Synthetische monitoring | doorloopt periodiek de kernreis met een synthetische identiteit | herkenbaar testaccount, geen echte transacties, eigen markering in logs en metrics |
+| Canaryverificatie | vergelijkt het gedrag van de nieuwe versie op een klein deel van het verkeer | automatische terugval bij afwijking |
+| Post-deploymentcheck | bevestigt dat de uitrol werkt | vooraf gedefinieerd, begrensd in tijd en omvang |
+| Configuratie- en autorisatiecontrole | controleert instellingen zonder klantimpact | read-only |
+
+Voor elke check geldt: **herkenbaar, traceerbaar en uitschakelbaar**, onder wijzigingsbeheer
+en incidentrespons, met opruimen en kostenbeheersing geregeld. Synthetische identiteiten
+representeren geen echte personen en tellen niet mee in functionele of financiële
+rapportages.
+
 ## 8. Nog te bepalen
 
 | Onderwerp | Eigenaar |

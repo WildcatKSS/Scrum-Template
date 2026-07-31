@@ -28,8 +28,19 @@ Alles in één keer: `./scripts/ci/all.sh`.
 
 | Soort | Gebruik | Nooit |
 |---|---|---|
-| E-mail | `test.user+p1@example.invalid` | een echt adres |
+| E-mail | `test.user+p1@example.invalid` | een echt of plausibel adres |
 | Naam | `Testgebruiker A` | een echte naam |
 | Bedrag | `12,34`, `1000,00` | een echt saldo |
-| Rekening | gereserveerde testreeks van `[LAND]` | een echt rekeningnummer |
-| Wachtwoord | `local-dev-not-a-real-secret` | een echt wachtwoord |
+| Rekeningnummer | een door de gekozen **provider-sandbox gepubliceerde** testwaarde; anders een bewust **ongeldige** waarde (onjuist controlegetal) | een structureel geldig nummer dat je zelf verzint — dat kan van een echt persoon zijn |
+| Kaartnummer | alleen de door de provider gepubliceerde testkaarten | een zelfbedacht nummer dat de Luhn-controle doorstaat |
+| Identificatienummer (BSN-achtig) | niet gebruiken; werk met een interne test-ID | een geldig gevormd nummer |
+| Telefoonnummer | gereserveerde fictieve reeks van je land, of duidelijk ongeldig | een bestaand nummer |
+| Wachtwoord/token | `local-dev-not-a-real-secret` | een echt wachtwoord of token |
+
+> **Geen universele testreeks.** Welke testwaarden veilig zijn, bepaalt de gekozen provider
+> of sandbox — die publiceert ze. Neem ze op in de implementatierepository of de
+> providerconfiguratie, niet als standaard in deze template. Zonder sandbox: bewust
+> ongeldige waarden die een live systeem sowieso zou weigeren.
+>
+> `PROVIDER_MODE=live` is in tests technisch geblokkeerd, zodat testdata nooit bij een
+> echte provider terechtkomt.

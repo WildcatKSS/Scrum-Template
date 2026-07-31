@@ -44,7 +44,10 @@ Zie ook [`../../tests/security/README.md`](../../tests/security/README.md).
   anonimisering van financiële gegevens is lastiger dan het lijkt.
 * Genereer testdata reproduceerbaar (vaste seed), zodat tests stabiel zijn.
 * Gebruik duidelijk herkenbare fictieve waarden (`test.user+p1@example.invalid`,
-  IBAN's uit de gereserveerde testreeks van je land, bedragen als 12,34).
+  bedragen als 12,34). Voor bank- en betaalgegevens: uitsluitend testwaarden die de
+  gekozen provider-sandbox publiceert, of bewust **ongeldige** waarden. Een structureel
+  geldig rekening- of kaartnummer is nooit automatisch een veilig voorbeeld — zie
+  [`../testing/test-strategy.md`](../testing/test-strategy.md) §4.
 * Geen echte namen, adressen, telefoonnummers of kaartnummers — ook niet als voorbeeld in
   documentatie.
 
