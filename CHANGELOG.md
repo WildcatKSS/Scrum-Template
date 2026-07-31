@@ -11,6 +11,13 @@ security-impact worden expliciet gemarkeerd.
 
 ## [Unreleased]
 
+### Opgelost
+- De SBOM-stap in `release.yml` probeerde de SBOM bij een tag-push zelf aan de GitHub
+  Release te koppelen, wat faalde op `Resource not accessible by integration`. Daardoor
+  brak de job `release-checks` af en werden de licentiecontrole en de vastlegging van de
+  SBOM als releasebewijs overgeslagen. `upload-release-assets` staat nu uit, zodat de job
+  `contents: read` houdt (#10)
+
 ## [1.0.0] - 2026-07-31
 
 Eerste stabiele versie van de Scrum- en DevSecOps-repositorytemplate voor een online

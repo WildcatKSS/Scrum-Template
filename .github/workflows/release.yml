@@ -246,11 +246,17 @@ jobs:
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           exit-code: "1"
+      # upload-release-assets staat bewust uit. Bij een tag-push probeert deze action de
+      # SBOM zelf aan de GitHub Release te koppelen, en dat vereist contents: write op
+      # deze job. Die rechten wil je hier niet: dit is een securityjob die leest en
+      # scant, niet schrijft. De SBOM wordt hieronder expliciet bewaard als
+      # releasebewijs, met een eigen naam en bewaartermijn.
       - name: SBOM genereren
         uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
         with:
           format: cyclonedx-json
           output-file: sbom.cyclonedx.json
+          upload-release-assets: false
       - name: Licentiecontrole
         run: ./scripts/ci/license-check.sh
       - name: SBOM bewaren als releasebewijs
