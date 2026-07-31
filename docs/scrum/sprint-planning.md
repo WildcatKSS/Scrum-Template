@@ -1,9 +1,17 @@
 # Sprint Planning
 
-**Doel:** het team bepaalt wat het komende `[2]` weken oplevert en hoe.
+**Doel:** het **hele Scrum Team** bepaalt samen waarom deze sprint waardevol is, wat erin
+kan, en hoe dat wordt gedaan.
 **Duur:** maximaal 4 uur bij een sprint van 2 weken (2 uur bij 1 week).
-**Deelnemers:** Product Owner, Scrum Master, developers, UX; security en privacy op
-afroep of vast bij items met impact.
+**Deelnemers:** het Scrum Team; specialisten sluiten aan wanneer hun input nodig is.
+
+| Wie | Brengt in |
+|---|---|
+| Product Owner | productdoel, context, backlogvolgorde en de waarde die op het spel staat |
+| Developers | wat haalbaar is, hoe het wordt gebouwd, en welke risico's er zijn |
+| Scrum Master | ondersteunt de effectieve toepassing van Scrum en bewaakt de timebox |
+
+Het **Sprint Goal ontstaat gezamenlijk** — het is geen opdracht die wordt uitgedeeld.
 
 ## Voorbereiding (vóór het event)
 
@@ -17,8 +25,9 @@ afroep of vast bij items met impact.
 
 ### Onderwerp 1 — Waarom is deze sprint waardevol? (30 min)
 
-De PO licht toe hoe de sprint bijdraagt aan het productdoel. Het team formuleert samen
-één **sprintdoel** in één zin.
+De Product Owner brengt in hoe deze sprint kan bijdragen aan het productdoel en welke
+context daarbij hoort. Het hele Scrum Team formuleert vervolgens samen één **Sprint Goal**
+in één zin.
 
 > Voorbeeld: *"Aan het einde van deze sprint kan een testgebruiker veilig een account
 > aanmaken en inloggen met MFA, en is dat door drie deelnemers uit de testgroep getest."*
@@ -31,7 +40,8 @@ is te demonstreren, en geeft ruimte om onderweg keuzes te maken.
 1. Bepaal de capaciteit: `beschikbare dagen × focusfactor` (start met `[70]%`), minus de
    vaste reservering van `[10]%` voor ongepland werk en `[10]%` voor kwaliteit/technische
    schuld.
-2. Selecteer items in volgorde van de backlog. Het team trekt het werk; de PO duwt niet.
+2. De Developers selecteren items uit de door de PO geordende backlog. Zij bepalen wat
+   haalbaar is; de PO licht waarde en volgorde toe en beantwoordt vragen.
 3. Controleer per item de DoR — nog steeds voldaan?
 4. Controleer de **balans** van de sprint:
    * bevat de sprint de bijbehorende security-, privacy- en testtaken?
@@ -40,6 +50,8 @@ is te demonstreren, en geeft ruimte om onderweg keuzes te maken.
 5. Stel vast: past dit bij het sprintdoel? Zo niet: eruit.
 
 ### Onderwerp 3 — Hoe gaan we het doen? (60 min)
+
+De Developers maken het plan; de rest van het Scrum Team denkt mee waar dat helpt.
 
 * Splits items in taken (technisch, test, security, privacy) waar dat helpt.
 * Benoem risico's en onbekenden; plan een spike als de onzekerheid te groot is.

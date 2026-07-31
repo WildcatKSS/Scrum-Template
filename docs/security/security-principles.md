@@ -156,5 +156,5 @@ en het wegvallen van auditlogging.
 | Pull request | securityvelden ingevuld; CODEOWNERS-review bij gevoelige paden |
 | CI | secret scan, SAST, dependency- en containerscan, SBOM, licenties |
 | Definition of Done | securitycontroles geslaagd, geen kritieke/hoge bevindingen |
-| Release | securitycheck en goedkeuring (vetorecht security) |
+| Release | securitycheck; openstaande kritieke/hoge bevinding blokkeert de release |
 | Periodiek | threat model per epic en per kwartaal; pentest vóór productie |

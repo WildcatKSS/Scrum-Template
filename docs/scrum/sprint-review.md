@@ -1,7 +1,8 @@
 # Sprint Review
 
-**Doel:** het increment inspecteren met belanghebbenden en de backlog aanpassen op basis
-van wat we hebben geleerd. Het is een **werksessie**, geen presentatie.
+**Doel:** het Scrum Team en de stakeholders inspecteren samen het resultaat, de context en
+de voortgang, en passen de Product Backlog aan op basis van wat is geleerd. Het is een
+**werksessie**, geen presentatie — en **geen goedkeurings- of sign-offmoment**.
 **Duur:** maximaal 2 uur bij een sprint van 2 weken.
 **Deelnemers:** het Scrum Team en de stakeholders die ertoe doen voor dit increment.
 Deelnemers uit de testgroep zijn welkom wanneer er een concrete vraag voor hen ligt — niet
@@ -32,10 +33,14 @@ sluiten aan bij relevante onderwerpen.
 
 ## Vaste agendapunten bij een financiële dienst
 
-| Punt | Wie | Wat wordt getoond |
+> **Controls worden gedurende de sprint uitgevoerd en aantoonbaar gemaakt**, niet hier
+> bevestigd. Wat hieronder staat is een terugblik op wat al is gebeurd, zodat iedereen
+> dezelfde stand kent — geen moment waarop governance alsnog "akkoord" geeft.
+
+| Punt | Wie | Wat wordt gedeeld |
 |---|---|---|
-| Securitystatus | Security | openstaande kritieke/hoge bevindingen, opgeloste bevindingen, resultaten van scans |
-| Privacystatus | Privacy | nieuwe verwerkingen, DPIA-status, bewaartermijnen |
+| Securitystatus | Developers met security-expertise; security officer sluit aan wanneer relevant | openstaande kritieke/hoge bevindingen, opgeloste bevindingen, scanresultaten |
+| Privacystatus | Developers met privacyexpertise; DPO wanneer zijn advies aan de orde is | nieuwe verwerkingen, DPIA-status, bewaartermijnen |
 | Compliancestatus | Compliance | geraakte controls, bewijs, openstaande acties, punten die nog **door een bevoegde specialist gevalideerd** moeten worden |
 | Gebruikersonderzoek | Developers (UX-expertise) | welke hypothese, welke methode, hoeveel deelnemers, wat viel op — of onderbouwd waarom deze sprint geen sessie nodig had |
 | Operationeel | Dev | incidenten, monitoring, SLO's |
@@ -66,7 +71,7 @@ Alle feedback wordt tijdens de sessie genoteerd en daarna omgezet in issues:
 - [ ] Increment draait in een testomgeving met synthetische data
 - [ ] Alleen Done-werk gedemonstreerd; niet-af werk expliciet benoemd
 - [ ] Bevindingen uit de leeractiviteit besproken, of onderbouwd waarom die er niet was
-- [ ] Security-, privacy- en compliancestatus behandeld
+- [ ] Security-, privacy- en compliancestatus gedeeld (als terugblik, niet als goedkeuring)
 - [ ] Alle feedback vastgelegd als issue met classificatie
 - [ ] Backlog en board bijgewerkt vóór de volgende planning
 - [ ] Deelnemers krijgen terugkoppeling over wat er met hun input gebeurt

@@ -124,8 +124,9 @@ De MVP is geslaagd als **alle** onderstaande punten waar zijn:
 | **Stoppen** | Probleem niet urgent (A1 onjuist), of regulatoir niet toegestaan (A5), of risico's niet beheersbaar binnen `[BUDGET/TIJD]` | stoppen of parkeren; besluit met onderbouwing vastleggen; opgedane kennis borgen |
 
 **Wie beslist:** de Product Owner, op basis van het bewijs uit de testgroep, met advies van
-security, privacy en compliance. Vetorecht bij security-, privacy- en compliancerisico's:
-zie [`../../GOVERNANCE.md`](../../GOVERNANCE.md).
+security, privacy en compliance. Een openstaand security-, privacy- of compliancerisico
+houdt doorgaan tegen tot de bevoegde mandaathouder daarover heeft besloten; zie
+[`../../GOVERNANCE.md`](../../GOVERNANCE.md).
 
 **Evaluatiemoment:** aan het einde van sprint `[4]` en daarna elke twee sprints.
 

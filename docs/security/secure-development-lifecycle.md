@@ -18,7 +18,7 @@ securityactiviteit bij welke stap in onze Scrum-cyclus hoort en wie die uitvoert
 | **CI** | secret scan, SAST, dependency review, container- en IaC-scan, SBOM, licenties | pipeline | workflowruns |
 | **Test** | securitytests in `tests/security/` | Developers | testresultaten |
 | **Definition of Done** | geen kritieke/hoge openstaande bevindingen (U4) | Developers | scanresultaten |
-| **Release** | securitycheck en goedkeuring; vetorecht bij bevindingen | security officer (governance) | releasechecklist |
+| **Release** | securitycheck; een openstaande kritieke/hoge bevinding blokkeert de release | security officer (governance) | releasechecklist |
 | **Productie** | monitoring, alarmering, auditlogging | Ops | dashboards |
 | **Doorlopend** | kwetsbaarhedenopvolging, patchen, hertesten | Security | issues |
 | **Periodiek** | pentest, herziening threat model, toegangsreview | Security | rapporten |

@@ -13,19 +13,22 @@ Developers, onafhankelijke governancerollen en stakeholders.
 | **Scrum Master** | Scrum Team | proces, events, wegnemen van belemmeringen | inhoud en volgorde van de backlog | `[MANAGEMENT]` |
 | **Developers** | Scrum Team | technische uitvoering, ontwerp binnen kaders, schattingen, en de vaststelling dát het increment aan de DoD voldoet | prioriteit en productrichting | Tech lead |
 | **Tech lead / architect** | Developers | architectuurkaders, ADR-besluiten | productprioriteit | CTO / `[ROL]` |
-| **Security officer** | governance (onafhankelijk) | securityeisen; **vetorecht** op release bij openstaande kritieke/hoge kwetsbaarheid | productprioriteit; of iets Done is | CISO / `[ROL]` |
-| **Privacy officer / DPO** | governance (wettelijk onafhankelijk) | privacy-eisen, DPIA-oordeel; **vetorecht** bij onaanvaardbaar privacyrisico | technische uitvoering | `[BESTUUR]` |
-| **Compliance officer** | governance | complianceregister, controls, bewijsvoering; **vetorecht** op release | productprioriteit | `[BESTUUR]` |
+| **Security officer** | governance (onafhankelijk) | securityeisen; een openstaande kritieke/hoge kwetsbaarheid **blokkeert de release** | productprioriteit; of iets Done is | CISO / `[ROL]` |
+| **DPO** | governance (wettelijk onafhankelijk) | **advies en toezicht**: monitort naleving, adviseert over DPIA's, rapporteert onafhankelijk, escaleert ernstige risico's | operationele product- en verwerkingsbesluiten; risicoacceptatie namens de organisatie | `[BESTUUR]` |
+| **Privacy officer / operationele privacyfunctie** | governance of Developers | registers, transparantie, bewaartermijnen, privacyvereisten; operationele beoordelingen binnen mandaat | wettelijke toepasselijkheid vaststellen | DPO / `[BESTUUR]` |
+| **Compliance officer** | governance | complianceregister, controls, bewijsvoering; een blokkerende compliancevraag **blokkeert de release** | productprioriteit | `[BESTUUR]` |
+| **Verwerkingsverantwoordelijke / mandaathouder** | formeel mandaat | het uiteindelijke besluit; accepteert of weigert organisatorische risico's; beslist over doorgang na ontvangen DPO-advies | technische uitvoering | `[BESTUUR]` |
 | **Deelnemers testgroep** | onderzoeksdeelnemers | niets — zij leveren gedrag, ervaringen en feedback | scope of prioriteit | coördinator testgroep |
 
 > **Done staat niet in deze tabel als beslissing van één persoon.** Of een item Done is,
 > volgt uit de [Definition of Done](docs/scrum/definition-of-done.md): objectief,
-> aantoonbaar en vastgesteld door de Developers. Een vetorecht kan een **release**
-> tegenhouden, maar verandert nooit of werk af is.
+> aantoonbaar en vastgesteld door de Developers. Een blokkerend punt houdt de **release**
+> tegen, maar verandert nooit of werk af is.
 
-**Vetorecht** betekent: de release gaat niet door tot het punt is opgelost of
-aantoonbaar en gedocumenteerd is geaccepteerd door de daartoe bevoegde eigenaar
-(zie §4).
+**Blokkerend** betekent: de release gaat niet door totdat het punt is opgelost óf
+aantoonbaar en gedocumenteerd is geaccepteerd door de daartoe bevoegde mandaathouder
+(zie §4). Het is geen persoonlijk vetorecht: het is een openstaand risico dat een besluit
+vraagt van wie dat besluit mag nemen.
 
 ## 2. Besluitvorming
 
@@ -36,7 +39,7 @@ aantoonbaar en gedocumenteerd is geaccepteerd door de daartoe bevoegde eigenaar
 | Is dit increment Done? | Developers, op basis van de DoD — geen persoonlijke goedkeuring | issue + PR-checklist |
 | Architectuur | Tech lead, met de Developers, consent-based | ADR in `docs/architecture/adr/` |
 | Risicoacceptatie (restrisico van uitgevoerd werk) | mandaathouder uit §4 | `docs/compliance/audit-evidence.md` §3 |
-| Privacy-/gegevensverwerking | DPO / privacy officer | DPIA + `docs/privacy/` |
+| Privacy-/gegevensverwerking | **mandaathouder**, met onafhankelijk advies van de DPO | DPIA + `docs/privacy/`; afwijking van het advies gemotiveerd vastgelegd |
 | Regulatoire toepasselijkheid | **bevoegde specialist (jurist/compliance)** | `docs/compliance/regulatory-decisions.md` |
 | Release naar productie | PO + Security + Compliance gezamenlijk | `docs/releases/release-checklist.md` |
 | Wijziging van deze governance | `[BESTUUR]` | PR + CHANGELOG |
@@ -75,6 +78,11 @@ Een risicoacceptatie is alleen geldig als **alle** onderstaande gegevens zijn va
 | Bevoegde goedkeurder | mandaathouder uit §1 |
 | Vervaldatum | wanneer opnieuw beoordelen; nooit onbeperkt |
 | Opvolgissue | waar het werk staat om het risico weg te nemen |
+
+> **De DPO accepteert geen risico's.** Bij een privacyrisico adviseert de DPO
+> onafhankelijk; de bevoegde mandaathouder neemt het besluit en legt vast waarom, zeker
+> wanneer dat besluit afwijkt van het advies. Een ernstig privacyrisico blokkeert de
+> release tot dat gedocumenteerde besluit er is.
 
 Waarvoor risicoacceptatie **wel** passend kan zijn: een openstaande kwetsbaarheid van
 niveau middel of lager, een leveranciersafhankelijkheid, een tijdelijke handmatige

@@ -38,9 +38,9 @@ rol. Volledige uitwerking: [`roles.md`](roles.md).
 
 | Accountability | Verantwoordelijk voor |
 |---|---|
-| **Product Owner** | waarde, productdoel, backlogprioriteit; inspecteert het resultaat en beslist over vrijgave |
-| **Scrum Master** | werkwijze, events, belemmeringen wegnemen |
-| **Developers** | het increment bouwen en aantoonbaar aan de DoD laten voldoen |
+| **Product Owner** | waarde, productdoel, backlogvolgorde; inspecteert het resultaat en beslist over vrijgave |
+| **Scrum Master** | effectieve toepassing van Scrum, belemmeringen wegnemen |
+| **Developers** | het increment bouwen, plannen hoe dat gebeurt, en aantoonbaar aan de DoD laten voldoen |
 
 De **Developers zijn multidisciplinair**: softwareontwikkeling, UX en gebruikersonderzoek,
 testen, security engineering, privacy engineering, compliance-uitvoering en operations
@@ -90,7 +90,7 @@ Regels:
 |---|---|---|---|
 | [Sprint Planning](sprint-planning.md) | max. 4 uur | Scrum Team | sprintdoel en plan bepalen |
 | Daily Scrum | 15 minuten | developers (rest optioneel) | voortgang naar het sprintdoel bijsturen |
-| [Backlog Refinement](refinement.md) | ~5% van de sprint (±4 uur) | Scrum Team | items Ready maken |
+| [Backlog Refinement](refinement.md) — *doorlopende activiteit, geen formeel event* | ~5% van de sprint | wie het werk raakt | items Ready maken |
 | [Sprint Review](sprint-review.md) | max. 2 uur | Scrum Team + stakeholders (waaronder deelnemers uit de testgroep) | increment inspecteren, feedback ophalen |
 | [Sprint Retrospective](retrospective.md) | max. 1,5 uur | Scrum Team | werkwijze verbeteren |
 

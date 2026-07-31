@@ -73,11 +73,35 @@ Die blijven bestaan, maar zijn geen Scrum-accountability.
 
 | Rol | Positie | Verantwoordelijkheid | Mandaat |
 |---|---|---|---|
-| **Security officer / CISO** | governance | securitykaders, onafhankelijke beoordeling, kwetsbaarhedenbeleid | vetorecht op release bij openstaande kritieke/hoge bevindingen |
-| **Privacy officer / DPO** | governance (wettelijk onafhankelijk) | toezicht op gegevensbescherming, DPIA-oordeel | vetorecht bij onaanvaardbaar privacyrisico; adviseert, voert niet uit |
-| **Compliance officer** | governance | complianceregister, controls, bewijsvoering, regulatoire vragen | vetorecht op release |
+| **Security officer / CISO** | governance | securitykaders, onafhankelijke beoordeling, kwetsbaarhedenbeleid | stelt securityeisen; een openstaande kritieke of hoge bevinding blokkeert de release |
+| **DPO** | governance, **wettelijk onafhankelijk** | monitort naleving, adviseert over DPIA's, rapporteert onafhankelijk, escaleert ernstige risico's | **adviseert en houdt toezicht — beslist niet operationeel** (zie hieronder) |
+| **Privacy officer / operationele privacyfunctie** | governance of Developers | registers, transparantie, bewaartermijnen, privacyvereisten in het werk | operationele beoordelingen binnen mandaat |
+| **Compliance officer** | governance | complianceregister, controls, bewijsvoering, regulatoire vragen | een openstaande blokkerende compliancevraag blokkeert de release |
+| **Verwerkingsverantwoordelijke / bestuurder / mandaathouder** | formeel mandaat | neemt het uiteindelijke besluit; accepteert of weigert organisatorische risico's | beslist over doorgang, ook wanneer DPO-advies is ontvangen |
 | **Interne of externe audit** | toezicht | toetst of controls werken | rapporteert aan `[BESTUUR]` |
 | **Opdrachtgever / stuurgroep** | stakeholder | budget, mandaat, strategische kaders | escalatiepunt |
+
+### De DPO adviseert, de mandaathouder beslist
+
+Dit onderscheid is geen formaliteit: als de DPO zelf operationele besluiten neemt of zijn
+eigen maatregelen implementeert, houdt hij geen onafhankelijk toezicht meer op zijn eigen
+werk.
+
+| De DPO **doet wel** | De DPO **doet niet** |
+|---|---|
+| onafhankelijk adviseren en monitoren | operationele product- of verwerkingsbesluiten nemen |
+| adviseren over DPIA's en de uitkomst beoordelen | risico's namens de organisatie accepteren |
+| onafhankelijk rapporteren aan `[BESTUUR]` | zelf de maatregelen implementeren waarop hij toeziet |
+| ernstige risico's escaleren | de rol van projectbeslisser of releasemanager vervullen |
+| vastleggen wanneer advies **niet** is opgevolgd | — |
+
+> **Ernstig privacyrisico blokkeert de release totdat de bevoegde mandaathouder een
+> gedocumenteerd besluit heeft genomen, met onafhankelijk advies van de DPO.** Wijkt dat
+> besluit af van het advies, dan wordt die afwijking gemotiveerd vastgelegd.
+
+Product Owner en Developers implementeren binnen de vastgestelde kaders. Zij kunnen
+juridische of privacyvereisten niet wegprioriteren en besluiten niet zelfstandig dat een
+onaanvaardbaar privacyrisico acceptabel is.
 
 Werkt zo iemand daarnaast **structureel mee aan het increment** (bijvoorbeeld een security
 engineer die de maatregelen zelf bouwt), dan is die persoon voor dát werk een Developer.
@@ -108,11 +132,17 @@ gegevens, en krijgen altijd terugkoppeling over wat er met hun inbreng is gebeur
 
 | Event | Product Owner | Scrum Master | Developers | Governance/specialist | Stakeholders & testgroep |
 |---|---|---|---|---|---|
-| Sprint Planning | leidt het "wat" | faciliteert | bepalen het "hoe" en de omvang | op afroep bij risico | — |
-| Daily Scrum | optioneel | optioneel | verplicht | — | — |
-| Refinement | verplicht | faciliteert | verplicht (incl. UX-, security- en privacyexpertise) | op afroep | — |
-| Sprint Review | leidt | faciliteert | tonen het increment en de bevindingen | bevestigen controls | aanwezig, geven feedback |
-| Retrospective | verplicht | faciliteert | verplicht | alleen op uitnodiging | niet aanwezig |
+| Sprint Planning | brengt productdoel, context en backlogvolgorde in | ondersteunt effectieve toepassing van Scrum | bepalen wat haalbaar is en maken het plan | sluiten aan wanneer hun input nodig is | — |
+| Daily Scrum | mag aansluiten | mag aansluiten | door en voor de Developers | — | — |
+| Refinement | betrokken | ondersteunt waar nodig | wie het werk raakt sluit aan; niet iedereen elke keer | wanneer hun expertise nodig is | — |
+| Sprint Review | leidt het gesprek over waarde en vervolg | faciliteert | tonen het increment en wat is geleerd | sluiten aan wanneer hun input relevant is | aanwezig, geven feedback |
+| Retrospective | aanwezig | faciliteert | aanwezig | alleen op uitnodiging | niet aanwezig |
+
+Het **Sprint Goal ontstaat gezamenlijk** in de Sprint Planning; het is geen opdracht van de
+Product Owner aan de Developers. Refinement is een **doorlopende activiteit**, geen formeel
+Scrum-event met verplichte aanwezigheid. De Sprint Review is **geen goedkeurings- of
+sign-offmoment**: controls worden gedurende de sprint uitgevoerd en aantoonbaar gemaakt,
+niet aan het eind bevestigd.
 
 ---
 

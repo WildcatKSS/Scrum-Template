@@ -2,12 +2,20 @@
 
 **Doel:** items uit de backlog begrijpelijk, klein en Ready maken — vóórdat er een sprint
 mee wordt gepland.
-**Ritme:** minimaal één sessie per week, `[60–90]` minuten (samen ±5% van de sprinttijd).
-**Deelnemers:** PO, developers, UX; security bij items met risico, privacy bij items met
-gegevens.
+**Ritme:** richtlijn `[60–90]` minuten per week (samen ±5% van de sprinttijd).
+**Deelnemers:** wie het betreffende werk raakt.
 
-Refinement is een **doorlopende activiteit**, geen formeel Scrum-event met vaste vorm. De
-vaste sessie voorkomt alleen dat het erbij inschiet.
+> **Refinement is een doorlopende activiteit, geen formeel Scrum-event.** Er is geen
+> verplichte vergadering en geen verplichte aanwezigheid. Wél geldt: de expertise die het
+> item raakt — bijvoorbeeld security bij een autorisatie-item of privacy bij nieuwe
+> gegevens — is tijdig betrokken. Niet iedere Developer hoeft bij ieder refinementmoment
+> te zijn; iedereen die het item straks bouwt, moet het wel begrijpen.
+>
+> Refinement mag **geen bureaucratische toegangspoort** worden. Ontbreekt er iets, spreek
+> dan één concrete actie met een eigenaar af in plaats van het item af te wijzen
+> ([antipatroon 15](anti-patterns.md#15-definition-of-ready-als-bureaucratische-toegangspoort)).
+
+Een vast moment in de week voorkomt alleen dat het erbij inschiet.
 
 ## Werkwijze per item (10–20 minuten)
 

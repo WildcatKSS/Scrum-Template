@@ -3,7 +3,9 @@
 > **Doel:** juridische en regulatoire vragen zichtbaar houden tot een bevoegde specialist
 > ze heeft beantwoord.
 > **Wanneer gebruiken:** zodra iemand denkt "mag dit eigenlijk wel?".
-> **Wie:** compliance officer beheert; iedereen mag een vraag toevoegen.
+> **Wie:** compliance officer beheert; iedereen mag een vraag toevoegen. Bij
+> privacyvragen adviseert de DPO onafhankelijk; het besluit ligt bij de bevoegde
+> mandaathouder.
 > **Adoptieniveau:** Core voor de blokkerende vragen (RD-01, RD-14), Regulated voor het volledige register.
 > **Gerelateerd:** [`compliance-register.md`](compliance-register.md) · [`../privacy/privacy-by-design.md`](../privacy/privacy-by-design.md) §0
 
@@ -35,7 +37,7 @@ eenmaal vastgestelde verplichting borgen, staat in
 | # | Vraag | Waarom relevant | Blokkeert | Status | Voorlopige aanname (**geen besluit**) | Gevalideerd door | Datum | Herbeoordeling |
 |---|---|---|---|---|---|---|---|---|
 | RD-01 | Is voor `[TYPE DIENST]` in `[LANDEN/REGIO]` een vergunning of registratie vereist? | bepaalt of we mogen lanceren | bèta en productie | **Voorgelegd** | wij nemen géén standpunt in | | | |
-| RD-02 | Zijn wij verwerkingsverantwoordelijke, verwerker of beide? | bepaalt verplichtingen en contracten | DPA's | Open | waarschijnlijk verantwoordelijk voor eigen verwerkingen | | | |
+| RD-02 | Zijn wij verwerkingsverantwoordelijke, verwerker of beide? | bepaalt verplichtingen en contracten | DPA's | Open | waarschijnlijk verantwoordelijk voor eigen verwerkingen; vaststelling door een bevoegde specialist, de DPO adviseert | | | |
 | RD-03 | Welke grondslag geldt per verwerking? | bepaalt of toestemming nodig is | ontwerp toestemmingsflow | In onderzoek | zie `../architecture/data-flow.md` (voorlopig) | | | |
 | RD-04 | Welke wettelijke bewaartermijnen gelden voor financiële gegevens? | bepaalt verwijderroutines | verwijderfunctionaliteit | Open | `[7 jaar]` als werkhypothese | | | |
 | RD-05 | Gelden er identificatie- of verificatieverplichtingen bij onboarding? | bepaalt de registratieflow | onboarding | Open | in de MVP niet ingebouwd | | | |

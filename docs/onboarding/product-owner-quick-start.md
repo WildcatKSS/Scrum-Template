@@ -100,7 +100,7 @@ Drie verschillende dingen — dit is de meest voorkomende verwarring:
 |---|---|---|
 | **Acceptatiecriteria** | wanneer déze story het gewenste gedrag vertoont; vooraf samen opgesteld | PO + Developers |
 | **Definition of Done** | de kwaliteitsondergrens voor élk increment: tests, review, security, documentatie | Developers stellen vast |
-| **Releasebesluit** | of dit Done increment nú naar gebruikers gaat, en naar welk kanaal | PO, met vetorecht van security/privacy/compliance |
+| **Releasebesluit** | of dit Done increment nú naar gebruikers gaat, en naar welk kanaal | PO; een openstaande blokkerende security-, privacy- of compliancebevinding houdt de release tegen |
 
 Je kunt dus **niet** iets Done verklaren dat technisch onvolledig is, en je hoeft **geen**
 aparte handtekening te zetten als de DoD aantoonbaar gehaald is. Ben je ontevreden over de

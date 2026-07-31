@@ -30,7 +30,7 @@ blijft `mock`. Het bestand staat in `.gitignore` en hoort daar te blijven.
 |---|---|
 | `src/` | applicatiecode; indeling volgt uit de stack ([`../../src/README.md`](../../src/README.md)) |
 | `tests/` | unit, integration, security, accessibility, end-to-end |
-| `scripts/ci/` | alles wat CI draait — je kunt het lokaal aanroepen |
+| `scripts/` | bootstrap en alles wat CI draait — je kunt het lokaal aanroepen ([overzicht](../../scripts/README.md)) |
 | `.github/workflows/` | CI, security, dependency review, code quality, release |
 | `docs/` | procesdocumentatie ([`../README.md`](../README.md)) |
 
