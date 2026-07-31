@@ -36,6 +36,15 @@ operations.
 Begin bij **Core**, ook als je weet dat je later Enterprise wordt. Details en de volledige
 lijst per niveau: [`docs/adoption-levels.md`](docs/adoption-levels.md).
 
+> **Twee momenten waarop je vooruit moet stappen**, want deze maatregelen werken alleen
+> vooraf:
+>
+> * **vóór** het ontwerp of de implementatie van functionaliteit die persoonsgegevens
+>   verwerkt → de Advanced-privacymaatregelen (doelbinding, minimalisatie, grondslag,
+>   bewaartermijn, DPIA-screening);
+> * **vóór** productiegebruik met echt geld, echte financiële gegevens of gereguleerde
+>   activiteiten → Regulated/Enterprise, met de readinesscriteria afgerond.
+
 ## 3. De route
 
 ### Eerste uur — repository klaarzetten
@@ -127,7 +136,7 @@ niet `Closes`, zolang er na de merge nog validatie volgt
 | Onderwerp | Route |
 |---|---|
 | **Beveiligingskwetsbaarheid** | **nooit** via een issue → [`SECURITY.md`](SECURITY.md) |
-| Vermoeden van datalek | direct privacy- én securitycontact, binnen 24 uur |
+| Vermoeden van een beveiligingsincident of datalek | **onmiddellijk** melden via het incidentproces ([`docs/security/incident-response.md`](docs/security/incident-response.md)); wacht niet op bevestiging, volledigheid of eigen onderzoek |
 | Securitywerk (niet-gevoelig) | issue via *Securitytaak* |
 | Privacy- of compliancevraag | issue via *Compliance- of privacytaak* |
 | "Mag dit juridisch?" | [`docs/compliance/regulatory-decisions.md`](docs/compliance/regulatory-decisions.md) — het team beantwoordt dit niet zelf |

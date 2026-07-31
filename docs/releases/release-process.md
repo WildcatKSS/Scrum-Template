@@ -16,6 +16,12 @@ bepalen of het gebeurt.
 Prereleases: `1.3.0-rc.1`, `1.3.0-beta.1`. Tags: `v1.3.0`.
 Versies vóór `1.0.0` zijn niet stabiel; dat mag, mits duidelijk gecommuniceerd.
 
+> **Vóór het eerste productiegebruik met echt geld, echte financiële gegevens of
+> gereguleerde activiteiten** zijn de readinesscriteria van
+> [`../adoption-levels.md`](../adoption-levels.md#regulated--enterprise) afgerond. Die
+> criteria horen **vóór** de eerste productie-uitrol thuis, niet erna: een vergunningsvraag
+> of een ontbrekend mandaat is achteraf niet te repareren zonder de dienst stil te leggen.
+
 ## 2. Releasekanalen
 
 | Kanaal | Voor wie | Data | Voorwaarden |
@@ -23,7 +29,7 @@ Versies vóór `1.0.0` zijn niet stabiel; dat mag, mits duidelijk gecommuniceerd
 | **Intern prototype** | team | synthetisch | CI groen |
 | **Testgroepversie** | testgroep (`[8–12]` deelnemers) | synthetisch | DoD gehaald, geen kritieke/hoge kwetsbaarheden, toestemming geregeld |
 | **Bèta** | `[grotere groep]` | synthetisch of beperkt echt — **te valideren** | DPIA afgerond, securitycheck, support geregeld. Draait op een **niet-productieomgeving**; wil je bèta wél in productie, richt daar dan een eigen environment voor in en neem het kanaal expliciet op in de productie-allowlist |
-| **Beperkte productie-uitrol** | `[X]%` van de gebruikers | echt | volledige releasechecklist, pentest, goedkeuringen |
+| **Beperkte productie-uitrol** | `[X]%` van de gebruikers | echt | volledige releasechecklist, pentest, goedkeuringen én de afgeronde Regulated-readinesscriteria |
 | **Algemene beschikbaarheid** | iedereen | echt | beperkte uitrol stabiel gedurende `[2]` weken |
 
 Overgang naar een volgend kanaal is een expliciet besluit van PO + Security + Compliance.
@@ -42,12 +48,14 @@ kernreis op staging.
 ### 3. Securitycheck
 Geen openstaande kritieke of hoge bevindingen. Nieuwe afhankelijkheden beoordeeld. Bij
 wijzigingen aan authenticatie, autorisatie of geldstromen: expliciete beoordeling door de
-security officer (governance). **Vetorecht.**
+security officer (governance). Een openstaande kritieke of hoge bevinding **blokkeert de
+release**.
 
 ### 4. Privacy- en compliancecheck
-Nieuwe of gewijzigde verwerkingen beoordeeld, bewaartermijnen geregeld, DPIA bijgewerkt,
-controls en bewijs bijgewerkt, openstaande regulatoire vragen niet blokkerend.
-**Vetorecht.**
+Nieuwe of gewijzigde verwerkingen beoordeeld, bewaartermijnen geregeld, DPIA bijgewerkt
+(**vóór** de implementatie, niet hier voor het eerst), controls en bewijs bijgewerkt. Een
+openstaande blokkerende regulatoire vraag of een ernstig privacyrisico **houdt de release
+tegen** tot de bevoegde mandaathouder een gedocumenteerd besluit heeft genomen.
 
 ### 5. Releasebesluit van de Product Owner
 Dit gaat over **vrijgave**, niet over de vraag of het werk af is: dat volgt al uit de

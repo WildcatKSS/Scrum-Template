@@ -7,6 +7,10 @@
 > **Wie:** Developers met operationsexpertise, samen met de tech lead; security en privacy
 > bij de betreffende onderwerpen.
 > **Adoptieniveau:** Advanced (staging), Regulated (productie met bewijs).
+> **Volgorde:** deze checklist hoort **vóór** de betreffende uitrol af te zijn — vóór
+> staging voor de test-items, vóór de eerste productie-uitrol voor de rest. Zij is een
+> voorwaarde voor productie, geen opruimactie erna
+> ([`../adoption-levels.md`](../adoption-levels.md#regulated--enterprise)).
 > **Gerelateerd:** [`deployment.md`](deployment.md) · [`sre-principles.md`](sre-principles.md) · [`../architecture/architecture-principles.md`](../architecture/architecture-principles.md)
 
 Cloud- en stack-agnostisch. Per onderwerp kies je één status:

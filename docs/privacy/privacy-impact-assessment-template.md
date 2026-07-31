@@ -4,9 +4,15 @@ Een DPIA brengt privacyrisico's in kaart **voordat** een verwerking start. Dit s
 helpt het team gestructureerd na te denken; het vervangt geen beoordeling door de
 privacyverantwoordelijke of, waar nodig, een bevoegde specialist.
 
+> **Wanneer:** de screening (§0) gebeurt **vóór de implementatie** van functionaliteit die
+> persoonsgegevens verwerkt — niet nadat de verwerking is gestart. Een DPIA die pas na
+> ingebruikname wordt gedaan, kan het ontwerp niet meer bijsturen.
+> **Wie:** opsteller uit de Developers of de operationele privacyfunctie; de **DPO
+> adviseert onafhankelijk** over de uitkomst; de **mandaathouder besluit**.
+
 ## 0. Wanneer is een DPIA nodig?
 
-Doe minimaal de **voortoets** hieronder bij elke nieuwe verwerking. Een volledige DPIA is
+Doe minimaal de **voortoets** hieronder bij elke nieuwe verwerking, vóór de implementatie. Een volledige DPIA is
 in elk geval aan de orde bij grootschalige verwerking van financiële gegevens, bij
 systematische monitoring, bij geautomatiseerde besluitvorming met gevolgen voor mensen, en
 bij het combineren van datasets.
@@ -106,7 +112,9 @@ Denk vanuit de **gebruiker**, niet vanuit de organisatie.
 * **Restrisico aanvaardbaar?** ⬜ ja ⬜ nee ⬜ alleen met aanvullende maatregelen
 * **Onderbouwing:** …
 * **Voorwaarden vóór ingebruikname:** …
-* **Vastgesteld door:** `[NAAM]` op `[DATUM]`
+* **Advies DPO:** `[ADVIES]`, uitgebracht op `[DATUM]`
+* **Besluit mandaathouder:** `[NAAM/ROL]` op `[DATUM]` — bij afwijking van het DPO-advies:
+  gemotiveerd vastgelegd in `[LOCATIE]`
 * **Herziening:** `[DATUM of GEBEURTENIS]`
 
 > Blijft het restrisico hoog na alle maatregelen, dan is voorafgaande raadpleging van de

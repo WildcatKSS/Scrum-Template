@@ -11,6 +11,13 @@ Voor een interne prototypeversie volstaat sectie 1.
 > een stabiele SemVer-versie en een kanaal uit de productie-allowlist. Zie
 > [`../operations/deployment.md`](../operations/deployment.md) §6.
 
+> **Eerste productie-uitrol met echt geld, echte financiële gegevens of gereguleerde
+> activiteiten?** Dan zijn de zes Regulated-readinesscriteria uit
+> [`../adoption-levels.md`](../adoption-levels.md#regulated--enterprise) **vooraf** afgerond
+> — beoordeelde regelgeving, ingerichte mandaten, gereed platform, beproefde incident- en
+> herstelprocessen, afgeronde beoordelingen en geen openstaande blokkerende besluiten.
+> Deze checklist vervangt die criteria niet.
+
 ## 1. Kwaliteit
 
 - [ ] Alle verplichte CI-checks groen (build, lint, unit, integratie, coverage, e2e, a11y)
@@ -20,7 +27,7 @@ Voor een interne prototypeversie volstaat sectie 1.
 - [ ] Testdekking ≥ `COVERAGE_MIN`
 - [ ] Increment werkt in een representatieve testomgeving met synthetische data
 
-## 2. Security — *vetorecht securityverantwoordelijke*
+## 2. Security — *een openstaande kritieke/hoge bevinding blokkeert de release*
 
 - [ ] Secret scanning zonder bevindingen
 - [ ] SAST zonder openstaande kritieke/hoge bevindingen
@@ -34,7 +41,7 @@ Voor een interne prototypeversie volstaat sectie 1.
 - [ ] Pentestbevindingen opgevolgd (vóór productie)
 - [ ] **Akkoord security:** `[NAAM]` op `[DATUM]`
 
-## 3. Privacy — *vetorecht privacyverantwoordelijke*
+## 3. Privacy — *een ernstig privacyrisico blokkeert de release tot de mandaathouder besluit*
 
 - [ ] Nieuwe of gewijzigde verwerkingen beoordeeld
 - [ ] Gegevensminimalisatie toegepast
@@ -43,10 +50,11 @@ Voor een interne prototypeversie volstaat sectie 1.
 - [ ] Rechten van betrokkenen werken aantoonbaar (inzage, export, verwijdering)
 - [ ] Toestemmingsflow werkt en is intrekbaar
 - [ ] Geen persoonsgegevens in logs, URL's, foutmeldingen of monitoring
-- [ ] DPIA opgesteld of bijgewerkt indien nodig
-- [ ] **Akkoord privacy:** `[NAAM]` op `[DATUM]`
+- [ ] DPIA opgesteld of bijgewerkt indien nodig — **vóór** de implementatie, niet erna
+- [ ] **Beoordeling privacy:** `[NAAM]` op `[DATUM]`; bij een ernstig risico het besluit van
+      de mandaathouder, met het onafhankelijke DPO-advies erbij
 
-## 4. Compliance — *vetorecht complianceverantwoordelijke*
+## 4. Compliance — *een blokkerende openstaande compliancevraag blokkeert de release*
 
 - [ ] Geraakte controls bijgewerkt in `../compliance/control-mapping.md`
 - [ ] Bewijs vastgelegd in `../compliance/audit-evidence.md`
@@ -75,6 +83,10 @@ Voor een interne prototypeversie volstaat sectie 1.
 - [ ] Capaciteit toereikend voor de verwachte belasting
 - [ ] Iemand kijkt na de uitrol daadwerkelijk mee, gedurende `[30]` minuten
 - [ ] Uitrolvenster afgestemd (geen release zonder beschikbare mensen)
+- [ ] Post-deploymentchecks vooraf ontworpen en begrensd: read-only healthchecks,
+      synthetische monitoring op de kernreis, canaryverificatie — geen ongecontroleerde
+      tests, geen wijziging van echte klantdata, geen echte transacties
+      ([`../testing/test-strategy.md`](../testing/test-strategy.md) §4a)
 
 ## 7. Toegankelijkheid en begrijpelijkheid
 
@@ -86,7 +98,8 @@ Voor een interne prototypeversie volstaat sectie 1.
 
 ## 8. Na de release
 
-- [ ] Uitrol succesvol afgerond en gemonitord
+- [ ] Uitrol succesvol afgerond en gemonitord; post-deploymentchecks geslaagd en hun
+      resultaat vastgelegd
 - [ ] Changelog bijgewerkt en release gepubliceerd
 - [ ] Bewijs vastgelegd (`../compliance/audit-evidence.md`)
 - [ ] Evaluatie binnen `[3]` werkdagen ingepland

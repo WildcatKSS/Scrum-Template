@@ -13,6 +13,21 @@ niveaus.
 **Groeipad:** Core → Advanced → Regulated/Enterprise. Je stapt op wanneer je product dat
 vraagt, niet op een vaste datum.
 
+> ### Twee momenten waarop je vóóruit moet stappen
+>
+> Niveaus zijn geen beloning voor wat je al hebt gebouwd; ze bepalen wat er **vooraf** moet
+> staan.
+>
+> **Stap uiterlijk vóór het ontwerp of de implementatie van functionaliteit die
+> persoonsgegevens verwerkt over naar de Advanced-privacymaatregelen.** Niet zodra je
+> gegevens verwerkt — dan is het te laat: doelbinding, minimalisatie, grondslag en
+> bewaartermijn bepalen mede hóé je bouwt. Dit geldt ook voor een prototype dat echte
+> persoonsgegevens gebruikt; de voorkeursroute blijft synthetische data.
+>
+> **Stap vóór productiegebruik met echt geld, echte financiële gegevens of gereguleerde
+> activiteiten over naar Regulated/Enterprise en rond de relevante readinesscriteria af.**
+> Niet nadat je live bent.
+
 ---
 
 ## Wat blijft altijd gelden
@@ -53,8 +68,9 @@ weinig of geen echte gebruikers.
 **Bewust nog niet:** control matrix, auditbewijs, formele governance, environments met
 approvals, SLO's, DPIA, releasekanalen.
 
-**Je bent klaar voor Advanced wanneer:** er echte gebruikers zijn, meerdere developers
-tegelijk werken, of je persoonsgegevens gaat verwerken.
+**Stap naar Advanced vóórdat** je functionaliteit ontwerpt of bouwt die persoonsgegevens
+verwerkt; verder wanneer er echte gebruikers zijn of meerdere developers tegelijk werken.
+Zolang je uitsluitend met synthetische data werkt, volstaat Core.
 
 ---
 
@@ -78,8 +94,21 @@ Alles uit Core, plus:
 | Security Champion binnen het team | [`security/security-champions.md`](security/security-champions.md) |
 | Platform-readiness | [`operations/platform-readiness-checklist.md`](operations/platform-readiness-checklist.md) |
 
-**Je bent klaar voor Regulated/Enterprise wanneer:** je in productie gaat met echt geld of
-echte financiële gegevens, onder toezicht valt, of assurance aan klanten moet geven.
+**Stap naar Regulated/Enterprise vóórdat** je in productie gaat met echt geld, echte
+financiële gegevens of gereguleerde activiteiten — en vóórdat je onder toezicht valt of
+assurance aan klanten geeft.
+
+### Privacymaatregelen die vóór de implementatie afgerond zijn
+
+| Moment | Wat er af moet zijn |
+|---|---|
+| Vóór ontwerpbeslissingen | welke gegevens raakt dit, en kan het met minder? ([`privacy/privacy-by-design.md`](privacy/privacy-by-design.md) §3) |
+| Vóór implementatie | doelbinding en gegevensminimalisatie vastgelegd |
+| Vóór verwerking | grondslag beoordeeld en transparantie geregeld |
+| Vóór opslag | bewaartermijn bepaald en afdwingbaar ([`privacy/data-retention.md`](privacy/data-retention.md)) |
+| Vóór implementatie bij verhoogd risico | DPIA-screening uitgevoerd ([`privacy/privacy-impact-assessment-template.md`](privacy/privacy-impact-assessment-template.md) §0) |
+
+Feitelijke verwerking begint pas nadat deze punten zijn ingevuld.
 
 ---
 
@@ -91,6 +120,20 @@ toezicht en externe verantwoording.
 laten zien.
 
 Alles uit Advanced, plus:
+
+### Readinesscriteria die vóór productie afgerond zijn
+
+Productie met echt geld, echte financiële gegevens of gereguleerde activiteiten is
+geblokkeerd totdat:
+
+1. de toepasselijkheid van regelgeving is beoordeeld door een bevoegde specialist
+   ([`compliance/regulatory-decisions.md`](compliance/regulatory-decisions.md));
+2. de benodigde mandaten en approvals zijn ingericht ([`../GOVERNANCE.md`](../GOVERNANCE.md));
+3. de productieomgeving en operationele controls gereed zijn
+   ([`operations/platform-readiness-checklist.md`](operations/platform-readiness-checklist.md));
+4. incident- en herstelprocessen zijn **getest**, niet alleen beschreven;
+5. de vereiste privacy-, security- en compliancebeoordelingen zijn afgerond;
+6. openstaande blokkerende besluiten zijn opgelost.
 
 | Onderdeel | Document |
 |---|---|

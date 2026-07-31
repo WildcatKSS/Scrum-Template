@@ -6,7 +6,7 @@ naar concrete keuzes die het team elke sprint maakt.
 > **Doel:** privacy als ontwerpeis, niet als document achteraf.
 > **Wanneer gebruiken:** bij refinement van elk item met gegevens, en bij nieuwe
 > verwerkingen.
-> **Wie:** Developers met privacyexpertise; de privacy officer/DPO toetst onafhankelijk.
+> **Wie:** Developers met privacyexpertise; de operationele privacyfunctie ondersteunt, de DPO adviseert en houdt onafhankelijk toezicht.
 > **Adoptieniveau:** Core (§1–3), Advanced (§4–7).
 > **Gerelateerd:** [`data-classification.md`](data-classification.md) · [`data-retention.md`](data-retention.md) · [`../compliance/regulatory-decisions.md`](../compliance/regulatory-decisions.md)
 
@@ -24,7 +24,7 @@ plicht.
 
 | # | Soort | Bron | Wie stelt vast wat geldt | Waar vastgelegd |
 |---|---|---|---|---|
-| 1 | **Gegevensbescherming** (privacywetgeving) | wet | privacy officer/DPO, met juridische validatie | dit document, [`data-retention.md`](data-retention.md), DPIA |
+| 1 | **Gegevensbescherming** (privacywetgeving) | wet | bevoegde specialist; de DPO adviseert en houdt onafhankelijk toezicht, de mandaathouder besluit | dit document, [`data-retention.md`](data-retention.md), DPIA |
 | 2 | **Intern privacybeleid** | eigen keuze, strenger dan de wet mag | privacy officer + PO | dit document |
 | 3 | **Informatiebeveiliging** (algemeen) | goede praktijk, normen, klantvereisten | security officer | [`../security/security-principles.md`](../security/security-principles.md) |
 | 4 | **Sectorspecifieke financiële regelgeving** | wet en toezicht, afhankelijk van `[TYPE DIENST]` en `[LANDEN/REGIO]` | **bevoegde specialist** — het team niet | [`../compliance/regulatory-decisions.md`](../compliance/regulatory-decisions.md) |
@@ -55,6 +55,22 @@ De standaardinstelling is altijd de meest privacyvriendelijke:
 * analytics gebeurt geaggregeerd, zonder individueel profiel;
 * meldingen staan uit of zijn beperkt tot wat functioneel nodig is;
 * de gebruiker hoeft niets aan te passen om privacy te krijgen.
+
+## 2a. Wanneer moet dit af zijn?
+
+Privacymaatregelen werken alleen vooraf. Ze bepalen mede **hoe** je bouwt, en zijn dus geen
+controle achteraf.
+
+| Uiterlijk vóór … | Moet vaststaan |
+|---|---|
+| ontwerpbeslissingen | welke gegevens de functionaliteit raakt, en of het met minder kan |
+| implementatie | doelbinding en gegevensminimalisatie |
+| feitelijke verwerking | grondslag beoordeeld, transparantie geregeld |
+| opslag | bewaartermijn bepaald en afdwingbaar |
+| implementatie bij mogelijk verhoogd risico | DPIA-screening uitgevoerd |
+
+Dit geldt óók voor een prototype dat echte persoonsgegevens gebruikt. De voorkeursroute
+blijft synthetische data — dan is deze volgorde geen belemmering.
 
 ## 3. Zeven ontwerpvragen per story
 
