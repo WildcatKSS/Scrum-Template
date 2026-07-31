@@ -11,6 +11,8 @@ security-impact worden expliciet gemarkeerd.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-07-31
+
 ### Opgelost
 - De SBOM-stap in `release.yml` probeerde de SBOM bij een tag-push zelf aan de GitHub
   Release te koppelen, wat faalde op `Resource not accessible by integration`. Daardoor
@@ -69,5 +71,6 @@ Voorbeeld van een ingevulde release:
 - Bedragen werden afgerond weergegeven in het transactieoverzicht (#128)
 -->
 
-[Unreleased]: https://github.com/WildcatKSS/Scrum-Template/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/WildcatKSS/Scrum-Template/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/WildcatKSS/Scrum-Template/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/WildcatKSS/Scrum-Template/releases/tag/v1.0.0
