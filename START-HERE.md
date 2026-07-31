@@ -49,7 +49,21 @@ lijst per niveau: [`docs/adoption-levels.md`](docs/adoption-levels.md).
 
 ### Eerste uur — repository klaarzetten
 
-1. Maak een repository aan vanuit deze template (*Use this template*).
+1. Maak een repository aan vanuit deze template met ***Use this template*** — niet met
+   *Fork* en niet met `git clone`.
+
+   > **Waarom dat uitmaakt.** *Use this template* geeft je repository één schone
+   > `Initial commit`: geen commits, tags of releases van de template, en geen
+   > fork-relatie. Fork en clone nemen die historie wél mee, en dan begint jouw product
+   > met de ontwikkelgeschiedenis van iemand anders.
+   >
+   > Al geforkt of gekloond? Herstel met
+   > `rm -rf .git && git init && git add -A && git commit -m "Initial commit"`.
+   >
+   > Om dezelfde reden begint [`CHANGELOG.md`](CHANGELOG.md) leeg: die hoort bij jouw
+   > product. De ontwikkelgeschiedenis van de template zelf staat in de Releases van de
+   > templaterepository.
+
 2. Lees deze pagina (dat doe je nu).
 3. Vul de eerste vier placeholders in — in `README.md` §2 en
    [`docs/product/product-vision.md`](docs/product/product-vision.md):

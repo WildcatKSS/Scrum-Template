@@ -63,6 +63,27 @@ Definition of Done. De Product Owner beoordeelt of dit Done increment nú naar d
 moet: is de waarde er, is de testgroepfeedback verwerkt, kloppen de releasenotes, is de
 communicatie geregeld?
 
+#### Volgorde: de pipeline maakt het concept, de mens publiceert
+
+Dit is de volgorde, en ze is niet uitwisselbaar:
+
+1. **Push de tag** `vX.Y.Z` — let op de kleine `v`; een tag als `V1.0.0` matcht het
+   patroon `v*.*.*` niet en start de workflow **stilzwijgend niet**.
+2. **De workflow maakt zelf een concept-release aan** met de gegenereerde releasenotes
+   als body (`draft: true`).
+3. **Controleer en vul aan**: releasekanaal, security-, privacy- en compliance-impact,
+   migraties, rollbackplan, goedkeuringen — de generator laat daar lege plekken voor.
+4. **Publiceer het concept** zodra de release-workflow groen is.
+
+> **Maak de release niet zelf aan vóór of tijdens het taggen.** De workflow verwacht een
+> concept te kunnen maken. Vindt hij in plaats daarvan een reeds gepubliceerde release,
+> dan kan hij die niet meer bijwerken — bij immutable releases weigert GitHub elke
+> wijziging na publicatie — en faalt de job.
+
+> **Publiceer ook niet vóórdat de workflow groen is.** Een gepubliceerde release is een
+> uitspraak dat de controles zijn doorlopen. Faalt de workflow daarna alsnog, dan staat er
+> een claim die niet klopt, en bij een immutable release krijg je die niet meer weg.
+
 ### 6. Gecontroleerde uitrol
 Tag `vX.Y.Z` → goedkeuring op de `production`-environment → gefaseerde uitrol
 (5% → 25% → 100%) met observatie tussen de stappen.
