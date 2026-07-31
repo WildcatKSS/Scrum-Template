@@ -315,8 +315,10 @@ jobs:
           body_path: RELEASE_NOTES.md
           prerelease: ${{ needs.release-candidate.outputs.prerelease == 'true' }}
           draft: true # bewust concept: de PO publiceert pas na akkoord
-          files: |
-            RELEASE_NOTES.md
+          # Bewust géén `files:` met RELEASE_NOTES.md. De notes staan al in de body van
+          # de release; ze daarnaast als bijlage aanhangen voegt niets toe. Bovendien
+          # faalt zo'n upload zodra de release al gepubliceerd is — bij immutable
+          # releases staat GitHub geen assets meer toe na publicatie.
 
   # ---------------------------------------------------------------------------
   # 4. Deployment naar de testomgeving
