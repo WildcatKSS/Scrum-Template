@@ -13,6 +13,18 @@ for step in "${steps[@]}"; do
   if ! "${HERE}/${step}"; then failed+=("${step}"); fi
 done
 
+# Rooktest op de releasenotesgenerator. Dat script draait normaal alleen in de
+# release-workflow, dus een fout erin blijft onopgemerkt tot het moment waarop je
+# hem het minst kunt gebruiken: midden in een release. Draai hem hier tegen de meest
+# recente tag, of tegen de volledige historie wanneer er nog geen tag is.
+log "── release/prepare-release-notes.sh (rooktest) ─────────────────────────────"
+smoke_version="$(git describe --tags --abbrev=0 2>/dev/null || echo 'v0.0.0')"
+if "${HERE}/../release/prepare-release-notes.sh" "${smoke_version}" >/dev/null; then
+  ok "releasenotes worden gegenereerd (${smoke_version})"
+else
+  failed+=("release/prepare-release-notes.sh")
+fi
+
 if [ ${#failed[@]} -gt 0 ]; then
   fail "Mislukte stappen: ${failed[*]}"
 fi

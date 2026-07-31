@@ -15,10 +15,16 @@ PREVIOUS_TAG="$(git describe --tags --abbrev=0 "${VERSION}^" 2>/dev/null || git 
 RANGE="${PREVIOUS_TAG}..${VERSION}"
 git rev-parse "${VERSION}" >/dev/null 2>&1 || RANGE="${PREVIOUS_TAG}..HEAD"
 
+# LET OP: gebruik hier `if`, geen `[ … ] && printf`. Bij een lege rubriek is dat
+# laatste commando de returnwaarde van de functie; onder `set -e` breekt het script
+# dan af. Vrijwel elke release mist minstens één rubriek, dus dat is de regel, niet
+# de uitzondering.
 section() {
   local title="$1" pattern="$2" body
   body="$(git log "${RANGE}" --no-merges --pretty=format:'- %s (%h)' | grep -E "^- ${pattern}" || true)"
-  [ -n "${body}" ] && printf '### %s\n\n%s\n\n' "${title}" "${body}"
+  if [ -n "${body}" ]; then
+    printf '### %s\n\n%s\n\n' "${title}" "${body}"
+  fi
 }
 
 cat <<HEADER
@@ -36,7 +42,9 @@ section "Documentatie" 'docs(\(.*\))?!?:'
 section "Onderhoud"   '(chore|build|ci|refactor|test|style)(\(.*\))?!?:'
 
 breaking="$(git log "${RANGE}" --no-merges --pretty=format:'- %s (%h)' | grep -E '!:' || true)"
-[ -n "${breaking}" ] && printf '### ⚠️ Breaking changes\n\n%s\n\n' "${breaking}"
+if [ -n "${breaking}" ]; then
+  printf '### ⚠️ Breaking changes\n\n%s\n\n' "${breaking}"
+fi
 
 cat <<'FOOTER'
 ---

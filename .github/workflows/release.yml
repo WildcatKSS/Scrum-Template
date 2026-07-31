@@ -257,15 +257,26 @@ jobs:
           format: cyclonedx-json
           output-file: sbom.cyclonedx.json
           upload-release-assets: false
+          # Ook de eigen artifact-upload van deze action uit: de stap hieronder bewaart
+          # de SBOM al onder een voorspelbare naam. Anders krijg je twee artifacts met
+          # dezelfde inhoud en verschillende namen, en is niet duidelijk welke het bewijs is.
+          upload-artifact: false
       - name: Licentiecontrole
         run: ./scripts/ci/license-check.sh
+      # LET OP — bewaartermijn: GitHub kapt artifactretentie af op het repositorymaximum,
+      # zonder waarschuwing. Voor publieke repositories is dat 90 dagen; voor private tot
+      # 400. Een hogere waarde hier vragen levert dus stil minder op dan je denkt. Daarom
+      # staat hier 90: wat de workflow belooft, is ook wat je krijgt.
+      # Moet het bewijs langer bewaard blijven — en bij een gereguleerde dienst is dat
+      # doorgaans zo — dan is een Actions-artifact niet de juiste opslag. Zie
+      # docs/compliance/audit-evidence.md §5.
       - name: SBOM bewaren als releasebewijs
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: sbom-${{ needs.release-candidate.outputs.version }}
           path: sbom.cyclonedx.json
           if-no-files-found: warn
-          retention-days: 365
+          retention-days: 90
       - name: Handmatige goedkeuringen herinneren
         run: |
           {
